@@ -64,3 +64,97 @@ export type BusinessConfig = {
   description: string;
   socialLinks: readonly SocialLink[];
 };
+
+export type ServiceIconId =
+  | "drain"
+  | "leak"
+  | "water-heater"
+  | "pipe"
+  | "fixture"
+  | "sump-pump"
+  | "sewer"
+  | "wrench";
+
+export type ServiceSummary = {
+  slug: string;
+  name: string;
+  description: string;
+  icon: ServiceIconId;
+  requestHref: string;
+};
+
+export type TrustPoint = {
+  title: string;
+  description: string;
+};
+
+export type ProcessStep = {
+  step: number;
+  title: string;
+  description: string;
+};
+
+export type ReputationConfig = {
+  rating: string;
+  ratingLabel: string;
+  reviewCount: string;
+  highlights: readonly string[];
+  note: string;
+};
+
+export type HeroConfig = {
+  eyebrow: string;
+  heading: string;
+  paragraph: string;
+  trustPoints: readonly string[];
+};
+
+export type EmergencyConfig = {
+  heading: string;
+  text: string;
+  callLabel: string;
+  callHref: string;
+  requestLabel: string;
+  requestHref: string;
+  safetyNote: string;
+};
+
+export type ServicesSectionConfig = {
+  heading: string;
+  supportingText: string;
+};
+
+export type WhyChooseConfig = {
+  heading: string;
+  points: readonly TrustPoint[];
+};
+
+export type ProcessConfig = {
+  heading: string;
+  steps: readonly ProcessStep[];
+};
+
+export type EstimatePlaceholderConfig = {
+  heading: string;
+  text: string;
+};
+
+export type FinalCtaConfig = {
+  heading: string;
+  text: string;
+  primaryLabel: string;
+  primaryHref: string;
+  secondaryLabel: string;
+  secondaryHref: string;
+};
+
+export type HomePageConfig = {
+  hero: HeroConfig;
+  reputation: ReputationConfig;
+  emergency: EmergencyConfig;
+  servicesSection: ServicesSectionConfig;
+  whyChoose: WhyChooseConfig;
+  process: ProcessConfig;
+  estimatePlaceholder: EstimatePlaceholderConfig;
+  finalCta: FinalCtaConfig;
+};

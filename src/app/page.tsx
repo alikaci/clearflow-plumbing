@@ -1,78 +1,45 @@
+import { home } from "@/config/home";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
-
-/* TEMPORARY Phase 1A shell preview. Replaced by the real homepage in a later phase. */
+import { Hero } from "@/components/sections/Hero";
+import { ReputationBar } from "@/components/sections/ReputationBar";
+import { EmergencyCallout } from "@/components/sections/EmergencyCallout";
+import { ServiceGrid } from "@/components/sections/ServiceGrid";
+import { WhyChoose } from "@/components/sections/WhyChoose";
+import { ProcessSteps } from "@/components/sections/ProcessSteps";
+import { FinalCta } from "@/components/sections/FinalCta";
 
 export default function Home() {
   return (
     <main id="main-content">
-      <Section>
-        <Container>
-          <Badge variant="blue">Phase 1A layout preview</Badge>
-          <h1 className="mt-4 text-4xl md:text-5xl">ClearFlow Plumbing Co.</h1>
-          <p className="mt-3 max-w-xl text-lg text-muted">
-            Global layout and design foundation initialized.
-          </p>
-        </Container>
-      </Section>
+      <Hero />
+      <ReputationBar />
+      <EmergencyCallout />
+      <ServiceGrid />
+      <WhyChoose />
+      <ProcessSteps />
 
-      <Section surface="muted">
-        <Container>
-          <h2 className="text-2xl md:text-3xl">UI primitives preview</h2>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Button href="#estimate" variant="primary">
-              Request a Free Estimate
-            </Button>
-            <Button href="#estimate" variant="secondary">
-              Call Now
-            </Button>
-            <Button href="#estimate" variant="outline">
-              Outline link
-            </Button>
-            <Button href="#estimate" variant="ghost">
-              Ghost link
-            </Button>
-          </div>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <Badge variant="orange">Badge</Badge>
-              <h3 className="mt-3 text-xl">Card heading</h3>
-              <p className="mt-2 text-muted">
-                Rounded surface with border and padding.
-              </p>
-            </Card>
-            <Card elevated>
-              <Badge variant="neutral">Elevated</Badge>
-              <h3 className="mt-3 text-xl">Card heading</h3>
-              <p className="mt-2 text-muted">
-                Same card with a subtle shadow.
-              </p>
-            </Card>
-            <Card>
-              <Badge variant="blue">Blue</Badge>
-              <h3 className="mt-3 text-xl">Card heading</h3>
-              <p className="mt-2 text-muted">
-                Flexible container for future sections.
-              </p>
-            </Card>
+      {/* TEMPORARY: replaced by the multi-step estimate request form in a later phase. */}
+      <Section
+        id="estimate"
+        surface="muted"
+        ariaLabel="Online request form, coming soon"
+      >
+        <Container size="narrow">
+          <div className="rounded-xl border border-dashed border-border bg-surface p-8 text-center">
+            <Badge variant="neutral">Temporary placeholder</Badge>
+            <h2 className="mt-4 text-2xl">
+              {home.estimatePlaceholder.heading}
+            </h2>
+            <p className="mx-auto mt-3 max-w-lg text-muted">
+              {home.estimatePlaceholder.text}
+            </p>
           </div>
         </Container>
       </Section>
 
-      <Section id="estimate">
-        <Container>
-          <h2 className="text-2xl md:text-3xl">Estimate anchor target</h2>
-          <p className="mt-3 max-w-2xl text-muted">
-            CTAs across the shell link to #estimate. The estimate form arrives
-            with the homepage in a later phase; for now this section is the
-            target.
-          </p>
-        </Container>
-      </Section>
+      <FinalCta />
     </main>
   );
 }
