@@ -146,6 +146,11 @@ html[data-shell-menu-open="true"] .mobile-action-bar {
   display: none;
 }
 
+/* Keep the mobile action bar hidden while the website assistant panel is open. */
+html[data-assistant-open="true"] .mobile-action-bar {
+  display: none;
+}
+
 .mobile-menu-dialog::backdrop {
   background-color: rgb(11 31 51 / 0.5);
 }

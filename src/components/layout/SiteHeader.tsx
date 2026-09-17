@@ -6,6 +6,8 @@ import { business } from "@/config/business";
 import { mainNavigation } from "@/config/navigation";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { filterNavigation } from "@/lib/features";
+import { resolveHashHref } from "@/lib/links";
 import { Wordmark } from "./Wordmark";
 import { MobileMenu } from "./MobileMenu";
 
@@ -16,6 +18,8 @@ function isActive(href: string, pathname: string) {
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const navItems = filterNavigation(mainNavigation);
+  const estimateHref = resolveHashHref(business.primaryCta.href, pathname);
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-white">
@@ -24,7 +28,7 @@ export function SiteHeader() {
 
         <nav aria-label="Main" className="hidden lg:block">
           <ul className="flex items-center gap-1">
-            {mainNavigation.map((item) => (
+            {navItems.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
@@ -47,7 +51,7 @@ export function SiteHeader() {
           >
             {business.phoneDisplay}
           </Button>
-          <Button href={business.primaryCta.href} variant="primary">
+          <Button href={estimateHref} variant="primary">
             {business.primaryCta.label}
           </Button>
         </div>

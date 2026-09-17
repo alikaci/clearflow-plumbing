@@ -1,0 +1,86 @@
+import type { SeoConfig } from "@/types";
+
+export const seo = {
+  siteName: "ClearFlow Plumbing Co.",
+  siteUrl: "https://clearflow.example",
+  indexable: false,
+  defaultTitle: "ClearFlow Plumbing Co.",
+  titleTemplate: "%s | ClearFlow Plumbing Co.",
+  defaultDescription:
+    "ClearFlow Plumbing Co. is a fictional Columbus plumbing website concept created by ServiceHarbor Studio for portfolio demonstration.",
+  openGraphImageKey: "openGraph",
+  routes: {
+    home: {
+      path: "/",
+      title: "Reliable Plumbing Help in Columbus",
+      description:
+        "Request professional plumbing support across Columbus and surrounding communities. A fictional portfolio concept by ServiceHarbor Studio.",
+    },
+    services: {
+      path: "/services",
+      title: "Plumbing Services",
+      description:
+        "Explore drain cleaning, leak repair, water-heater services, pipe repair, fixture repair, sump pumps, sewer lines and general plumbing support.",
+    },
+    emergency: {
+      path: "/emergency",
+      title: "Urgent Plumbing Help",
+      description:
+        "Guidance for urgent plumbing problems such as burst pipes, sewer backups and major blockages, with clear hours and safety information.",
+    },
+    serviceAreas: {
+      path: "/service-areas",
+      title: "Service Areas",
+      description:
+        "Check the demonstration service area for Columbus and nearby communities including Dublin, Westerville, Hilliard, Grove City, Gahanna, Reynoldsburg and Worthington.",
+    },
+    about: {
+      path: "/about",
+      title: "About the Concept",
+      description:
+        "ClearFlow Plumbing Co. is a fictional Columbus plumbing brand created to demonstrate a modern local-service website.",
+    },
+    gallery: {
+      path: "/gallery",
+      title: "Project Gallery",
+      description:
+        "Before-and-after project presentation for common plumbing work, shown for concept demonstration.",
+    },
+    offers: {
+      path: "/offers",
+      title: "Current Offers",
+      description:
+        "Sample offer presentation showing how promotions would be configured for a real plumbing business.",
+    },
+    membership: {
+      path: "/membership",
+      title: "ClearFlow Care Plan",
+      description:
+        "An optional membership concept for homeowners, shown for demonstration purposes only.",
+    },
+    financing: {
+      path: "/financing",
+      title: "Financing Information",
+      description:
+        "How financing information would be presented for larger plumbing projects. This demonstration does not provide financing.",
+    },
+    book: {
+      path: "/book",
+      title: "Booking Preview",
+      description:
+        "A simulated booking flow showing how appointment scheduling could be presented for a real plumbing business.",
+    },
+    contact: {
+      path: "/contact",
+      title: "Contact",
+      description:
+        "Demonstration phone number, hours, service region and the multi-step request form for ClearFlow Plumbing Co.",
+    },
+    privacy: {
+      path: "/privacy",
+      title: "Privacy Notes",
+      description:
+        "How this fictional portfolio demonstration handles form data, local photo previews and tracking.",
+    },
+  },
+} satisfies SeoConfig;

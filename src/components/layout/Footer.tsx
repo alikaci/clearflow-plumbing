@@ -1,68 +1,25 @@
 import Link from "next/link";
 import { business } from "@/config/business";
-import { mainNavigation } from "@/config/navigation";
+import { footerNavigation } from "@/config/navigation";
 import { Container } from "@/components/ui/Container";
+import { filterNavigation } from "@/lib/features";
 import { Wordmark } from "./Wordmark";
 
 export function Footer() {
-  const serviceLinks = [
-    { href: "/services", label: "Plumbing Services" },
-    { href: "/emergency", label: "Emergency Plumbing" },
-    { href: "/service-areas", label: "Service Areas" },
-  ];
+  const groups = footerNavigation
+    .map((group) => ({ ...group, items: filterNavigation(group.items) }))
+    .filter((group) => group.items.length > 0);
 
   return (
     <footer className="bg-navy text-footer-text">
       <Container className="py-14 md:py-16">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-          <div>
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-6">
+          <div className="lg:col-span-2">
             <Wordmark variant="dark" />
             <p className="mt-4 max-w-xs text-sm text-footer-muted">
               {business.description}
             </p>
-          </div>
-
-          <nav aria-label="Main">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-footer-text">
-              Main
-            </h2>
-            <ul className="mt-4 flex flex-col gap-2">
-              {mainNavigation.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="inline-flex py-0.5 text-sm text-footer-muted underline-offset-2 transition-colors hover:text-white hover:underline"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <nav aria-label="Services">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-footer-text">
-              Services
-            </h2>
-            <ul className="mt-4 flex flex-col gap-2">
-              {serviceLinks.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="inline-flex py-0.5 text-sm text-footer-muted underline-offset-2 transition-colors hover:text-white hover:underline"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-footer-text">
-              Contact
-            </h2>
-            <ul className="mt-4 flex flex-col gap-2 text-sm text-footer-muted">
+            <ul className="mt-6 flex flex-col gap-2 text-sm text-footer-muted">
               <li>
                 <a
                   href={business.phoneUri}
@@ -84,8 +41,29 @@ export function Footer() {
                 )}
               </li>
               <li>{business.hours.full}</li>
+              <li>Serving {business.serviceArea}</li>
             </ul>
           </div>
+
+          {groups.map((group) => (
+            <nav key={group.id} aria-label={group.title}>
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-footer-text">
+                {group.title}
+              </h2>
+              <ul className="mt-4 flex flex-col gap-2">
+                {group.items.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="inline-flex py-0.5 text-sm text-footer-muted underline-offset-2 transition-colors hover:text-white hover:underline"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
 
         <div className="mt-12 border-t border-white/10 pt-8">
@@ -97,18 +75,9 @@ export function Footer() {
               {business.disclosures.aiImagery}
             </p>
           </div>
-          <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <Link
-              href="/privacy"
-              className="text-sm text-footer-muted underline-offset-2 transition-colors hover:text-white hover:underline"
-            >
-              Privacy
-            </Link>
-            <p className="text-sm text-footer-muted">
-              {business.disclosures.copyright}
-            </p>
-          </div>
-          <p className="mt-3 text-sm text-footer-muted">Concept by {business.creator}</p>
+          <p className="mt-6 text-sm text-footer-muted">
+            {business.disclosures.copyright}
+          </p>
         </div>
       </Container>
     </footer>

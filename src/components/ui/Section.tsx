@@ -8,6 +8,7 @@ type SectionProps = {
   id?: string;
   surface?: SectionSurface;
   ariaLabel?: string;
+  labelledBy?: string;
 };
 
 const surfaceClasses: Record<SectionSurface, string> = {
@@ -23,16 +24,14 @@ export function Section({
   id,
   surface = "default",
   ariaLabel,
+  labelledBy,
 }: SectionProps) {
   return (
     <section
       id={id}
       aria-label={ariaLabel}
-      className={[
-        surfaceClasses[surface],
-        "py-14 md:py-20",
-        className,
-      ]
+      aria-labelledby={labelledBy}
+      className={[surfaceClasses[surface], "py-14 md:py-20", className]
         .filter(Boolean)
         .join(" ")}
     >

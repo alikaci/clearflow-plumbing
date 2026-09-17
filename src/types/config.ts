@@ -38,10 +38,18 @@ export type FeatureFlags = {
   photoUploadPreview: boolean;
 };
 
+export type FlagName = keyof FeatureFlags;
+
 export type NavigationItem = {
   label: string;
   href: string;
-  flag?: keyof FeatureFlags;
+  flag?: FlagName;
+};
+
+export type FooterNavGroup = {
+  id: string;
+  title: string;
+  items: readonly NavigationItem[];
 };
 
 export type BusinessConfig = {
@@ -65,6 +73,16 @@ export type BusinessConfig = {
   socialLinks: readonly SocialLink[];
 };
 
+export type SelectOption<T extends string = string> = {
+  value: T;
+  label: string;
+};
+
+export type SelectOptionGroup = {
+  label: string;
+  options: readonly SelectOption[];
+};
+
 export type ServiceIconId =
   | "drain"
   | "leak"
@@ -75,31 +93,271 @@ export type ServiceIconId =
   | "sewer"
   | "wrench";
 
+export type ImageKey =
+  | "heroTechnician"
+  | "serviceDrain"
+  | "serviceLeak"
+  | "serviceWaterHeater"
+  | "servicePipe"
+  | "serviceFaucet"
+  | "serviceSump"
+  | "serviceSewer"
+  | "technicianHomeowner"
+  | "brandedVan"
+  | "aboutTeam"
+  | "galleryPipeBefore"
+  | "galleryPipeAfter"
+  | "galleryHeaterBefore"
+  | "galleryHeaterAfter"
+  | "galleryDrainBefore"
+  | "galleryDrainAfter"
+  | "galleryFaucetBefore"
+  | "galleryFaucetAfter"
+  | "galleryUtilityBefore"
+  | "galleryUtilityAfter"
+  | "openGraph";
+
+export type ImageFallbackMotif =
+  | "pipes"
+  | "tank"
+  | "drain"
+  | "droplet"
+  | "van"
+  | "people"
+  | "before"
+  | "after"
+  | "brand";
+
+export type ImageAsset = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  aspectRatio: `${number} / ${number}`;
+  priority: boolean;
+  decorative: boolean;
+  available: boolean;
+  motif: ImageFallbackMotif;
+  generationNote: string;
+};
+
+export type ImageManifest = Record<ImageKey, ImageAsset>;
+
+export type ServiceFaq = {
+  question: string;
+  answer: string;
+};
+
 export type ServiceSummary = {
   slug: string;
   name: string;
+  shortName: string;
   description: string;
   icon: ServiceIconId;
-  requestHref: string;
+  imageKey: ImageKey;
 };
 
-export type TrustPoint = {
-  title: string;
-  description: string;
+export type ServiceDetail = ServiceSummary & {
+  headline: string;
+  intro: string;
+  commonProblems: readonly string[];
+  warningSigns: readonly string[];
+  assessmentIncludes: readonly string[];
+  benefits: readonly string[];
+  relatedSlugs: readonly string[];
+  faqs: readonly ServiceFaq[];
 };
 
-export type ProcessStep = {
-  step: number;
-  title: string;
-  description: string;
+export type Review = {
+  name: string;
+  location: string;
+  quote: string;
 };
 
-export type ReputationConfig = {
+export type ReviewsConfig = {
+  heading: string;
+  supportingText: string;
   rating: string;
   ratingLabel: string;
   reviewCount: string;
   highlights: readonly string[];
   note: string;
+  presentationNote: string;
+  reviews: readonly Review[];
+};
+
+export type FaqItem = {
+  id: string;
+  question: string;
+  answer: string;
+};
+
+export type Offer = {
+  id: string;
+  title: string;
+  description: string;
+  detail: string;
+};
+
+export type MembershipBenefit = {
+  title: string;
+  description: string;
+};
+
+export type FinancingUseCase = {
+  title: string;
+  description: string;
+};
+
+export type ServiceArea = {
+  name: string;
+  description: string;
+};
+
+export type ServiceAreaConfig = {
+  heading: string;
+  supportingText: string;
+  areas: readonly ServiceArea[];
+  zips: readonly string[];
+  checkerTitle: string;
+  checkerDescription: string;
+  zipLabel: string;
+  zipHelp: string;
+  submitLabel: string;
+  resetLabel: string;
+  successMessage: string;
+  alternativeMessage: string;
+  disclaimer: string;
+  invalidMessage: string;
+};
+
+export type GalleryPair = {
+  id: string;
+  category: string;
+  description: string;
+  beforeKey: ImageKey;
+  afterKey: ImageKey;
+};
+
+export type GalleryConfig = {
+  heading: string;
+  supportingText: string;
+  note: string;
+  previewCount: number;
+  pairs: readonly GalleryPair[];
+};
+
+export type AssistantChoice = {
+  id: string;
+  label: string;
+  response: string;
+  href: string;
+  hrefLabel: string;
+};
+
+export type AssistantConfig = {
+  title: string;
+  intro: string;
+  disclaimer: string;
+  choices: readonly AssistantChoice[];
+};
+
+export type CostToolConfig = {
+  heading: string;
+  supportingText: string;
+  resultMessage: string;
+  ctaLabel: string;
+  ctaHref: string;
+};
+
+export type PropertyTypeValue =
+  | "house"
+  | "apartment-condo"
+  | "commercial"
+  | "other";
+
+export type ContactMethodValue = "phone" | "email" | "text";
+
+export type ContactTimeValue = "morning" | "afternoon" | "evening";
+
+export type UrgencyValue = "urgent" | "not-urgent";
+
+export type EstimateFormValues = {
+  service: string;
+  city: string;
+  zip: string;
+  propertyType: PropertyTypeValue;
+  urgency: UrgencyValue;
+  description: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  contactMethod: ContactMethodValue;
+  contactTime: ContactTimeValue;
+  privacy: boolean;
+};
+
+export type BookingFormValues = {
+  service: string;
+  date: string;
+  timeRange: string;
+  fullName: string;
+  email: string;
+  phone: string;
+};
+
+export type FormsConfig = {
+  estimateHeading: string;
+  estimateSupportingText: string;
+  bookingHeading: string;
+  bookingSupportingText: string;
+  bookingDisclaimer: string;
+  bookingConfirmation: string;
+  stepTitles: readonly string[];
+  bookingStepTitles: readonly string[];
+  serviceOptions: readonly SelectOption[];
+  serviceOtherOption: SelectOption;
+  propertyTypes: readonly SelectOption<PropertyTypeValue>[];
+  contactMethods: readonly SelectOption<ContactMethodValue>[];
+  contactTimes: readonly SelectOption<ContactTimeValue>[];
+  urgencyOptions: readonly SelectOption<UrgencyValue>[];
+  timeRanges: readonly SelectOption[];
+  cityLabel: string;
+  zipLabel: string;
+  descriptionLabel: string;
+  descriptionHelp: string;
+  photoLabel: string;
+  photoHelp: string;
+  photoRemoveLabel: string;
+  photoMaxBytes: number;
+  honeypotFieldName: string;
+  successHeading: string;
+  successMessage: string;
+  successNote: string;
+  submitLabel: string;
+  submittingLabel: string;
+  backLabel: string;
+  nextLabel: string;
+  reviewLabel: string;
+  resetLabel: string;
+  privacyLabel: string;
+};
+
+export type SeoRouteConfig = {
+  path: string;
+  title: string;
+  description: string;
+};
+
+export type SeoConfig = {
+  siteName: string;
+  siteUrl: string;
+  indexable: false;
+  defaultTitle: string;
+  titleTemplate: string;
+  defaultDescription: string;
+  openGraphImageKey: ImageKey;
+  routes: Record<string, SeoRouteConfig>;
 };
 
 export type HeroConfig = {
@@ -129,14 +387,15 @@ export type WhyChooseConfig = {
   points: readonly TrustPoint[];
 };
 
-export type ProcessConfig = {
-  heading: string;
-  steps: readonly ProcessStep[];
+export type TrustPoint = {
+  title: string;
+  description: string;
 };
 
-export type EstimatePlaceholderConfig = {
-  heading: string;
-  text: string;
+export type ProcessStep = {
+  step: number;
+  title: string;
+  description: string;
 };
 
 export type FinalCtaConfig = {
@@ -148,13 +407,29 @@ export type FinalCtaConfig = {
   secondaryHref: string;
 };
 
+export type OptionalFeaturesConfig = {
+  heading: string;
+  supportingText: string;
+  tiles: readonly {
+    flag: FlagName;
+    title: string;
+    description: string;
+    href: string;
+    linkLabel: string;
+  }[];
+};
+
 export type HomePageConfig = {
   hero: HeroConfig;
-  reputation: ReputationConfig;
   emergency: EmergencyConfig;
   servicesSection: ServicesSectionConfig;
   whyChoose: WhyChooseConfig;
   process: ProcessConfig;
-  estimatePlaceholder: EstimatePlaceholderConfig;
   finalCta: FinalCtaConfig;
+  optionalFeatures: OptionalFeaturesConfig;
+};
+
+export type ProcessConfig = {
+  heading: string;
+  steps: readonly ProcessStep[];
 };

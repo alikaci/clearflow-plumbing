@@ -2,6 +2,7 @@ import { business } from "@/config/business";
 import { home } from "@/config/home";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { Icon } from "@/components/ui/Icon";
 import { Section } from "@/components/ui/Section";
 import { HeroVisual } from "@/components/ui/HeroVisual";
 
@@ -11,17 +12,7 @@ function TrustCheck() {
       aria-hidden="true"
       className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-light text-blue"
     >
-      <svg
-        viewBox="0 0 24 24"
-        className="h-3.5 w-3.5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="m5 13 4 4L19 7" />
-      </svg>
+      <Icon name="check" className="h-3.5 w-3.5" />
     </span>
   );
 }

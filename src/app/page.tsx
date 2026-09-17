@@ -1,44 +1,36 @@
-import { home } from "@/config/home";
-import { Badge } from "@/components/ui/Badge";
-import { Container } from "@/components/ui/Container";
-import { Section } from "@/components/ui/Section";
+import { features } from "@/config/features";
+import { buildMetadata } from "@/lib/metadata";
 import { Hero } from "@/components/sections/Hero";
 import { ReputationBar } from "@/components/sections/ReputationBar";
 import { EmergencyCallout } from "@/components/sections/EmergencyCallout";
 import { ServiceGrid } from "@/components/sections/ServiceGrid";
+import { ServiceAreaChecker } from "@/components/sections/ServiceAreaChecker";
 import { WhyChoose } from "@/components/sections/WhyChoose";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
+import { GalleryPreview } from "@/components/sections/GalleryPreview";
+import { ReviewsSection } from "@/components/sections/ReviewsSection";
+import { OptionalFeatures } from "@/components/sections/OptionalFeatures";
+import { FaqSection } from "@/components/sections/FaqSection";
+import { EstimateSection } from "@/components/sections/EstimateSection";
 import { FinalCta } from "@/components/sections/FinalCta";
+
+export const metadata = buildMetadata("home");
 
 export default function Home() {
   return (
     <main id="main-content">
       <Hero />
-      <ReputationBar />
-      <EmergencyCallout />
+      {features.reputationSection ? <ReputationBar /> : null}
+      {features.emergencyPath ? <EmergencyCallout /> : null}
       <ServiceGrid />
+      {features.serviceAreaChecker ? <ServiceAreaChecker /> : null}
       <WhyChoose />
       <ProcessSteps />
-
-      {/* TEMPORARY: replaced by the multi-step estimate request form in a later phase. */}
-      <Section
-        id="estimate"
-        surface="muted"
-        ariaLabel="Online request form, coming soon"
-      >
-        <Container size="narrow">
-          <div className="rounded-xl border border-dashed border-border bg-surface p-8 text-center">
-            <Badge variant="neutral">Temporary placeholder</Badge>
-            <h2 className="mt-4 text-2xl">
-              {home.estimatePlaceholder.heading}
-            </h2>
-            <p className="mx-auto mt-3 max-w-lg text-muted">
-              {home.estimatePlaceholder.text}
-            </p>
-          </div>
-        </Container>
-      </Section>
-
+      {features.gallery ? <GalleryPreview /> : null}
+      {features.reputationSection ? <ReviewsSection /> : null}
+      <OptionalFeatures />
+      <FaqSection />
+      <EstimateSection />
       <FinalCta />
     </main>
   );

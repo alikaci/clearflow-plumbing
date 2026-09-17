@@ -2,15 +2,22 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { business } from "@/config/business";
 import { mainNavigation } from "@/config/navigation";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
+import { filterNavigation } from "@/lib/features";
+import { resolveHashHref } from "@/lib/links";
 import { Wordmark } from "./Wordmark";
 
 export function MobileMenu() {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const navItems = filterNavigation(mainNavigation);
+  const estimateHref = resolveHashHref(business.primaryCta.href, pathname);
 
   function openMenu() {
     const dialog = dialogRef.current;
@@ -71,17 +78,7 @@ export function MobileMenu() {
         aria-label="Open menu"
         className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-navy hover:bg-surface-muted"
       >
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          className="h-6 w-6"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        >
-          <path d="M4 7h16M4 12h16M4 17h16" />
-        </svg>
+        <Icon name="menu" />
       </button>
 
       <dialog
@@ -101,23 +98,13 @@ export function MobileMenu() {
               aria-label="Close menu"
               className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-navy hover:bg-surface-muted"
             >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              >
-                <path d="M6 6l12 12M18 6L6 18" />
-              </svg>
+              <Icon name="close" />
             </button>
           </div>
 
           <nav aria-label="Primary" className="flex-1 px-4 py-4">
             <ul className="flex flex-col gap-1">
-              {mainNavigation.map((item) => (
+              {navItems.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -132,7 +119,7 @@ export function MobileMenu() {
           </nav>
 
           <div className="flex flex-col gap-3 border-t border-border px-4 py-4">
-            <Button href={business.primaryCta.href} variant="primary" size="lg" fullWidth>
+            <Button href={estimateHref} variant="primary" size="lg" fullWidth>
               {business.primaryCta.label}
             </Button>
             <Button href={business.secondaryCta.href} variant="outline" size="lg" fullWidth>
