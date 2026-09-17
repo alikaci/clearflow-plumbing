@@ -33,6 +33,7 @@ export function ReviewsSection() {
             <li key={review.name}>
               <Card className="flex h-full flex-col">
                 <div
+                  role="img"
                   className="flex gap-0.5 text-orange"
                   aria-label="Five out of five stars"
                 >

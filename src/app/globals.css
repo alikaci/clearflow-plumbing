@@ -9,7 +9,7 @@ through generated Tailwind utilities (bg-navy, text-muted, bg-surface-muted, ...
 @theme {
   /* Brand colors */
   --color-navy: #0b1f33;
-  --color-blue: #1473e6;
+  --color-blue: #0f63cf;
   --color-blue-light: #eaf4ff;
   --color-orange: #f97316;
   --color-white: #ffffff;
