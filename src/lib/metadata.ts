@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { seo } from "@/config/seo";
+import { getSiteUrl, toAbsoluteUrl } from "@/lib/site-url";
 
 type RouteId = keyof typeof seo.routes;
 
@@ -8,10 +9,13 @@ export function buildMetadataFor(input: {
   description: string;
   path: string;
 }): Metadata {
+  const siteUrl = getSiteUrl();
+  const canonical = siteUrl ? toAbsoluteUrl(siteUrl, input.path) : null;
+
   return {
     title: input.title,
     description: input.description,
-    alternates: { canonical: `${seo.siteUrl}${input.path}` },
+    ...(canonical ? { alternates: { canonical } } : {}),
     robots: {
       index: false,
       follow: false,
@@ -21,10 +25,10 @@ export function buildMetadataFor(input: {
     openGraph: {
       title: `${input.title} | ${seo.siteName}`,
       description: input.description,
-      url: `${seo.siteUrl}${input.path}`,
       siteName: seo.siteName,
       locale: "en_US",
       type: "website",
+      ...(canonical ? { url: canonical } : {}),
     },
   };
 }

@@ -433,18 +433,23 @@ export function EstimateForm() {
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         {step > 0 ? (
-          <Button type="button" variant="outline" onClick={handleBack}>
+          <Button
+            key="back"
+            type="button"
+            variant="outline"
+            onClick={handleBack}
+          >
             {forms.backLabel}
           </Button>
         ) : null}
         {isLastStep ? (
-          <Button type="submit" disabled={status === "submitting"}>
+          <Button key="submit" type="submit" disabled={status === "submitting"}>
             {status === "submitting"
               ? forms.submittingLabel
               : forms.submitLabel}
           </Button>
         ) : (
-          <Button type="button" onClick={handleNext}>
+          <Button key="next" type="button" onClick={handleNext}>
             {forms.nextLabel}
           </Button>
         )}

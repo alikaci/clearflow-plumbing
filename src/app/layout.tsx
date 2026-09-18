@@ -7,9 +7,21 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Footer } from "@/components/layout/Footer";
 import { MobileActionBar } from "@/components/layout/MobileActionBar";
 import { Assistant } from "@/components/assistant/Assistant";
+import { getSiteUrl, toAbsoluteUrl } from "@/lib/site-url";
+
+const siteUrl = getSiteUrl();
+/*
+The opengraph-image file convention is resolved against metadataBase. Next.js
+defaults metadataBase to http://localhost:3000 when it is not set, which would
+emit an unverified absolute image URL. When no real origin is configured we
+explicitly clear the images so no localhost or assumed domain is published.
+*/
+const openGraphImage = siteUrl
+  ? toAbsoluteUrl(siteUrl, "/opengraph-image")
+  : null;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(seo.siteUrl),
+  ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
   title: {
     default: seo.defaultTitle,
     template: seo.titleTemplate,
@@ -27,7 +39,11 @@ export const metadata: Metadata = {
     siteName: seo.siteName,
     locale: "en_US",
     type: "website",
-    url: seo.siteUrl,
+    ...(siteUrl ? { url: siteUrl } : {}),
+    images: openGraphImage ? [openGraphImage] : [],
+  },
+  twitter: {
+    images: openGraphImage ? [openGraphImage] : [],
   },
 };
 

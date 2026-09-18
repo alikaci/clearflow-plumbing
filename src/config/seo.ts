@@ -1,8 +1,15 @@
 import type { SeoConfig } from "@/types";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const seo = {
   siteName: "ClearFlow Plumbing Co.",
-  siteUrl: "https://clearflow.example",
+  /*
+  No public domain is owned and nothing has been deployed. The origin is read
+  from NEXT_PUBLIC_SITE_URL and stays null when it is not configured, so no
+  canonical, Open Graph URL or robots Host value is emitted for an unverified
+  domain. See README.md for deployment configuration.
+  */
+  siteUrl: getSiteUrl(),
   indexable: false,
   defaultTitle: "ClearFlow Plumbing Co.",
   titleTemplate: "%s | ClearFlow Plumbing Co.",

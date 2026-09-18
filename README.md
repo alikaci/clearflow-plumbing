@@ -1,10 +1,6 @@
 # ClearFlow Plumbing Co.
 
-Foundation for a portfolio demonstration website (fictional business concept).
-
-## Current phase
-
-**Phase 0 — Foundation.** The website has not been implemented yet. No pages, design, components, forms, content, or deployment exist beyond the minimal Next.js scaffold.
+Fictional portfolio demonstration website for a plumbing-services concept, designed and developed by ServiceHarbor Studio. No real service is provided and nothing here is deployed.
 
 ## Environment
 
@@ -18,6 +14,8 @@ Foundation for a portfolio demonstration website (fictional business concept).
 npm install
 ```
 
+Copy `.env.example` to `.env.local` if you want to review canonical/Open Graph output. `NEXT_PUBLIC_SITE_URL` is optional and must be the bare origin of an owned domain (for example `https://clearflow-plumbing.com`). When it is unset, canonical tags, `og:url`, `og:image`, `twitter:image` and the `robots.txt` `Host` directive are omitted so no local or placeholder domain is ever published.
+
 ## Commands
 
 | Task | Command |
@@ -25,11 +23,16 @@ npm install
 | Development server | `npm run dev` |
 | Production build | `npm run build` |
 | Lint | `npm run lint` |
-| Type check | `npx tsc --noEmit` |
+| Type check | `npm run typecheck` |
+| Lint, type check and build | `npm run check` |
+| Unit and component tests | `npm test` |
+| End-to-end tests (Chromium) | `npm run e2e` |
 | Run production build locally | `npm run start` |
+
+`npm run e2e` starts the production server on port 4300, so run `npm run build` first.
 
 ## Status
 
-- The website has not been implemented yet.
-- Nothing has been deployed.
-- No remote Git repository has been created.
+- All routes, content, forms and interactions are implemented as a static-first portfolio concept.
+- Content security policy and baseline security headers are applied in `next.config.ts`.
+- Nothing has been deployed and no remote Git repository has been created.

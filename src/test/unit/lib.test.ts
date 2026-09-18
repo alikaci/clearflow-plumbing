@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { filterNavigation, isFeatureEnabled } from "@/lib/features";
 import { resolveHashHref } from "@/lib/links";
 import { buildMetadata, buildMetadataFor } from "@/lib/metadata";
@@ -155,14 +155,20 @@ describe("simulateSubmit", () => {
 });
 
 describe("metadata builders", () => {
-  it("builds metadata for a named route", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("omits canonical and Open Graph URLs when no site URL is configured", () => {
     const metadata = buildMetadata("services");
     expect(metadata.title).toBe("Plumbing Services");
-    expect(metadata.alternates?.canonical).toBe("https://clearflow.example/services");
+    expect(metadata.alternates?.canonical).toBeUndefined();
+    expect(metadata.openGraph?.url).toBeUndefined();
     expect(metadata.robots).toMatchObject({ index: false, follow: false });
   });
 
-  it("builds metadata from explicit values", () => {
+  it("builds an absolute canonical when a valid site URL is configured", () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-plumbing.com");
     const metadata = buildMetadataFor({
       title: "Custom",
       description: "Custom description",
@@ -170,6 +176,19 @@ describe("metadata builders", () => {
     });
     expect(metadata.title).toBe("Custom");
     expect(metadata.openGraph?.title).toBe("Custom | ClearFlow Plumbing Co.");
-    expect(metadata.openGraph?.url).toBe("https://clearflow.example/custom");
+    expect(metadata.alternates?.canonical).toBe(
+      "https://clearflow-plumbing.com/custom",
+    );
+    expect(metadata.openGraph?.url).toBe("https://clearflow-plumbing.com/custom");
+  });
+
+  it("ignores an invalid site URL", () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "not-a-url");
+    expect(buildMetadata("home").alternates?.canonical).toBeUndefined();
+  });
+
+  it("never emits a localhost canonical", () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "http://localhost:3000");
+    expect(buildMetadata("home").alternates?.canonical).toBeUndefined();
   });
 });

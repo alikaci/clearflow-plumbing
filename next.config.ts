@@ -14,11 +14,20 @@ is intentionally tight. Two allowances are required and documented:
 
 'unsafe-eval' is added only in development for the bundler's dev runtime and is
 absent from the production policy.
+
+connect-src stays at 'self' in production. WebSocket origins (ws:, wss:) are
+only added in development because they are needed by the dev-server HMR client;
+the production site opens no WebSocket connections.
 */
-const scriptSrc =
-  process.env.NODE_ENV === "production"
-    ? "script-src 'self' 'unsafe-inline'"
-    : "script-src 'self' 'unsafe-inline' 'unsafe-eval'";
+const isProduction = process.env.NODE_ENV === "production";
+
+const scriptSrc = isProduction
+  ? "script-src 'self' 'unsafe-inline'"
+  : "script-src 'self' 'unsafe-inline' 'unsafe-eval'";
+
+const connectSrc = isProduction
+  ? "connect-src 'self'"
+  : "connect-src 'self' ws: wss:";
 
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -30,7 +39,7 @@ const contentSecurityPolicy = [
   "font-src 'self' data:",
   "style-src 'self' 'unsafe-inline'",
   scriptSrc,
-  "connect-src 'self' ws: wss:",
+  connectSrc,
 ].join("; ");
 
 const securityHeaders = [

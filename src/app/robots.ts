@@ -1,7 +1,9 @@
 import type { MetadataRoute } from "next";
-import { seo } from "@/config/seo";
+import { getSiteUrl } from "@/lib/site-url";
 
 export default function robots(): MetadataRoute.Robots {
+  const siteUrl = getSiteUrl();
+
   return {
     rules: [
       {
@@ -9,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: "/",
       },
     ],
-    host: seo.siteUrl,
+    ...(siteUrl ? { host: siteUrl } : {}),
   };
 }

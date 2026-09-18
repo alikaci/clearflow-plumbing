@@ -351,7 +351,7 @@ export type SeoRouteConfig = {
 
 export type SeoConfig = {
   siteName: string;
-  siteUrl: string;
+  siteUrl: string | null;
   indexable: false;
   defaultTitle: string;
   titleTemplate: string;
