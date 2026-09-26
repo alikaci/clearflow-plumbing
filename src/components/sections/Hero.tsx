@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/ui/Icon";
 import { Section } from "@/components/ui/Section";
-import { HeroVisual } from "@/components/ui/HeroVisual";
+import { BrandImage } from "@/components/ui/BrandImage";
 
 function TrustCheck() {
   return (
@@ -61,7 +61,19 @@ export function Hero() {
             </ul>
           </div>
 
-          <HeroVisual />
+          {/*
+            The wrapper keeps the 4:3 frame, border and corner radius identical
+            whether the manifest entry renders the photo or the SVG fallback, and
+            the source is also 4:3, so the photo is never cropped and no
+            focal-point adjustment is needed at any breakpoint.
+          */}
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border">
+            <BrandImage
+              imageKey="heroTechnician"
+              className="h-full w-full object-cover"
+              sizes="(min-width: 1280px) 513px, (min-width: 1024px) 429px, (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)"
+            />
+          </div>
         </div>
       </Container>
     </Section>

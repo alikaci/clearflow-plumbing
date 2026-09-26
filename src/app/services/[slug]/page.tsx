@@ -73,8 +73,8 @@ export default async function ServiceDetailPage({
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
             <BrandImage
               imageKey={service.imageKey}
-              className="w-full rounded-xl"
-              sizes="(min-width: 1024px) 40vw, 90vw"
+              className="w-full rounded-xl object-cover"
+              sizes="(min-width: 1280px) 486px, (min-width: 1024px) 407px, (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)"
             />
 
             <div className="grid gap-8 sm:grid-cols-2">

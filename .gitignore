@@ -16,6 +16,10 @@
 /playwright-report
 /blob-report
 /playwright/.cache
+/visual-review
+
+# raw staging assets (not committed)
+/incoming-images
 
 # next.js
 /.next/

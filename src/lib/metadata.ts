@@ -4,6 +4,32 @@ import { getSiteUrl, toAbsoluteUrl } from "@/lib/site-url";
 
 type RouteId = keyof typeof seo.routes;
 
+/*
+The social preview image lives at /opengraph-image and is generated in code by
+the route handler. It is only referenced from metadata when a real origin is
+configured, so no localhost or assumed domain is ever published.
+
+Both the root layout and every page need this value: Next.js merges layout and
+page metadata shallowly per top-level key, so a page-level `openGraph` object
+replaces the layout one outright, including its `images`. Keeping the helper
+here means the image, its dimensions and its alt text cannot drift apart.
+*/
+export function getSocialImage(): NonNullable<
+  NonNullable<Metadata["openGraph"]>["images"]
+> {
+  const siteUrl = getSiteUrl();
+  if (!siteUrl) return [];
+
+  return [
+    {
+      url: toAbsoluteUrl(siteUrl, "/opengraph-image"),
+      width: 1200,
+      height: 630,
+      alt: "ClearFlow Plumbing Co. concept social preview: Reliable Plumbing Help, Without the Guesswork, Columbus, Ohio.",
+    },
+  ];
+}
+
 export function buildMetadataFor(input: {
   title: string;
   description: string;
@@ -29,6 +55,11 @@ export function buildMetadataFor(input: {
       locale: "en_US",
       type: "website",
       ...(canonical ? { url: canonical } : {}),
+      images: getSocialImage(),
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: getSocialImage(),
     },
   };
 }

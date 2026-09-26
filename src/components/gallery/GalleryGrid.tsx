@@ -11,8 +11,8 @@ export function GalleryGrid({ pairs }: { pairs: readonly GalleryPair[] }) {
               <figure>
                 <BrandImage
                   imageKey={pair.beforeKey}
-                  className="w-full rounded-lg"
-                  sizes="(min-width: 1280px) 16vw, (min-width: 768px) 38vw, 88vw"
+                  className="w-full rounded-lg object-cover"
+                  sizes="(min-width: 1280px) 13vw, (min-width: 768px) 22vw, (min-width: 640px) 45vw, 90vw"
                 />
                 <figcaption className="mt-2 text-sm font-medium text-muted">
                   Before
@@ -21,8 +21,8 @@ export function GalleryGrid({ pairs }: { pairs: readonly GalleryPair[] }) {
               <figure>
                 <BrandImage
                   imageKey={pair.afterKey}
-                  className="w-full rounded-lg"
-                  sizes="(min-width: 1280px) 16vw, (min-width: 768px) 38vw, 88vw"
+                  className="w-full rounded-lg object-cover"
+                  sizes="(min-width: 1280px) 13vw, (min-width: 768px) 22vw, (min-width: 640px) 45vw, 90vw"
                 />
                 <figcaption className="mt-2 text-sm font-medium text-muted">
                   After

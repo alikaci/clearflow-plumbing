@@ -191,4 +191,27 @@ describe("metadata builders", () => {
     vi.stubEnv("NEXT_PUBLIC_SITE_URL", "http://localhost:3000");
     expect(buildMetadata("home").alternates?.canonical).toBeUndefined();
   });
+
+  it("emits the social image on every page when a site URL is configured", () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-plumbing.com");
+    const metadata = buildMetadata("gallery");
+
+    const images = metadata.openGraph?.images as
+      | { url: string; width: number; height: number; alt: string }[]
+      | undefined;
+    expect(images).toHaveLength(1);
+    expect(images?.[0]).toMatchObject({
+      url: "https://clearflow-plumbing.com/opengraph-image",
+      width: 1200,
+      height: 630,
+    });
+    expect(images?.[0]?.alt).toBeTruthy();
+    expect(metadata.twitter).toMatchObject({ card: "summary_large_image" });
+  });
+
+  it("omits the social image when no site URL is configured", () => {
+    const metadata = buildMetadata("gallery");
+    expect(metadata.openGraph?.images).toEqual([]);
+    expect(metadata.twitter?.images).toEqual([]);
+  });
 });

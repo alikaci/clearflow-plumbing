@@ -1,61 +1,85 @@
 # IMAGE_ASSET_CHECKLIST
 
-Handoff checklist for the 22 image slots defined in `src/config/images.ts`. Every slot
-currently has `available: false`, so the UI renders a branded SVG fallback at the exact
-final aspect ratio (no broken images, no layout shift). Generation prompts live in
-`IMAGE_GENERATION_PROMPTS.md`.
+Status of the 22 image slots defined in `src/config/images.ts`.
 
-## Activation process
+**All 22 assets are installed and active** (`available: true`). Each slot renders the real
+photo through `next/image`; the branded SVG fallback is intentionally retained, so any entry
+switched back to `available: false` still renders a placeholder at the same aspect ratio with
+no layout shift. Generation prompts live in `IMAGE_GENERATION_PROMPTS.md`.
 
-1. Generate each visual from `IMAGE_GENERATION_PROMPTS.md` at the exact dimensions below.
-2. Export an optimized `.jpg` (quality ~80) where practical; keep the exact pixel dimensions.
-3. Save the file under `public/` at the `src` path shown in the table (folder `public/images`).
-4. Verify the file exists and its width/height match the table before editing any config.
-5. In `src/config/images.ts`, change `available: false` to `true` for that one slot only.
-6. Run `npm run check` and confirm lint, build and typecheck pass with `next/image`.
-7. Run `npm test` and `npm run e2e`; the axe checks re-run against the real image rendering.
-8. If the final image differs from the placeholder's meaning, update that entry's `alt` and
-   keep the AI-generated disclosure text accurate, then commit the image change on its own.
+The delivered files were AI-generated concept visuals for this fictional portfolio brand.
+They were converted from the staged PNG sources to progressive JPEG (quality 85, 4:2:0,
+metadata stripped) and placed at the exact manifest paths under `public/images/`.
 
 ## Slot checklist
 
-`available: false` = fallback SVG is rendered. `available: true` = real file is served.
+`Final dimensions` is the delivered pixel size. Where it differs from the original plan, the
+reason is stated in the notes below.
 
-| # | Slot (`images` key) | File under `public/` | Dimensions | Aspect | Priority | `available` today |
-| - | ------------------- | -------------------- | ---------- | ------ | -------- | ----------------- |
-| 1 | `heroTechnician` | `/images/hero-technician.jpg` | 1600x1200 | 4:3 | yes | false |
-| 2 | `serviceDrain` | `/images/service-drain-cleaning.jpg` | 1200x900 | 4:3 | no | false |
-| 3 | `serviceLeak` | `/images/service-leak-repair.jpg` | 1200x900 | 4:3 | no | false |
-| 4 | `serviceWaterHeater` | `/images/service-water-heater.jpg` | 1200x900 | 4:3 | no | false |
-| 5 | `servicePipe` | `/images/service-pipe-repair.jpg` | 1200x900 | 4:3 | no | false |
-| 6 | `serviceFaucet` | `/images/service-toilet-faucet.jpg` | 1200x900 | 4:3 | no | false |
-| 7 | `serviceSump` | `/images/service-sump-pump.jpg` | 1200x900 | 4:3 | no | false |
-| 8 | `serviceSewer` | `/images/service-sewer-line.jpg` | 1200x900 | 4:3 | no | false |
-| 9 | `technicianHomeowner` | `/images/technician-homeowner.jpg` | 1200x900 | 4:3 | no | false |
-| 10 | `brandedVan` | `/images/branded-van.jpg` | 1600x1000 | 16:10 | no | false |
-| 11 | `aboutTeam` | `/images/about-team.jpg` | 1400x1050 | 4:3 | no | false |
-| 12 | `galleryPipeBefore` | `/images/gallery-pipe-before.jpg` | 1000x750 | 4:3 | no | false |
-| 13 | `galleryPipeAfter` | `/images/gallery-pipe-after.jpg` | 1000x750 | 4:3 | no | false |
-| 14 | `galleryHeaterBefore` | `/images/gallery-heater-before.jpg` | 1000x750 | 4:3 | no | false |
-| 15 | `galleryHeaterAfter` | `/images/gallery-heater-after.jpg` | 1000x750 | 4:3 | no | false |
-| 16 | `galleryDrainBefore` | `/images/gallery-drain-before.jpg` | 1000x750 | 4:3 | no | false |
-| 17 | `galleryDrainAfter` | `/images/gallery-drain-after.jpg` | 1000x750 | 4:3 | no | false |
-| 18 | `galleryFaucetBefore` | `/images/gallery-faucet-before.jpg` | 1000x750 | 4:3 | no | false |
-| 19 | `galleryFaucetAfter` | `/images/gallery-faucet-after.jpg` | 1000x750 | 4:3 | no | false |
-| 20 | `galleryUtilityBefore` | `/images/gallery-utility-before.jpg` | 1000x750 | 4:3 | no | false |
-| 21 | `galleryUtilityAfter` | `/images/gallery-utility-after.jpg` | 1000x750 | 4:3 | no | false |
-| 22 | `openGraph` | `/images/opengraph.jpg` | 1200x630 | 1200:630 | no | false |
+| # | Slot (`images` key) | File under `public/images/` | Planned | Final | Aspect | Priority | Active |
+| - | ------------------- | --------------------------- | ------- | ----- | ------ | -------- | ------ |
+| 1 | `heroTechnician` | `hero-technician.jpg` | 1600x1200 | 1448x1086 | 4:3 | yes | yes |
+| 2 | `serviceDrain` | `service-drain-cleaning.jpg` | 1200x900 | 1200x900 | 4:3 | no | yes |
+| 3 | `serviceLeak` | `service-leak-repair.jpg` | 1200x900 | 1200x900 | 4:3 | no | yes |
+| 4 | `serviceWaterHeater` | `service-water-heater.jpg` | 1200x900 | 1200x900 | 4:3 | no | yes |
+| 5 | `servicePipe` | `service-pipe-repair.jpg` | 1200x900 | 1200x900 | 4:3 | no | yes |
+| 6 | `serviceFaucet` | `service-toilet-faucet.jpg` | 1200x900 | 1200x900 | 4:3 | no | yes |
+| 7 | `serviceSump` | `service-sump-pump.jpg` | 1200x900 | 1200x900 | 4:3 | no | yes |
+| 8 | `serviceSewer` | `service-sewer-line.jpg` | 1200x900 | 1200x900 | 4:3 | no | yes |
+| 9 | `technicianHomeowner` | `technician-homeowner.jpg` | 1200x900 | 1200x900 | 4:3 | no | yes |
+| 10 | `brandedVan` | `branded-van.jpg` | 1600x1000 | 1448x905 | 16:10 | no | yes |
+| 11 | `aboutTeam` | `about-team.jpg` | 1400x1050 | 1323x992 | 4:3 | no | yes |
+| 12 | `galleryPipeBefore` | `gallery-pipe-before.jpg` | 1000x750 | 1000x750 | 4:3 | no | yes |
+| 13 | `galleryPipeAfter` | `gallery-pipe-after.jpg` | 1000x750 | 1000x750 | 4:3 | no | yes |
+| 14 | `galleryHeaterBefore` | `gallery-heater-before.jpg` | 1000x750 | 1000x750 | 4:3 | no | yes |
+| 15 | `galleryHeaterAfter` | `gallery-heater-after.jpg` | 1000x750 | 1000x750 | 4:3 | no | yes |
+| 16 | `galleryDrainBefore` | `gallery-drain-before.jpg` | 1000x750 | 1000x750 | 4:3 | no | yes |
+| 17 | `galleryDrainAfter` | `gallery-drain-after.jpg` | 1000x750 | 1000x750 | 4:3 | no | yes |
+| 18 | `galleryFaucetBefore` | `gallery-faucet-before.jpg` | 1000x750 | 1000x750 | 4:3 | no | yes |
+| 19 | `galleryFaucetAfter` | `gallery-faucet-after.jpg` | 1000x750 | 1000x750 | 4:3 | no | yes |
+| 20 | `galleryUtilityBefore` | `gallery-utility-before.jpg` | 1000x750 | 1000x750 | 4:3 | no | yes |
+| 21 | `galleryUtilityAfter` | `gallery-utility-after.jpg` | 1000x750 | 1000x750 | 4:3 | no | yes |
+| 22 | `openGraph` | `opengraph.jpg` | 1200x630 | 1200x630 | 1200:630 | no | yes |
+
+## Processing notes
+
+- Everything except three files arrived at the planned ratio already; those were only
+  downscaled. No image was upscaled and none was stretched.
+- `hero-technician.jpg` (1448x1086) and `branded-van.jpg` (1448x905) are smaller than the
+  original 1600px plan because the staged source was smaller. They are delivered at source
+  resolution instead of being enlarged.
+- `branded-van.jpg` was cropped from 1448x1086 to 1448x905 (4:3 to 16:10). The crop is biased
+  to the top: the row-detail analysis put the low-detail band (sky and background) at the top
+  and the strongest detail (vehicle body, wheels, road) in the lower middle, so only 49px was
+  trimmed from the bottom and 132px from the top. The vehicle and both wheels stay inside the
+  frame.
+- `about-team.jpg` was cropped from 1586x992 to 1323x992 (16:10 to 4:3). The crop is biased to
+  the right: the column-detail analysis put the strongest detail in the left and centre
+  columns and a bright, low-detail band on the right, so 203px was trimmed from the right and
+  60px from the left.
+- `opengraph.jpg` was scaled to cover 1200x630 and centre-cropped, removing roughly 5px of
+  total width.
+- No image was stretched, and no image was re-encoded beyond the JPEG conversion.
+
+## Changing an asset later
+
+1. Generate the replacement from `IMAGE_GENERATION_PROMPTS.md` at the dimensions in the table.
+2. Export an optimized `.jpg` (quality 82-88), keeping the exact pixel dimensions.
+3. Save it at the `public/images/` path shown for that slot.
+4. Set `available: true` in `src/config/images.ts` if the entry is currently `false`, and keep
+   `width`, `height` and `aspectRatio` in sync with the new file.
+5. Run `npm run check`, `npm test` and `npm run e2e`.
 
 ## Safety rules
 
-- Never set `available: true` for a slot whose file is not present; `next/image` would
-  request a missing file and the page would show a broken image.
+- Never set `available: true` for a slot whose file is not present; `next/image` would request
+  a missing file and show a broken image.
 - Do not rename or move a file without updating the matching `src` in `src/config/images.ts`.
-- Keep each before/after pair at the same camera angle, framing and lighting so the
-  comparison reads as one project.
-- Do not include real company names, phone numbers, addresses, readable license plates,
+- Keep each before/after pair at the same camera angle, framing and lighting so the comparison
+  reads as one project.
+- Do not introduce real company names, phone numbers, addresses, readable license plates,
   signage, logos or identifiable real people.
-- Slot 22 (`openGraph`) is a reserved photographic asset. The live social preview is the
-  generated `/opengraph-image` route (`src/app/opengraph-image/route.tsx`), which is emitted
-  only when `NEXT_PUBLIC_SITE_URL` is configured. Adopting the photo for social previews
-  would additionally require wiring it into `src/app/layout.tsx`.
+- The social preview served at `/opengraph-image` is generated in code by
+  `src/app/opengraph-image/route.tsx`, which uses `public/images/opengraph.jpg` as the
+  background and renders the required text deterministically. The image is only referenced from
+  metadata when `NEXT_PUBLIC_SITE_URL` is configured.

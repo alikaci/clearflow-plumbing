@@ -41,8 +41,17 @@ export default function AboutPage() {
             </div>
             <BrandImage
               imageKey="aboutTeam"
-              className="w-full rounded-xl"
-              sizes="(min-width: 1024px) 45vw, 90vw"
+              className="w-full rounded-xl object-cover"
+              sizes="(min-width: 1280px) 544px, (min-width: 1024px) 456px, (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)"
+            />
+          </div>
+
+          {/* Wide brand band; the 16:10 frame keeps the vehicle whole. */}
+          <div className="mt-12">
+            <BrandImage
+              imageKey="brandedVan"
+              className="w-full rounded-xl object-cover"
+              sizes="(min-width: 1280px) 1136px, (min-width: 1024px) calc(100vw - 64px), (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)"
             />
           </div>
         </Container>
