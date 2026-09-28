@@ -46,7 +46,7 @@ function buildClasses(
   className: string | undefined,
 ): string {
   return [
-    "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-colors",
+    "inline-flex items-center justify-center gap-2 rounded-lg font-semibold microtransition hover-on:-translate-y-px active:translate-y-px",
     variantClasses[variant],
     sizeClasses[size],
     fullWidth ? "w-full" : "",

@@ -223,7 +223,7 @@ test.describe("before your visit guidance", () => {
     for (let step = 0; step < 12; step += 1) {
       await page.keyboard.press("Tab");
 
-      const state = await page.evaluate((selector) => {
+      const state = await page.evaluate(() => {
         const scope = document.querySelector("#before-your-visit");
         const active = document.activeElement as HTMLElement | null;
         if (!scope || !active || active === document.body) return null;
@@ -235,7 +235,7 @@ test.describe("before your visit guidance", () => {
               Node.DOCUMENT_POSITION_FOLLOWING,
           ),
         };
-      }, focusableSelector);
+      });
 
       if (!state) break;
       visited.push(state.label);

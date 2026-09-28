@@ -102,10 +102,10 @@ export function Assistant() {
                   <p className="text-sm text-text">{active.response}</p>
                   <Link
                     href={resolveHashHref(active.href, pathname)}
-                    className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue underline-offset-2 hover:underline"
+                    className="inline-link-arrow mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue underline-offset-2 hover:underline"
                   >
                     {active.hrefLabel}
-                    <Icon name="arrow-right" className="h-4 w-4" />
+                    <Icon name="arrow-right" className="inline-link-arrow-icon h-4 w-4" />
                   </Link>
                 </div>
               ) : null}

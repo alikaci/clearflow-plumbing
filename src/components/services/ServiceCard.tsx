@@ -4,7 +4,7 @@ import { Icon } from "@/components/ui/Icon";
 
 export function ServiceCard({ service }: { service: ServiceSummary }) {
   return (
-    <article className="flex h-full flex-col rounded-xl border border-border bg-surface p-6 transition-shadow hover:shadow-md">
+    <article className="flex h-full flex-col rounded-xl border border-border bg-surface p-6 microtransition hover-on:-translate-y-0.5 hover:shadow-md">
       <span
         aria-hidden="true"
         className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-blue-light text-blue"

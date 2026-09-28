@@ -21,7 +21,7 @@ export function Steps({ steps, current, label = "Progress" }: StepsProps) {
               <span
                 aria-hidden="true"
                 className={[
-                  "inline-flex h-7 w-7 items-center justify-center rounded-full text-sm font-semibold",
+                  "inline-flex h-7 w-7 items-center justify-center rounded-full text-sm font-semibold microtransition",
                   isCurrent
                     ? "bg-blue text-white"
                     : isComplete

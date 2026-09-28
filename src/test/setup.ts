@@ -18,3 +18,13 @@ afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
 });
+
+if (typeof window !== "undefined") {
+  if (typeof window.requestAnimationFrame !== "function") {
+    window.requestAnimationFrame = (callback: FrameRequestCallback) =>
+      window.setTimeout(() => callback(performance.now()), 0);
+  }
+  if (typeof window.cancelAnimationFrame !== "function") {
+    window.cancelAnimationFrame = (id: number) => window.clearTimeout(id);
+  }
+}

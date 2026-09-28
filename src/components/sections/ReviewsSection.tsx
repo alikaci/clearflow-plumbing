@@ -3,34 +3,39 @@ import { Card } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/ui/Icon";
 import { Section } from "@/components/ui/Section";
+import { Reveal } from "@/components/motion/Reveal";
 
 export function ReviewsSection() {
   return (
     <Section surface="muted" labelledBy="reviews-heading">
       <Container>
-        <div className="max-w-2xl">
-          <h2 id="reviews-heading" className="text-2xl md:text-3xl">
-            {reviews.heading}
-          </h2>
-          <p className="mt-3 text-muted">{reviews.supportingText}</p>
-        </div>
-
-        <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">
-          <div className="flex items-center gap-2">
-            <Icon name="star" className="h-5 w-5 text-orange" />
-            <span className="text-2xl font-bold text-navy">
-              {reviews.rating}
-            </span>
-            <span className="text-sm text-muted">{reviews.ratingLabel}</span>
+        <Reveal>
+          <div className="max-w-2xl">
+            <h2 id="reviews-heading" className="text-2xl md:text-3xl">
+              {reviews.heading}
+            </h2>
+            <p className="mt-3 text-muted">{reviews.supportingText}</p>
           </div>
-          <p className="text-sm font-semibold text-text">
-            {reviews.reviewCount}
-          </p>
-        </div>
+        </Reveal>
+
+        <Reveal variant="fade">
+          <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">
+            <div className="flex items-center gap-2">
+              <Icon name="star" className="h-5 w-5 text-orange" />
+              <span className="text-2xl font-bold text-navy">
+                {reviews.rating}
+              </span>
+              <span className="text-sm text-muted">{reviews.ratingLabel}</span>
+            </div>
+            <p className="text-sm font-semibold text-text">
+              {reviews.reviewCount}
+            </p>
+          </div>
+        </Reveal>
 
         <ul className="mt-8 grid gap-5 md:grid-cols-3">
-          {reviews.reviews.map((review) => (
-            <li key={review.name}>
+          {reviews.reviews.map((review, index) => (
+            <Reveal key={review.name} as="li" variant="fade" index={index}>
               <Card className="flex h-full flex-col">
                 <div
                   role="img"
@@ -53,12 +58,14 @@ export function ReviewsSection() {
                 </p>
                 <p className="text-sm text-muted">{review.location}</p>
               </Card>
-            </li>
+            </Reveal>
           ))}
         </ul>
 
-        <p className="mt-6 text-sm text-muted">{reviews.note}</p>
-        <p className="mt-1 text-sm text-muted">{reviews.presentationNote}</p>
+        <Reveal variant="fade">
+          <p className="mt-6 text-sm text-muted">{reviews.note}</p>
+          <p className="mt-1 text-sm text-muted">{reviews.presentationNote}</p>
+        </Reveal>
       </Container>
     </Section>
   );

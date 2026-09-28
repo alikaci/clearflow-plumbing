@@ -1,11 +1,12 @@
 import type { GalleryPair } from "@/types";
 import { BrandImage } from "@/components/ui/BrandImage";
+import { Reveal } from "@/components/motion/Reveal";
 
 export function GalleryGrid({ pairs }: { pairs: readonly GalleryPair[] }) {
   return (
     <ul className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {pairs.map((pair) => (
-        <li key={pair.id}>
+      {pairs.map((pair, index) => (
+        <Reveal key={pair.id} as="li" index={index}>
           <article className="flex h-full flex-col rounded-xl border border-border bg-white p-4">
             {/* The pair stays side by side on every phone width so the
                 comparison reads horizontally; only the gutter widens. */}
@@ -34,7 +35,7 @@ export function GalleryGrid({ pairs }: { pairs: readonly GalleryPair[] }) {
             <h3 className="mt-5 text-lg">{pair.category}</h3>
             <p className="mt-2 text-sm text-muted">{pair.description}</p>
           </article>
-        </li>
+        </Reveal>
       ))}
     </ul>
   );

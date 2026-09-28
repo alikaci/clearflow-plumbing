@@ -78,6 +78,14 @@ export function Footer() {
           <p className="mt-6 text-sm text-footer-muted">
             {business.disclosures.copyright}
           </p>
+          <div className="mt-6 flex justify-end">
+            <a
+              href="#top"
+              className="inline-flex items-center text-sm font-medium text-footer-muted underline-offset-2 transition-colors hover:text-white hover:underline"
+            >
+              Back to top
+            </a>
+          </div>
         </div>
       </Container>
     </footer>

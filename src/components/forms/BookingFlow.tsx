@@ -124,7 +124,7 @@ export function BookingFlow() {
         ref={confirmationRef}
         role="status"
         tabIndex={-1}
-        className="rounded-xl border border-success/30 bg-white p-6"
+        className="confirmation-in rounded-xl border border-success/30 bg-white p-6"
       >
         <h3 className="text-xl text-navy">{forms.bookingConfirmation}</h3>
         <Button type="button" className="mt-6" onClick={handleReset}>
@@ -172,7 +172,7 @@ export function BookingFlow() {
         </div>
       ) : null}
 
-      <div className="mt-8 flex flex-col gap-6">
+      <div key={step} className="step-in mt-8 flex flex-col gap-6">
         {step === 0 ? (
           <SelectField
             id="booking-service"

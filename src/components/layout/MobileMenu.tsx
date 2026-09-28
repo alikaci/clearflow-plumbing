@@ -11,6 +11,11 @@ import { filterNavigation } from "@/lib/features";
 import { resolveHashHref } from "@/lib/links";
 import { Wordmark } from "./Wordmark";
 
+function isActive(href: string, pathname: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function MobileMenu() {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -56,6 +61,19 @@ export function MobileMenu() {
 
   useEffect(() => {
     if (!open) return;
+    if (typeof window.matchMedia !== "function") return;
+    const desktop = window.matchMedia("(min-width: 64rem)");
+    const handleChange = () => {
+      if (desktop.matches) closeMenu();
+    };
+    desktop.addEventListener("change", handleChange);
+    return () => {
+      desktop.removeEventListener("change", handleChange);
+    };
+  }, [open, pathname]);
+
+  useEffect(() => {
+    if (!open) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
@@ -89,7 +107,12 @@ export function MobileMenu() {
         className="mobile-menu-dialog fixed inset-0 m-0 h-full max-h-none w-full max-w-none overflow-y-auto p-0"
         onClick={handleBackdropClick}
       >
-        <div className="ml-auto flex min-h-full w-full max-w-sm flex-col border-l border-border bg-white sm:w-96">
+        <div
+          className={[
+            "ml-auto flex min-h-full w-full max-w-sm flex-col border-l border-border bg-white sm:w-96",
+            open ? "mobile-menu-panel-enter" : "",
+          ].join(" ")}
+        >
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <Wordmark />
             <button
@@ -104,17 +127,26 @@ export function MobileMenu() {
 
           <nav aria-label="Primary" className="flex-1 px-4 py-4">
             <ul className="flex flex-col gap-1">
-              {navItems.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    onClick={closeMenu}
-                    className="block rounded-lg px-3 py-3 text-lg font-medium text-text hover:bg-surface-muted hover:text-blue"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {navItems.map((item) => {
+                const active = isActive(item.href, pathname);
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      onClick={closeMenu}
+                      aria-current={active ? "page" : undefined}
+                      className={[
+                        "block rounded-lg px-3 py-3 text-lg font-medium microtransition",
+                        active
+                          ? "bg-blue-light font-semibold text-blue"
+                          : "text-text hover:bg-surface-muted hover:text-blue",
+                      ].join(" ")}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 

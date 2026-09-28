@@ -9,6 +9,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Section } from "@/components/ui/Section";
 import { PageIntro } from "@/components/sections/PageIntro";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
+import { Reveal } from "@/components/motion/Reveal";
 
 export const metadata = buildMetadata("pricing");
 
@@ -35,12 +36,14 @@ export default function PricingPage() {
 
       <Section labelledBy="pricing-factors-heading">
         <Container>
-          <h2 id="pricing-factors-heading" className="text-2xl md:text-3xl">
-            {pricing.costFactorsHeading}
-          </h2>
+          <Reveal>
+            <h2 id="pricing-factors-heading" className="text-2xl md:text-3xl">
+              {pricing.costFactorsHeading}
+            </h2>
+          </Reveal>
           <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {pricing.costFactors.map((factor) => (
-              <li key={factor.title}>
+            {pricing.costFactors.map((factor, index) => (
+              <Reveal key={factor.title} as="li" index={index}>
                 <Card className="h-full">
                   <div className="flex items-start gap-3">
                     <span
@@ -59,7 +62,7 @@ export default function PricingPage() {
                     </div>
                   </div>
                 </Card>
-              </li>
+              </Reveal>
             ))}
           </ul>
         </Container>
@@ -67,9 +70,11 @@ export default function PricingPage() {
 
       <Section surface="muted" labelledBy="pricing-questions-heading">
         <Container>
-          <h2 id="pricing-questions-heading" className="text-2xl md:text-3xl">
-            {pricing.questionsHeading}
-          </h2>
+          <Reveal>
+            <h2 id="pricing-questions-heading" className="text-2xl md:text-3xl">
+              {pricing.questionsHeading}
+            </h2>
+          </Reveal>
           <ul className="mt-8 grid gap-x-8 gap-y-4 sm:grid-cols-2">
             {pricing.questions.map((question) => (
               <li key={question} className="flex items-start gap-3">

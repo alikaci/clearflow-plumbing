@@ -210,7 +210,7 @@ export function EstimateForm() {
           {forms.confirmationStatus}
         </p>
 
-        <div className="border-t-4 border-success pt-6">
+        <div className="confirmation-in border-t-4 border-success pt-6">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-success">
             {forms.confirmationEyebrow}
           </p>
@@ -406,7 +406,7 @@ export function EstimateForm() {
         </p>
       ) : null}
 
-      <div ref={firstStepRef} className="mt-8 flex flex-col gap-6">
+      <div key={step} ref={firstStepRef} className="step-in mt-8 flex flex-col gap-6">
         {step === 0 ? (
           <SelectField
             id="estimate-service"

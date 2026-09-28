@@ -8,6 +8,7 @@ import { Section } from "@/components/ui/Section";
 import { BrandImage } from "@/components/ui/BrandImage";
 import { PageIntro } from "@/components/sections/PageIntro";
 import { VerifiedCredentials } from "@/components/sections/VerifiedCredentials";
+import { Reveal } from "@/components/motion/Reveal";
 
 export const metadata = buildMetadata("about");
 
@@ -22,50 +23,56 @@ export default function AboutPage() {
 
       <Section labelledBy="about-story-heading">
         <Container>
-          <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
-            <div>
-              <h2 id="about-story-heading" className="text-2xl md:text-3xl">
-                A Concept Built Around Clear Service
-              </h2>
-              <p className="mt-4 text-muted">
-                The concept imagines how a plumbing business could present its
-                services, service area and request process in a way that feels
-                organized and easy to follow. Every page is designed to answer
-                the practical questions a homeowner has before requesting help.
-              </p>
-              <p className="mt-4 text-muted">
-                ClearFlow is not a real plumbing company. It exists to show how a
-                production-quality local-service website could be structured,
-                and how optional features such as booking, membership and
-                financing information could be added when a client needs them.
-              </p>
+          <Reveal>
+            <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
+              <div>
+                <h2 id="about-story-heading" className="text-2xl md:text-3xl">
+                  A Concept Built Around Clear Service
+                </h2>
+                <p className="mt-4 text-muted">
+                  The concept imagines how a plumbing business could present its
+                  services, service area and request process in a way that feels
+                  organized and easy to follow. Every page is designed to answer
+                  the practical questions a homeowner has before requesting help.
+                </p>
+                <p className="mt-4 text-muted">
+                  ClearFlow is not a real plumbing company. It exists to show how a
+                  production-quality local-service website could be structured,
+                  and how optional features such as booking, membership and
+                  financing information could be added when a client needs them.
+                </p>
+              </div>
+              <BrandImage
+                imageKey="aboutTeam"
+                className="w-full rounded-xl object-cover"
+                sizes="(min-width: 1280px) 544px, (min-width: 1024px) 456px, (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)"
+              />
             </div>
-            <BrandImage
-              imageKey="aboutTeam"
-              className="w-full rounded-xl object-cover"
-              sizes="(min-width: 1280px) 544px, (min-width: 1024px) 456px, (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)"
-            />
-          </div>
+          </Reveal>
 
           {/* Wide brand band; the 16:10 frame keeps the vehicle whole. */}
-          <div className="mt-12">
-            <BrandImage
-              imageKey="brandedVan"
-              className="w-full rounded-xl object-cover"
-              sizes="(min-width: 1280px) 1136px, (min-width: 1024px) calc(100vw - 64px), (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)"
-            />
-          </div>
+          <Reveal variant="fade">
+            <div className="mt-12">
+              <BrandImage
+                imageKey="brandedVan"
+                className="w-full rounded-xl object-cover"
+                sizes="(min-width: 1280px) 1136px, (min-width: 1024px) calc(100vw - 64px), (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)"
+              />
+            </div>
+          </Reveal>
         </Container>
       </Section>
 
       <Section surface="muted" labelledBy="about-approach-heading">
         <Container>
-          <h2 id="about-approach-heading" className="text-2xl md:text-3xl">
-            {home.whyChoose.heading}
-          </h2>
+          <Reveal>
+            <h2 id="about-approach-heading" className="text-2xl md:text-3xl">
+              {home.whyChoose.heading}
+            </h2>
+          </Reveal>
           <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {home.whyChoose.points.map((point) => (
-              <li key={point.title} className="flex gap-3">
+            {home.whyChoose.points.map((point, index) => (
+              <Reveal key={point.title} as="li" index={index} className="flex gap-3">
                 <Icon name="check" className="mt-1 h-5 w-5 shrink-0 text-blue" />
                 <div>
                   <h3 className="text-lg">{point.title}</h3>
@@ -73,7 +80,7 @@ export default function AboutPage() {
                     {point.description}
                   </p>
                 </div>
-              </li>
+              </Reveal>
             ))}
           </ul>
         </Container>

@@ -9,6 +9,7 @@ import { Section } from "@/components/ui/Section";
 import { PageIntro } from "@/components/sections/PageIntro";
 import { ServiceCard } from "@/components/services/ServiceCard";
 import { CostGuidanceTool } from "@/components/forms/CostGuidanceTool";
+import { Reveal } from "@/components/motion/Reveal";
 
 export const metadata = buildMetadata("services");
 
@@ -23,14 +24,16 @@ export default function ServicesPage() {
 
       <Section labelledBy="all-services-heading">
         <Container>
-          <h2 id="all-services-heading" className="text-2xl md:text-3xl">
-            All Services
-          </h2>
+          <Reveal>
+            <h2 id="all-services-heading" className="text-2xl md:text-3xl">
+              All Services
+            </h2>
+          </Reveal>
           <ul className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-            {serviceSummaries.map((service) => (
-              <li key={service.slug}>
+            {serviceSummaries.map((service, index) => (
+              <Reveal key={service.slug} as="li" index={index}>
                 <ServiceCard service={service} />
-              </li>
+              </Reveal>
             ))}
           </ul>
         </Container>
@@ -39,15 +42,19 @@ export default function ServicesPage() {
       {features.costRangeTool ? (
         <Section surface="muted" labelledBy="cost-tool-heading">
           <Container size="narrow">
-            <div className="max-w-2xl">
-              <h2 id="cost-tool-heading" className="text-2xl md:text-3xl">
-                {costTool.heading}
-              </h2>
-              <p className="mt-3 text-muted">{costTool.supportingText}</p>
-            </div>
-            <Card className="mt-8">
-              <CostGuidanceTool ctaHref="/#estimate" />
-            </Card>
+            <Reveal>
+              <div className="max-w-2xl">
+                <h2 id="cost-tool-heading" className="text-2xl md:text-3xl">
+                  {costTool.heading}
+                </h2>
+                <p className="mt-3 text-muted">{costTool.supportingText}</p>
+              </div>
+            </Reveal>
+            <Reveal variant="fade">
+              <Card className="mt-8">
+                <CostGuidanceTool ctaHref="/#estimate" />
+              </Card>
+            </Reveal>
           </Container>
         </Section>
       ) : null}

@@ -14,6 +14,7 @@ import { Icon } from "@/components/ui/Icon";
 import { PageIntro } from "@/components/sections/PageIntro";
 import { FaqAccordion } from "@/components/sections/FaqAccordion";
 import { BeforeYourVisit } from "@/components/services/BeforeYourVisit";
+import { Reveal } from "@/components/motion/Reveal";
 
 export const dynamicParams = false;
 
@@ -74,69 +75,75 @@ export default async function ServiceDetailPage({
           <h2 id="service-overview-heading" className="sr-only">
             {service.name} overview
           </h2>
-          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
-            <BrandImage
-              imageKey={service.imageKey}
-              className="w-full rounded-xl object-cover"
-              sizes="(min-width: 1280px) 486px, (min-width: 1024px) 407px, (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)"
-            />
+          <Reveal>
+            <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
+              <BrandImage
+                imageKey={service.imageKey}
+                className="w-full rounded-xl object-cover"
+                sizes="(min-width: 1280px) 486px, (min-width: 1024px) 407px, (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)"
+              />
 
-            <div className="grid gap-8 sm:grid-cols-2">
-              <div>
-                <h3 className="text-lg">Common Problems</h3>
-                <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-muted">
-                  {service.commonProblems.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-lg">Warning Signs</h3>
-                <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-muted">
-                  {service.warningSigns.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
+              <div className="grid gap-8 sm:grid-cols-2">
+                <div>
+                  <h3 className="text-lg">Common Problems</h3>
+                  <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-muted">
+                    {service.commonProblems.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="text-lg">Warning Signs</h3>
+                  <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-muted">
+                    {service.warningSigns.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
+          </Reveal>
         </Container>
       </Section>
 
       <Section surface="muted" labelledBy="service-assessment-heading">
         <Container>
           <div className="grid gap-8 md:grid-cols-2">
-            <div>
-              <h2 id="service-assessment-heading" className="text-2xl">
-                What an Assessment Includes
-              </h2>
-              <ul className="mt-4 space-y-3">
-                {service.assessmentIncludes.map((item) => (
-                  <li key={item} className="text-muted">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-6">
-                <Link
-                  href={pricingContextLinks.service.href}
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-blue underline-offset-2 hover:underline"
-                >
-                  {pricingContextLinks.service.label}
-                  <Icon name="arrow-right" className="h-4 w-4" />
-                </Link>
-              </p>
-            </div>
-            <div>
-              <h2 className="text-2xl">Benefits of Addressing It Early</h2>
-              <ul className="mt-4 space-y-3">
-                {service.benefits.map((item) => (
-                  <li key={item} className="text-muted">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <Reveal>
+              <div>
+                <h2 id="service-assessment-heading" className="text-2xl">
+                  What an Assessment Includes
+                </h2>
+                <ul className="mt-4 space-y-3">
+                  {service.assessmentIncludes.map((item) => (
+                    <li key={item} className="text-muted">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-6">
+                  <Link
+                    href={pricingContextLinks.service.href}
+                    className="inline-link-arrow inline-flex items-center gap-2 text-sm font-semibold text-blue underline-offset-2 hover:underline"
+                  >
+                    {pricingContextLinks.service.label}
+                    <Icon name="arrow-right" className="inline-link-arrow-icon h-4 w-4" />
+                  </Link>
+                </p>
+              </div>
+            </Reveal>
+            <Reveal index={1}>
+              <div>
+                <h2 className="text-2xl">Benefits of Addressing It Early</h2>
+                <ul className="mt-4 space-y-3">
+                  {service.benefits.map((item) => (
+                    <li key={item} className="text-muted">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
           </div>
         </Container>
       </Section>
@@ -154,12 +161,14 @@ export default async function ServiceDetailPage({
 
       <Section surface="muted" labelledBy="related-services-heading">
         <Container>
-          <h2 id="related-services-heading" className="text-2xl">
-            Related Services
-          </h2>
+          <Reveal>
+            <h2 id="related-services-heading" className="text-2xl">
+              Related Services
+            </h2>
+          </Reveal>
           <ul className="mt-6 grid gap-5 sm:grid-cols-2">
-            {related.map((item) => (
-              <li key={item.slug}>
+            {related.map((item, index) => (
+              <Reveal key={item.slug} as="li" index={index}>
                 <Card className="flex h-full flex-col">
                   <h3 className="text-lg">{item.name}</h3>
                   <p className="mt-2 flex-1 text-sm text-muted">
@@ -173,7 +182,7 @@ export default async function ServiceDetailPage({
                     View {item.name}
                   </Button>
                 </Card>
-              </li>
+              </Reveal>
             ))}
           </ul>
         </Container>

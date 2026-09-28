@@ -20,7 +20,7 @@ export function FaqAccordion({ items }: { items: readonly FaqItem[] }) {
                 aria-expanded={isOpen}
                 aria-controls={`faq-panel-${item.id}`}
                 onClick={() => setOpenId(isOpen ? null : item.id)}
-                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-base font-semibold text-navy hover:bg-surface-muted"
+                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-base font-semibold text-navy microtransition hover:bg-surface-muted"
               >
                 <span>{item.question}</span>
                 <Icon

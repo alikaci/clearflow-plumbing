@@ -1,6 +1,7 @@
 import { home } from "@/config/home";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
+import { Reveal } from "@/components/motion/Reveal";
 import type { ProcessStep } from "@/types";
 
 type ProcessStepsProps = {
@@ -32,9 +33,11 @@ export function ProcessSteps({
       labelledBy={labelledBy}
     >
       <Container>
-        <h2 id={labelledBy} className="text-2xl md:text-3xl">
-          {heading}
-        </h2>
+        <Reveal>
+          <h2 id={labelledBy} className="text-2xl md:text-3xl">
+            {heading}
+          </h2>
+        </Reveal>
 
         <ol
           className={[
@@ -42,8 +45,8 @@ export function ProcessSteps({
             columns === 2 ? "md:grid-cols-2" : "md:grid-cols-3",
           ].join(" ")}
         >
-          {steps.map((step) => (
-            <li key={step.step}>
+          {steps.map((step, index) => (
+            <Reveal key={step.step} as="li" index={index}>
               <div className="flex items-center gap-4">
                 <span
                   aria-hidden="true"
@@ -60,7 +63,7 @@ export function ProcessSteps({
               </div>
               <h3 className="mt-4 text-lg">{step.title}</h3>
               <p className="mt-2 text-sm text-muted">{step.description}</p>
-            </li>
+            </Reveal>
           ))}
         </ol>
       </Container>

@@ -51,6 +51,36 @@ through generated Tailwind utilities (bg-navy, text-muted, bg-surface-muted, ...
   */
   --mobile-action-bar-height: calc(3.5625rem + env(safe-area-inset-bottom, 0px));
   --mobile-floating-gap: 0.875rem;
+
+  /* Motion */
+  --motion-duration-fast: 160ms;
+  --motion-duration-base: 320ms;
+  --motion-duration-reveal: 480ms;
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-reveal-distance: 1rem;
+  --motion-step-distance: 0.5rem;
+  --motion-arrow-shift: 0.25rem;
+  --motion-stagger-step: 60ms;
+  --motion-stagger-max: 240ms;
+}
+
+/*
+Hover-only interactions that require a pointing device that can hover, so a tap
+never leaves a control stuck in a hovered or lifted state on touch screens.
+*/
+@custom-variant hover-on (@media (hover: hover) and (pointer: fine));
+
+/*
+Shared interaction transition: covers the Tailwind v4 translate/scale/rotate
+properties alongside the classic color/shadow/opacity/transform set.
+*/
+@utility microtransition {
+  transition-property: color, background-color, border-color,
+    text-decoration-color, box-shadow, opacity, transform, translate, scale,
+    rotate;
+  transition-timing-function: var(--motion-ease-standard);
+  transition-duration: var(--motion-duration-fast);
 }
 
 @layer base {
@@ -149,6 +179,15 @@ through generated Tailwind utilities (bg-navy, text-muted, bg-surface-muted, ...
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  /* Reveals never hide, delay or move content for reduced-motion users. */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    translate: none !important;
+    transition: none !important;
+    transition-delay: 0ms !important;
+  }
 }
 
 /*
@@ -174,4 +213,113 @@ html[data-assistant-open="true"] .mobile-action-bar {
 
 .mobile-menu-dialog::backdrop {
   background-color: rgb(11 31 51 / 0.5);
+}
+
+/*
+Reveal on scroll (progressive enhancement).
+Content renders fully visible by default: there is no script, no "prefers-
+reduced-motion" preference, or no hydration yet, so nothing is ever hidden.
+The client Reveal component only marks elements below the fold as pending after
+it paints, then flips them to revealed once an IntersectionObserver sees them.
+*/
+[data-reveal][data-reveal-state="idle"] {
+  opacity: 1;
+  transform: none;
+}
+
+[data-reveal][data-reveal-state="pending"] {
+  opacity: 0;
+}
+
+[data-reveal][data-reveal-variant="up"][data-reveal-state="pending"] {
+  transform: translateY(var(--motion-reveal-distance));
+}
+
+[data-reveal][data-reveal-variant="in"][data-reveal-state="pending"] {
+  opacity: 0;
+  transform: scale(0.99);
+}
+
+[data-reveal][data-reveal-state="revealed"] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--motion-duration-reveal) var(--motion-ease-emphasized),
+    transform var(--motion-duration-reveal) var(--motion-ease-emphasized);
+  transition-delay: var(--reveal-stagger-ms, 0ms);
+}
+
+/* New form step: a short decorative drift, never a slide between columns. */
+.step-in {
+  animation: step-in var(--motion-duration-base) var(--motion-ease-standard);
+}
+
+@keyframes step-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--motion-step-distance));
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Confirmation fades in without moving so the entrance never risks
+   overlapping the fixed mobile action bar. */
+.confirmation-in {
+  animation: confirmation-in var(--motion-duration-base)
+    var(--motion-ease-standard);
+}
+
+@keyframes confirmation-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Mobile menu panel slides in only on open; Escape and focus return keep the
+   native dialog behaviour on close. */
+.mobile-menu-panel-enter {
+  animation: menu-panel-enter var(--motion-duration-base)
+    var(--motion-ease-emphasized);
+}
+
+@keyframes menu-panel-enter {
+  from {
+    opacity: 0;
+    transform: translateX(1.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Arrow links nudge their trailing icon on hover or focus from a pointer that
+   can hover; the icon only translates, the label never shifts. */
+.inline-link-arrow {
+  transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+.inline-link-arrow .inline-link-arrow-icon {
+  transition: translate var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .inline-link-arrow:hover .inline-link-arrow-icon,
+  .inline-link-arrow:focus-visible .inline-link-arrow-icon {
+    translate: var(--motion-arrow-shift) 0;
+  }
+}
+
+/* A soft shadow only once the user scrolls; it never changes layout. */
+html[data-scrolled] .site-header {
+  box-shadow: 0 4px 14px rgb(11 31 51 / 0.06);
 }
