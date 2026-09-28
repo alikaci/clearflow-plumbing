@@ -40,7 +40,17 @@ through generated Tailwind utilities (bg-navy, text-muted, bg-surface-muted, ...
   /* Layout */
   --container-local: 1200px;
   --container-narrow: 840px;
-  --action-bar-height: 56px;
+
+  /*
+  Mobile floating actions
+  --mobile-action-bar-height is the single source of truth for the space the
+  fixed action bar occupies. It already includes env(safe-area-inset-bottom) and
+  is re-published with the measured height by MobileActionBar, so it stays exact
+  when labels wrap, the user scales text, or the viewport changes. Consumers are
+  the page shell (body padding) and the assistant launcher/panel (bottom offset).
+  */
+  --mobile-action-bar-height: calc(3.5625rem + env(safe-area-inset-bottom, 0px));
+  --mobile-floating-gap: 0.875rem;
 }
 
 @layer base {
@@ -64,9 +74,9 @@ through generated Tailwind utilities (bg-navy, text-muted, bg-surface-muted, ...
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    padding-bottom: calc(
-      var(--action-bar-height) + env(safe-area-inset-bottom, 0px)
-    );
+    /* Reserve the action bar's real height so the final card, CTA and footer
+       stay reachable while the bar is on screen. */
+    padding-bottom: var(--mobile-action-bar-height);
   }
 
   h1,
@@ -140,6 +150,17 @@ through generated Tailwind utilities (bg-navy, text-muted, bg-surface-muted, ...
     scroll-behavior: auto !important;
   }
 }
+
+/*
+Floating layer stacking, lowest to highest:
+  1. page content, sticky site header ............ z-30
+  2. mobile action bar ........................... z-40
+  3. assistant launcher and panel ................ z-50
+  4. skip link ................................... z-[70]
+  5. mobile menu dialog .......................... native <dialog> top layer
+Add new floating UI inside this order instead of introducing larger ad-hoc
+z-index values.
+*/
 
 /* Keep the mobile action bar hidden while a shell dialog (mobile menu) is open. */
 html[data-shell-menu-open="true"] .mobile-action-bar {

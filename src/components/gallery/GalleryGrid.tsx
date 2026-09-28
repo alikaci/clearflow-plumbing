@@ -7,12 +7,14 @@ export function GalleryGrid({ pairs }: { pairs: readonly GalleryPair[] }) {
       {pairs.map((pair) => (
         <li key={pair.id}>
           <article className="flex h-full flex-col rounded-xl border border-border bg-white p-4">
-            <div className="grid gap-4 sm:grid-cols-2">
+            {/* The pair stays side by side on every phone width so the
+                comparison reads horizontally; only the gutter widens. */}
+            <div className="grid grid-cols-2 gap-2 sm:gap-4">
               <figure>
                 <BrandImage
                   imageKey={pair.beforeKey}
                   className="w-full rounded-lg object-cover"
-                  sizes="(min-width: 1280px) 13vw, (min-width: 768px) 22vw, (min-width: 640px) 45vw, 90vw"
+                  sizes="(min-width: 1280px) 13vw, (min-width: 768px) 22vw, (min-width: 640px) 45vw, calc(50vw - 2.5rem)"
                 />
                 <figcaption className="mt-2 text-sm font-medium text-muted">
                   Before
@@ -22,7 +24,7 @@ export function GalleryGrid({ pairs }: { pairs: readonly GalleryPair[] }) {
                 <BrandImage
                   imageKey={pair.afterKey}
                   className="w-full rounded-lg object-cover"
-                  sizes="(min-width: 1280px) 13vw, (min-width: 768px) 22vw, (min-width: 640px) 45vw, 90vw"
+                  sizes="(min-width: 1280px) 13vw, (min-width: 768px) 22vw, (min-width: 640px) 45vw, calc(50vw - 2.5rem)"
                 />
                 <figcaption className="mt-2 text-sm font-medium text-muted">
                   After

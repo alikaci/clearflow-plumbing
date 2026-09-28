@@ -14,6 +14,7 @@ export function Assistant() {
   const panelRef = useRef<HTMLDivElement>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
+  const panelId = "assistant-panel";
 
   const active = assistant.choices.find((choice) => choice.id === activeId);
 
@@ -43,14 +44,17 @@ export function Assistant() {
 
   if (!features.chatAssistant) return null;
 
+  // Sit above the action bar's real height (safe-area inset included) plus a
+  // shared gap. On desktop the bar is hidden and lg:bottom-6 takes over.
   const positionClasses =
-    "fixed right-4 bottom-[calc(var(--action-bar-height)+1rem)] z-50 lg:right-6 lg:bottom-6";
+    "fixed right-4 bottom-[calc(var(--mobile-action-bar-height)+var(--mobile-floating-gap))] z-50 lg:right-6 lg:bottom-6";
 
   return (
     <>
       {open ? (
         <div
           ref={panelRef}
+          id={panelId}
           role="dialog"
           aria-label={assistant.title}
           tabIndex={-1}
@@ -115,11 +119,12 @@ export function Assistant() {
         type="button"
         onClick={() => (open ? closeAssistant() : setOpen(true))}
         aria-expanded={open}
+        aria-controls={panelId}
         aria-label={open ? "Close website assistant" : "Open website assistant"}
-        className={`${positionClasses} inline-flex min-h-12 items-center gap-2 rounded-full bg-navy px-5 text-sm font-semibold text-white shadow-lg hover:opacity-90`}
+        className={`${positionClasses} inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-navy px-5 text-sm font-semibold text-white shadow-lg hover:opacity-90 max-[26rem]:h-12 max-[26rem]:w-12 max-[26rem]:p-0`}
       >
         <Icon name="chat" className="h-5 w-5" />
-        <span>{assistant.title}</span>
+        <span className="max-[26rem]:hidden">{assistant.title}</span>
       </button>
     </>
   );
