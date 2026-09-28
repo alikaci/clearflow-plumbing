@@ -7,6 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Section } from "@/components/ui/Section";
 import { BrandImage } from "@/components/ui/BrandImage";
 import { PageIntro } from "@/components/sections/PageIntro";
+import { VerifiedCredentials } from "@/components/sections/VerifiedCredentials";
 
 export const metadata = buildMetadata("about");
 
@@ -92,6 +93,14 @@ export default function AboutPage() {
           </div>
         </Container>
       </Section>
+
+      {/*
+        Credentials render nothing while the feature is disabled, so the About
+        page shows no new heading, spacing or separator today. Placed last with
+        a muted surface so the page keeps its strict alternating rhythm if real
+        credentials are ever supplied.
+      */}
+      <VerifiedCredentials />
     </main>
   );
 }

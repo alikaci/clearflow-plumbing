@@ -1,4 +1,5 @@
 import type { FormsConfig } from "@/types";
+import { getPostalCodeLabel, getPostalCodeFieldLabel } from "@/lib/market";
 import { services } from "./services";
 
 export const forms = {
@@ -47,7 +48,7 @@ export const forms = {
     { value: "4-6", label: "4:00 PM - 6:00 PM" },
   ],
   cityLabel: "City",
-  zipLabel: "ZIP code",
+  zipLabel: getPostalCodeFieldLabel(),
   descriptionLabel: "Describe the problem",
   descriptionHelp:
     "Include what you have noticed, when it started and anything that makes it worse.",
@@ -70,7 +71,7 @@ export const forms = {
   confirmationSummaryLabels: {
     service: "Service",
     city: "City",
-    zip: "ZIP Code",
+    zip: getPostalCodeLabel(),
     propertyType: "Property type",
     urgency: "Urgency",
     contactPreference: "Contact preference",

@@ -1,4 +1,5 @@
 import type { ServiceAreaConfig } from "@/types";
+import { getPostalCodeExample, getPostalCodeFieldLabel } from "@/lib/market";
 
 export const serviceAreas = {
   heading: "Plumbing Service Across Columbus and Nearby Communities",
@@ -79,8 +80,8 @@ export const serviceAreas = {
   checkerTitle: "Check Your ZIP Code",
   checkerDescription:
     "Enter a five-digit ZIP code to see whether it is part of the demonstration service area.",
-  zipLabel: "ZIP code",
-  zipHelp: "Five digits, for example 43215.",
+  zipLabel: getPostalCodeFieldLabel(),
+  zipHelp: `Five digits, for example ${getPostalCodeExample()}.`,
   submitLabel: "Check coverage",
   resetLabel: "Check another ZIP",
   successMessage:

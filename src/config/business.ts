@@ -8,6 +8,7 @@ export const business = {
   creator: "ServiceHarbor Studio",
   region: "Columbus, Ohio and surrounding communities",
   serviceArea,
+  activeMarketId: "US",
   phoneDisplay: "(614) 555-0147",
   phoneUri: "tel:+16145550147",
   email: {

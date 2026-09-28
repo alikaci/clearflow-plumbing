@@ -40,6 +40,87 @@ export type FeatureFlags = {
 
 export type FlagName = keyof FeatureFlags;
 
+export type MarketId = "US" | "UK" | "EU_BASE";
+
+export type MarketCurrency = "USD" | "GBP" | "EUR";
+
+export type MarketTaxLabel = "Tax" | "VAT";
+
+export type MarketPostalCode = {
+  label: string;
+  /**
+   * Sentence-case label for use inside a form field. Kept separate from
+   * `label` so substituting it never changes the capitalisation of existing
+   * copy.
+   */
+  fieldLabel: string;
+  shortLabel: string;
+  example: string;
+};
+
+/*
+A market profile carries generic market conventions only: locale, currency,
+terminology, date convention, phone prefix and a consent expectation.
+
+It deliberately holds no business data. Company name, phone number, email,
+service-area ZIP lists, business hours and enabled features belong to
+`business`/`features` and must never be placed here.
+*/
+export type MarketProfile = {
+  id: MarketId;
+  label: string;
+  locale: string;
+  /**
+   * ISO 3166-1 alpha-2 country code, or null when the profile is a regional
+   * base that still requires a concrete country.
+   */
+  countryCode: string | null;
+  currency: MarketCurrency;
+  postalCode: MarketPostalCode;
+  taxLabel: MarketTaxLabel;
+  /** E.164 calling prefix, or null when unresolved. */
+  phoneCountryCode: string | null;
+  /** Display convention only. A country profile may override it. */
+  dateFormat: string;
+  supportsFinancing: boolean;
+  supportsMembership: boolean;
+  /**
+   * Architectural default for an optional-tracking consent gate. This is not
+   * legal advice and does not add tracking or any consent UI.
+   */
+  requiresOptionalTrackingConsent: boolean;
+  /**
+   * A regional base (EU_BASE) is a template, not a production market. It may
+   * not be activated until concrete country-specific values are supplied.
+   */
+  requiresCountryCompletion: boolean;
+  /** Explains why a profile is a base and what must be verified first. */
+  activationNote: string | null;
+};
+
+export type VerifiedCredentialLogo = {
+  src: string;
+  /** Must identify the credential itself, never a generic word like "image". */
+  alt: string;
+};
+
+export type VerifiedCredential = {
+  name: string;
+  registrationNumber?: string;
+  /** Must be an absolute https URL. http and relative values are rejected. */
+  verificationUrl: string;
+  /** ISO 8601 date (YYYY-MM-DD) on which the credential was verified. */
+  verifiedAt: string;
+  logo?: VerifiedCredentialLogo;
+};
+
+export type CredentialsConfig = {
+  enabled: boolean;
+  heading?: string;
+  intro?: string;
+  items: readonly VerifiedCredential[];
+};
+
 export type NavigationItem = {
   label: string;
   href: string;
@@ -58,6 +139,12 @@ export type BusinessConfig = {
   creator: string;
   region: string;
   serviceArea: string;
+  /*
+  Single source of truth for the active market profile. This is a build-time
+  setting: it is never inferred from geolocation, IP address, browser language
+  or visitor input, and it is not exposed as a visitor-facing control.
+  */
+  activeMarketId: MarketId;
   phoneDisplay: string;
   phoneUri: string;
   email: BusinessEmail;

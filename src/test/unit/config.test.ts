@@ -2,9 +2,12 @@ import { describe, expect, it } from "vitest";
 import { business } from "@/config/business";
 import { faqs } from "@/config/faqs";
 import { features } from "@/config/features";
+import { forms } from "@/config/forms";
+import { getPostalCodeExample, getPostalCodeFieldLabel, getPostalCodeLabel } from "@/lib/market";
 import { images } from "@/config/images";
 import { footerNavigation, mainNavigation } from "@/config/navigation";
 import { offers } from "@/config/offers";
+import { pricing } from "@/config/pricing";
 import { reviews } from "@/config/reviews";
 import { seo } from "@/config/seo";
 import {
@@ -333,5 +336,96 @@ describe("site configuration", () => {
     for (const flag of Object.keys(features) as (keyof typeof features)[]) {
       expect(typeof features[flag]).toBe("boolean");
     }
+  });
+});
+
+/*
+The active market is wired into a small number of reusable labels. These tests
+pin the exact current US strings so the wiring can never quietly change visible
+copy.
+*/
+describe("market terminology wiring", () => {
+  it("keeps the 28 demonstration ZIP codes unchanged", () => {
+    expect(serviceAreas.zips).toHaveLength(28);
+    expect(serviceAreas.zips).toContain("43215");
+    expect(serviceAreas.zips).toContain("43004");
+    expect(serviceAreas.zips).toContain("43235");
+  });
+
+  it("keeps the US phone number and Columbus positioning", () => {
+    expect(business.phoneDisplay).toBe("(614) 555-0147");
+    expect(business.phoneUri).toBe("tel:+16145550147");
+    expect(business.region).toContain("Columbus, Ohio");
+    expect(business.serviceArea).toContain("Columbus");
+  });
+
+  it("resolves the wired labels to the active US profile values", () => {
+    expect(business.activeMarketId).toBe("US");
+    expect(forms.zipLabel).toBe("ZIP code");
+    expect(forms.zipLabel).toBe(getPostalCodeFieldLabel());
+    expect(forms.confirmationSummaryLabels.zip).toBe("ZIP Code");
+    expect(forms.confirmationSummaryLabels.zip).toBe(getPostalCodeLabel());
+    expect(serviceAreas.zipLabel).toBe("ZIP code");
+    expect(serviceAreas.zipLabel).toBe(getPostalCodeFieldLabel());
+  });
+
+  it("keeps the ZIP checker example and help text", () => {
+    expect(serviceAreas.zipHelp).toBe("Five digits, for example 43215.");
+    expect(serviceAreas.zipHelp).toContain(getPostalCodeExample());
+  });
+
+  it("keeps the existing routes unchanged", () => {
+    const hrefs = [
+      ...mainNavigation.map((item) => item.href),
+      ...footerNavigation.flatMap((group) => group.items.map((item) => item.href)),
+    ];
+    for (const route of [
+      "/",
+      "/services",
+      "/emergency",
+      "/service-areas",
+      "/about",
+      "/offers",
+      "/contact",
+      "/pricing",
+      "/membership",
+      "/financing",
+      "/book",
+      "/gallery",
+      "/privacy",
+    ]) {
+      expect(hrefs, route).toContain(route);
+    }
+    expect(Object.keys(seo.routes).sort()).toEqual(
+      [
+        "about",
+        "book",
+        "contact",
+        "emergency",
+        "financing",
+        "gallery",
+        "home",
+        "membership",
+        "offers",
+        "pricing",
+        "privacy",
+        "serviceAreas",
+        "services",
+      ].sort(),
+    );
+  });
+
+  it("uses US tax wording and never UK or EU terms in current copy", () => {
+    const visible = [
+      ...pricing.questions,
+      ...serviceAreas.areas.map((area) => area.description),
+      faqs.map((faq) => `${faq.question} ${faq.answer}`).join(" "),
+    ].join(" ");
+
+    expect(visible).toContain("Does applicable tax apply?");
+    expect(visible).not.toContain("VAT");
+    expect(visible).not.toContain("Postcode");
+    expect(visible).not.toContain("GBP");
+    expect(visible).not.toContain("EUR");
   });
 });

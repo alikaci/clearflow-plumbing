@@ -6,6 +6,7 @@ import { business } from "@/config/business";
 import { features } from "@/config/features";
 import { forms } from "@/config/forms";
 import { createDemoReference } from "@/lib/demo-reference";
+import { getPostalCodeFieldLabel } from "@/lib/market";
 import type { EstimateFormValues, SelectOption } from "@/types";
 import { Button } from "@/components/ui/Button";
 import {
@@ -38,7 +39,7 @@ const initialValues: EstimateFormValues = {
 const fieldLabels: Record<string, string> = {
   service: "Service",
   city: "City",
-  zip: "ZIP code",
+  zip: getPostalCodeFieldLabel(),
   propertyType: "Property type",
   urgency: "Urgency",
   description: "Problem description",
