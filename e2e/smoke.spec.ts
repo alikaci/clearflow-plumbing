@@ -71,14 +71,40 @@ test.describe("request flow", () => {
     await page.getByRole("button", { name: "Continue" }).click();
 
     await page.getByLabel(/portfolio demonstration/).check();
+    const postSubmitRequests: string[] = [];
+    page.on("request", (request) => {
+      postSubmitRequests.push(`${request.method()} ${request.url()}`);
+    });
     await page.getByRole("button", { name: "Submit request" }).click();
 
-    await expect(page.getByText("Your request has been prepared.")).toBeVisible({
-      timeout: 5000,
-    });
     await expect(
-      page.getByText("This portfolio demonstration did not create a real plumbing appointment."),
+      page.getByRole("heading", { name: "Your Demonstration Request Is Complete" }),
+    ).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText("REQUEST RECEIVED")).toBeVisible();
+    await expect(
+      page.getByText(
+        "This is a portfolio demonstration. No appointment has been created and no information has been sent to a plumbing company.",
+      ),
     ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Request Summary" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "What Happens Next in a Live Website?" }),
+    ).toBeVisible();
+    await expect(page.getByText(/^CF-DEMO-\d{6}$/)).toBeVisible();
+    await expect(page.getByText("No photos selected")).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "Return Home" }),
+    ).toHaveAttribute("href", "/");
+    await expect(
+      page
+        .locator("#estimate")
+        .getByRole("link", { name: /Call \(614\) 555-0147/ }),
+    ).toHaveAttribute("href", "tel:+16145550147");
+    expect(
+      postSubmitRequests.filter((entry) => !entry.startsWith("GET ")),
+    ).toEqual([]);
   });
 
   test("checks ZIP coverage in the service-area tool", async ({ page }) => {

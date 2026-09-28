@@ -320,6 +320,23 @@ export type BookingFormValues = {
   phone: string;
 };
 
+export type ConfirmationStep = {
+  step: number;
+  title: string;
+  description: string;
+};
+
+export type ConfirmationSummaryLabels = {
+  service: string;
+  city: string;
+  zip: string;
+  propertyType: string;
+  urgency: string;
+  contactPreference: string;
+  description: string;
+  photos: string;
+};
+
 export type FormsConfig = {
   estimateHeading: string;
   estimateSupportingText: string;
@@ -345,9 +362,21 @@ export type FormsConfig = {
   photoRemoveLabel: string;
   photoMaxBytes: number;
   honeypotFieldName: string;
-  successHeading: string;
-  successMessage: string;
-  successNote: string;
+  confirmationEyebrow: string;
+  confirmationHeading: string;
+  confirmationReferenceLabel: string;
+  confirmationDisclosure: string;
+  confirmationSupport: string;
+  confirmationStatus: string;
+  confirmationSummaryHeading: string;
+  confirmationSummaryLabels: ConfirmationSummaryLabels;
+  confirmationNotProvided: string;
+  confirmationNoPhotos: string;
+  confirmationLiveWebsiteHeading: string;
+  confirmationLiveWebsiteNote: string;
+  confirmationLiveWebsiteSteps: readonly ConfirmationStep[];
+  confirmationPrimaryLabel: string;
+  confirmationSecondaryLabel: string;
   submitLabel: string;
   submittingLabel: string;
   backLabel: string;

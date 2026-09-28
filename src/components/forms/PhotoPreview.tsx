@@ -10,7 +10,13 @@ type SelectedPhoto = {
   name: string;
 };
 
-export function PhotoPreview({ id }: { id: string }) {
+export function PhotoPreview({
+  id,
+  onPhotoCountChange,
+}: {
+  id: string;
+  onPhotoCountChange?: (count: number) => void;
+}) {
   const [photo, setPhoto] = useState<SelectedPhoto | null>(null);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -25,18 +31,24 @@ export function PhotoPreview({ id }: { id: string }) {
     if (inputRef.current) inputRef.current.value = "";
   }
 
+  function reportCount(count: number) {
+    onPhotoCountChange?.(count);
+  }
+
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0] ?? null;
     setError(null);
 
     if (!file) {
       setPhoto(null);
+      reportCount(0);
       return;
     }
 
     if (!file.type.startsWith("image/")) {
       setError("Choose an image file such as a JPG or PNG.");
       setPhoto(null);
+      reportCount(0);
       clearInput();
       return;
     }
@@ -44,16 +56,19 @@ export function PhotoPreview({ id }: { id: string }) {
     if (file.size > forms.photoMaxBytes) {
       setError("Choose an image that is 5 MB or smaller.");
       setPhoto(null);
+      reportCount(0);
       clearInput();
       return;
     }
 
     setPhoto({ url: URL.createObjectURL(file), name: file.name });
+    reportCount(1);
   }
 
   function handleRemove() {
     setPhoto(null);
     setError(null);
+    reportCount(0);
     clearInput();
   }
 

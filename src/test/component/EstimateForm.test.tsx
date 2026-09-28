@@ -115,12 +115,12 @@ describe("EstimateForm", () => {
     );
     await user.click(screen.getByRole("button", { name: forms.submitLabel }));
     expect(
-      await screen.findByText(forms.successMessage, {}, { timeout: 3000 }),
+      await screen.findByText(forms.confirmationHeading, {}, { timeout: 3000 }),
     ).toBeInTheDocument();
-    expect(screen.getByText(forms.successNote)).toBeInTheDocument();
+    expect(screen.getByText(forms.confirmationDisclosure)).toBeInTheDocument();
 
     await user.click(
-      screen.getByRole("button", { name: forms.resetLabel }),
+      screen.getByRole("button", { name: forms.confirmationPrimaryLabel }),
     );
     expect(screen.getByText("Step 1 of 5")).toBeInTheDocument();
     expect(screen.getByLabelText(/Which service do you need/)).toHaveValue("");

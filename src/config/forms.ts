@@ -57,10 +57,65 @@ export const forms = {
   photoRemoveLabel: "Remove photo",
   photoMaxBytes: 5 * 1024 * 1024,
   honeypotFieldName: "companyWebsite",
-  successHeading: "Request prepared",
-  successMessage: "Your request has been prepared.",
-  successNote:
-    "This portfolio demonstration did not create a real plumbing appointment.",
+  confirmationEyebrow: "REQUEST RECEIVED",
+  confirmationHeading: "Your Demonstration Request Is Complete",
+  confirmationReferenceLabel: "Demo reference",
+  confirmationDisclosure:
+    "This is a portfolio demonstration. No appointment has been created and no information has been sent to a plumbing company.",
+  confirmationSupport:
+    "You can review the simulated request below or start a new demonstration.",
+  confirmationStatus:
+    "Demonstration request complete. No appointment was created.",
+  confirmationSummaryHeading: "Request Summary",
+  confirmationSummaryLabels: {
+    service: "Service",
+    city: "City",
+    zip: "ZIP Code",
+    propertyType: "Property type",
+    urgency: "Urgency",
+    contactPreference: "Contact preference",
+    description: "Problem description",
+    photos: "Selected photos",
+  },
+  confirmationNotProvided: "Not provided",
+  confirmationNoPhotos: "No photos selected",
+  confirmationLiveWebsiteHeading: "What Happens Next in a Live Website?",
+  confirmationLiveWebsiteNote:
+    "This demonstration stops at the confirmation screen and does not transmit or retain the submitted information.",
+  confirmationLiveWebsiteSteps: [
+    {
+      step: 1,
+      title: "Request Review",
+      description:
+        "The business reviews the submitted details and determines the appropriate next step.",
+    },
+    {
+      step: 2,
+      title: "Availability Check",
+      description:
+        "The business checks its actual schedule and service-area availability.",
+    },
+    {
+      step: 3,
+      title: "Customer Contact",
+      description:
+        "The customer may receive a call, text or email using the contact method they provided.",
+    },
+    {
+      step: 4,
+      title: "Appointment Agreement",
+      description:
+        "The customer and business agree on an available appointment window.",
+    },
+    {
+      step: 5,
+      title: "On-Site Assessment",
+      description:
+        "A qualified technician assesses the plumbing problem before work begins.",
+    },
+  ],
+  confirmationPrimaryLabel: "Start a New Request",
+  confirmationSecondaryLabel: "Return Home",
   submitLabel: "Submit request",
   submittingLabel: "Preparing request...",
   backLabel: "Back",

@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
+import { business } from "@/config/business";
 import { features } from "@/config/features";
 import { forms } from "@/config/forms";
+import { createDemoReference } from "@/lib/demo-reference";
 import type { EstimateFormValues, SelectOption } from "@/types";
 import { Button } from "@/components/ui/Button";
 import {
@@ -55,22 +57,52 @@ function labelFor(
   return options.find((option) => option.value === value)?.label ?? value;
 }
 
+type SubmittedRequest = {
+  values: EstimateFormValues;
+  photoCount: number;
+  reference: string;
+};
+
+function orNotProvided(value: string): string {
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : forms.confirmationNotProvided;
+}
+
+function photoCountLabel(count: number): string {
+  if (count < 1) return forms.confirmationNoPhotos;
+  return `${count} ${count === 1 ? "photo" : "photos"} selected`;
+}
+
 export function EstimateForm() {
   const [values, setValues] = useState<EstimateFormValues>(initialValues);
+  const [photoCount, setPhotoCount] = useState(0);
   const [step, setStep] = useState(0);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success">(
     "idle",
   );
+  const [submitted, setSubmitted] = useState<SubmittedRequest | null>(null);
   const [instance, setInstance] = useState(0);
-  const successRef = useRef<HTMLDivElement>(null);
+  const [resetCount, setResetCount] = useState(0);
+  const confirmationRef = useRef<HTMLHeadingElement>(null);
+  const firstStepRef = useRef<HTMLDivElement>(null);
+  const submitLockRef = useRef(false);
+  const focusFormRef = useRef(false);
 
   const totalSteps = forms.stepTitles.length;
   const allServiceOptions = [...forms.serviceOptions, forms.serviceOtherOption];
 
   useEffect(() => {
-    if (status === "success") successRef.current?.focus();
+    if (status === "success") confirmationRef.current?.focus();
   }, [status]);
+
+  useEffect(() => {
+    if (!focusFormRef.current) return;
+    focusFormRef.current = false;
+    firstStepRef.current
+      ?.querySelector<HTMLElement>("select, input, textarea, button")
+      ?.focus();
+  }, [resetCount]);
 
   function update<K extends keyof EstimateFormValues>(
     key: K,
@@ -108,8 +140,14 @@ export function EstimateForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (submitLockRef.current) return;
 
     if (isHoneypotFilled(event)) {
+      setSubmitted({
+        values: { ...values },
+        photoCount,
+        reference: createDemoReference(),
+      });
       setStatus("success");
       return;
     }
@@ -132,37 +170,197 @@ export function EstimateForm() {
 
     setErrors({});
     setStatus("submitting");
-    const result = await simulateSubmit();
-    if (result.ok) {
-      setStatus("success");
-    } else {
-      setStatus("idle");
-      setErrors({ _form: result.reason });
+    submitLockRef.current = true;
+    try {
+      const result = await simulateSubmit();
+      if (result.ok) {
+        setSubmitted({
+          values: { ...values },
+          photoCount,
+          reference: createDemoReference(),
+        });
+        setStatus("success");
+      } else {
+        setStatus("idle");
+        setErrors({ _form: result.reason });
+      }
+    } finally {
+      submitLockRef.current = false;
     }
   }
 
   function handleReset() {
     setValues(initialValues);
+    setPhotoCount(0);
     setStep(0);
     setErrors({});
     setStatus("idle");
+    setSubmitted(null);
     setInstance((current) => current + 1);
+    focusFormRef.current = true;
+    setResetCount((current) => current + 1);
   }
 
-  if (status === "success") {
+  if (submitted) {
+    const summary = submitted.values;
     return (
-      <div
-        ref={successRef}
-        role="status"
-        tabIndex={-1}
-        className="rounded-xl border border-success/30 bg-white p-6 md:p-8"
-      >
-        <h3 className="text-xl text-navy">{forms.successHeading}</h3>
-        <p className="mt-3 text-text">{forms.successMessage}</p>
-        <p className="mt-3 text-muted">{forms.successNote}</p>
-        <Button type="button" className="mt-6" onClick={handleReset}>
-          {forms.resetLabel}
-        </Button>
+      <div>
+        <p role="status" aria-live="polite" className="sr-only">
+          {forms.confirmationStatus}
+        </p>
+
+        <div className="border-t-4 border-success pt-6">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-success">
+            {forms.confirmationEyebrow}
+          </p>
+          <h3
+            ref={confirmationRef}
+            tabIndex={-1}
+            className="mt-2 text-xl text-navy md:text-2xl"
+          >
+            {forms.confirmationHeading}
+          </h3>
+
+          <div className="mt-5 rounded-lg border border-border bg-surface-muted p-4">
+            <p className="text-sm text-muted">
+              {forms.confirmationReferenceLabel}
+            </p>
+            <p className="mt-1 text-lg font-semibold tracking-[0.08em] text-navy">
+              {submitted.reference}
+            </p>
+          </div>
+
+          <p className="mt-5 rounded-lg border border-border bg-surface-muted p-4 text-sm text-text">
+            {forms.confirmationDisclosure}
+          </p>
+          <p className="mt-4 text-sm text-muted">
+            {forms.confirmationSupport}
+          </p>
+
+          <div className="mt-8">
+            <h4 className="text-lg text-navy">
+              {forms.confirmationSummaryHeading}
+            </h4>
+            <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+              <div>
+                <dt className="text-sm text-muted">
+                  {forms.confirmationSummaryLabels.service}
+                </dt>
+                <dd className="font-medium text-text">
+                  {labelFor(allServiceOptions, summary.service)}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm text-muted">
+                  {forms.confirmationSummaryLabels.city}
+                </dt>
+                <dd className="font-medium text-text">
+                  {orNotProvided(summary.city)}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm text-muted">
+                  {forms.confirmationSummaryLabels.zip}
+                </dt>
+                <dd className="font-medium text-text">
+                  {orNotProvided(summary.zip)}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm text-muted">
+                  {forms.confirmationSummaryLabels.propertyType}
+                </dt>
+                <dd className="font-medium text-text">
+                  {labelFor(forms.propertyTypes, summary.propertyType)}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm text-muted">
+                  {forms.confirmationSummaryLabels.urgency}
+                </dt>
+                <dd className="font-medium text-text">
+                  {labelFor(forms.urgencyOptions, summary.urgency)}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm text-muted">
+                  {forms.confirmationSummaryLabels.contactPreference}
+                </dt>
+                <dd className="font-medium text-text">
+                  {labelFor(forms.contactMethods, summary.contactMethod)},
+                  best time to reach you:{" "}
+                  {labelFor(forms.contactTimes, summary.contactTime).toLowerCase()}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm text-muted">
+                  {forms.confirmationSummaryLabels.photos}
+                </dt>
+                <dd className="font-medium text-text">
+                  {photoCountLabel(submitted.photoCount)}
+                </dd>
+              </div>
+              <div className="sm:col-span-2">
+                <dt className="text-sm text-muted">
+                  {forms.confirmationSummaryLabels.description}
+                </dt>
+                <dd className="font-medium whitespace-pre-line text-text">
+                  {summary.description}
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="mt-8">
+            <h4 className="text-lg text-navy">
+              {forms.confirmationLiveWebsiteHeading}
+            </h4>
+            <ol className="mt-4 grid gap-5 sm:grid-cols-2">
+              {forms.confirmationLiveWebsiteSteps.map((item) => (
+                <li key={item.step}>
+                  <div className="flex items-center gap-4">
+                    <span
+                      aria-hidden="true"
+                      className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-navy text-lg font-bold text-white"
+                    >
+                      {item.step}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="hidden h-px flex-1 bg-navy/15 sm:block"
+                    />
+                  </div>
+                  <h5 className="mt-3 font-semibold text-navy">
+                    {item.title}
+                  </h5>
+                  <p className="mt-2 text-sm text-muted">
+                    {item.description}
+                  </p>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-5 text-sm text-muted">
+              {forms.confirmationLiveWebsiteNote}
+            </p>
+          </div>
+
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Button type="button" onClick={handleReset}>
+              {forms.confirmationPrimaryLabel}
+            </Button>
+            <Button href="/" variant="outline">
+              {forms.confirmationSecondaryLabel}
+            </Button>
+          </div>
+          <p className="mt-4">
+            <a
+              href={business.phoneUri}
+              className="inline-flex min-h-11 items-center font-semibold text-blue underline underline-offset-4"
+            >
+              Call {business.phoneDisplay}
+            </a>
+          </p>
+        </div>
       </div>
     );
   }
@@ -207,7 +405,7 @@ export function EstimateForm() {
         </p>
       ) : null}
 
-      <div className="mt-8 flex flex-col gap-6">
+      <div ref={firstStepRef} className="mt-8 flex flex-col gap-6">
         {step === 0 ? (
           <SelectField
             id="estimate-service"
@@ -286,7 +484,11 @@ export function EstimateForm() {
               required
             />
             {features.photoUploadPreview ? (
-              <PhotoPreview key={instance} id="estimate-photo" />
+              <PhotoPreview
+                key={instance}
+                id="estimate-photo"
+                onPhotoCountChange={setPhotoCount}
+              />
             ) : null}
           </>
         ) : null}

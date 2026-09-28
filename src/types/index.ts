@@ -7,6 +7,8 @@ export type {
   BusinessDisclosure,
   BusinessEmail,
   BusinessHours,
+  ConfirmationStep,
+  ConfirmationSummaryLabels,
   ContactMethodValue,
   ContactTimeValue,
   ContentIconId,
