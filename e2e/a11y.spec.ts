@@ -5,10 +5,12 @@ const targets = [
   { path: "/", name: "home" },
   { path: "/services", name: "services hub" },
   { path: "/services/water-heaters", name: "service detail" },
+  { path: "/services/drain-cleaning", name: "service detail with safety guidance" },
   { path: "/contact", name: "contact" },
   { path: "/book", name: "booking preview" },
   { path: "/service-areas", name: "service areas" },
   { path: "/pricing", name: "pricing process" },
+  { path: "/emergency", name: "emergency safety" },
 ];
 
 for (const target of targets) {

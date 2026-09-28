@@ -162,6 +162,19 @@ export type ServiceFaq = {
   answer: string;
 };
 
+export type BeforeVisitImportance = "standard" | "important";
+
+export type BeforeVisitItem = {
+  title: string;
+  description: string;
+  importance?: BeforeVisitImportance;
+};
+
+export type BeforeVisitConfig = {
+  intro?: string;
+  items: readonly BeforeVisitItem[];
+};
+
 export type ServiceSummary = {
   slug: string;
   name: string;
@@ -180,6 +193,7 @@ export type ServiceDetail = ServiceSummary & {
   benefits: readonly string[];
   relatedSlugs: readonly string[];
   faqs: readonly ServiceFaq[];
+  beforeVisit?: BeforeVisitConfig;
 };
 
 export type Review = {

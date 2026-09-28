@@ -13,6 +13,7 @@ import { Card } from "@/components/ui/Card";
 import { Icon } from "@/components/ui/Icon";
 import { PageIntro } from "@/components/sections/PageIntro";
 import { FaqAccordion } from "@/components/sections/FaqAccordion";
+import { BeforeYourVisit } from "@/components/services/BeforeYourVisit";
 
 export const dynamicParams = false;
 
@@ -177,6 +178,8 @@ export default async function ServiceDetailPage({
           </ul>
         </Container>
       </Section>
+
+      <BeforeYourVisit config={service.beforeVisit} />
 
       <Section surface="dark">
         <Container size="narrow" className="text-center">

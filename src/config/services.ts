@@ -54,6 +54,30 @@ export const services: readonly ServiceDetail[] = [
           "Access to the affected fixtures and any accessible cleanouts is what matters. The request form lets you share details ahead of time.",
       },
     ],
+    beforeVisit: {
+      items: [
+        {
+          title: "Do Not Add More Drain Cleaner",
+          description:
+            "Avoid adding more chemical drain cleaner before a service visit. If a product has already been used, tell the service provider what was used and when.",
+        },
+        {
+          title: "Avoid Using the Affected Drain",
+          description:
+            "If water is backing up or draining very slowly, avoid continued use when it may cause additional overflow.",
+        },
+        {
+          title: "Clear the Area Around the Fixture",
+          description:
+            "Move personal items away from the sink, tub or floor drain only when the area is safe to approach.",
+        },
+        {
+          title: "Note Where the Backup Occurs",
+          description:
+            "Record whether the problem affects one fixture or several fixtures and when it was first noticed.",
+        },
+      ],
+    },
   },
   {
     slug: "leak-repair",
@@ -108,6 +132,31 @@ export const services: readonly ServiceDetail[] = [
           "If water is actively escaping, it is reasonable to shut off the nearest supply valve or the main shutoff if you can access it safely. For unsafe conditions, contact the appropriate emergency service.",
       },
     ],
+    beforeVisit: {
+      items: [
+        {
+          title: "Keep Clear of Electrical Hazards",
+          description:
+            "Do not enter standing water or touch electrical devices, outlets or equipment near the leak. If electricity may be involved, contact the appropriate emergency service or utility provider.",
+          importance: "important",
+        },
+        {
+          title: "Use a Known Shutoff Only If Safe",
+          description:
+            "If the correct local shutoff is clearly identified and can be reached safely, it may help limit water flow. Do not force a stuck valve or enter an unsafe area.",
+        },
+        {
+          title: "Keep the Area Clear",
+          description:
+            "Move belongings away from the affected area only when it is safe, and avoid covering or altering the leak in a way that hides its source.",
+        },
+        {
+          title: "Note What You Observed",
+          description:
+            "Record when the leak started and whether it appears during use, continuously or only under certain conditions.",
+        },
+      ],
+    },
   },
   {
     slug: "water-heaters",
@@ -162,6 +211,32 @@ export const services: readonly ServiceDetail[] = [
           "No. Pricing depends on the equipment, the property and the work involved, so it is discussed after an assessment.",
       },
     ],
+    beforeVisit: {
+      items: [
+        {
+          title: "Do Not Open Access Panels",
+          description:
+            "Do not remove covers or attempt to inspect internal gas or electrical components.",
+          importance: "important",
+        },
+        {
+          title: "Record Visible Error Information",
+          description:
+            "Note any visible error code, warning light, unusual sound or leak without opening or adjusting the equipment.",
+        },
+        {
+          title: "Clear the Surrounding Area",
+          description:
+            "Move stored items away from the water heater only when the area is dry and safe to approach.",
+        },
+        {
+          title: "Treat Gas or Electrical Concerns as Urgent",
+          description:
+            "If there is a suspected gas leak, electrical hazard, fire risk or immediate threat to safety, leave the area and contact the appropriate emergency service or utility provider.",
+          importance: "important",
+        },
+      ],
+    },
   },
   {
     slug: "pipe-repair",
@@ -216,6 +291,31 @@ export const services: readonly ServiceDetail[] = [
           "If water is actively escaping, shutting off the nearest valve or the main shutoff is a reasonable step when it can be done safely.",
       },
     ],
+    beforeVisit: {
+      items: [
+        {
+          title: "Do Not Disturb Damaged Pipework",
+          description:
+            "Avoid moving, bending or applying temporary force to damaged or corroded pipes.",
+        },
+        {
+          title: "Clear Safe Access",
+          description:
+            "Move nearby stored items only when the area is dry and safe to approach.",
+        },
+        {
+          title: "Record the Conditions",
+          description:
+            "Note whether leaking or noise occurs continuously, during fixture use or when specific appliances operate.",
+        },
+        {
+          title: "Stay Clear of Electrical Hazards",
+          description:
+            "Do not approach standing water near outlets, wiring or powered equipment. Contact the appropriate emergency service or utility provider if an immediate hazard exists.",
+          importance: "important",
+        },
+      ],
+    },
   },
   {
     slug: "toilets-faucets",
@@ -270,6 +370,30 @@ export const services: readonly ServiceDetail[] = [
           "The concept presents general fixture support. A real business would confirm brand coverage when the request is reviewed.",
       },
     ],
+    beforeVisit: {
+      items: [
+        {
+          title: "Avoid Continued Use During an Overflow",
+          description:
+            "If the fixture is overflowing, avoid flushing or running additional water into it.",
+        },
+        {
+          title: "Do Not Force Stuck Handles or Valves",
+          description:
+            "Avoid forcing a handle, shutoff or fitting that does not move normally.",
+        },
+        {
+          title: "Clear the Fixture Area",
+          description:
+            "Move personal items away from the toilet, sink or faucet when the area is safe and dry enough to approach.",
+        },
+        {
+          title: "Note When the Problem Happens",
+          description:
+            "Record whether the issue is constant, occurs during use or returns after a temporary improvement.",
+        },
+      ],
+    },
   },
   {
     slug: "sump-pumps",
@@ -324,6 +448,31 @@ export const services: readonly ServiceDetail[] = [
           "A real business may offer backup options. This concept presents inspection, maintenance and replacement support as the core services.",
       },
     ],
+    beforeVisit: {
+      items: [
+        {
+          title: "Do Not Enter Water Near Electrical Equipment",
+          description:
+            "Do not touch the pump, outlet, extension cord or electrical equipment while standing water is present.",
+          importance: "important",
+        },
+        {
+          title: "Do Not Bypass Electrical Controls",
+          description:
+            "Do not modify plugs, extension cords, alarms, switches or other electrical controls.",
+        },
+        {
+          title: "Note Alarms or Warning Lights",
+          description:
+            "Record visible alarms, warning lights or unusual sounds without reaching into the pit or opening electrical equipment.",
+        },
+        {
+          title: "Keep the Pit Area Accessible",
+          description:
+            "Move nearby stored items only when the floor is dry and the area is safe to approach.",
+        },
+      ],
+    },
   },
   {
     slug: "sewer-lines",
@@ -378,6 +527,31 @@ export const services: readonly ServiceDetail[] = [
           "Reducing water use until the issue is reviewed is a reasonable step to limit further backups.",
       },
     ],
+    beforeVisit: {
+      items: [
+        {
+          title: "Limit Water Use During a Backup",
+          description:
+            "If sewage or wastewater is backing up, avoid running additional fixtures when continued use may worsen the overflow.",
+        },
+        {
+          title: "Keep Clear of Contaminated Areas",
+          description:
+            "Keep children and pets away from sewage, wastewater and affected surfaces.",
+          importance: "important",
+        },
+        {
+          title: "Do Not Add Chemical Cleaners",
+          description:
+            "Avoid adding drain-cleaning chemicals. Tell the service provider about any product already used.",
+        },
+        {
+          title: "Note Which Fixtures Are Affected",
+          description:
+            "Record whether the problem appears at one fixture, several fixtures or the lowest drains in the property.",
+        },
+      ],
+    },
   },
   {
     slug: "general-plumbing",
@@ -432,6 +606,30 @@ export const services: readonly ServiceDetail[] = [
           "Small issues are often the easiest to address. Getting an explanation early tends to keep the conversation simple.",
       },
     ],
+    beforeVisit: {
+      items: [
+        {
+          title: "Record What You Have Observed",
+          description:
+            "Note when the problem began, which fixtures are affected and whether the issue is changing.",
+        },
+        {
+          title: "Prepare Safe Access",
+          description:
+            "Move personal items away from the affected area only when it is safe to do so.",
+        },
+        {
+          title: "Mention Previous Repairs",
+          description:
+            "Tell the service provider about recent repairs, replacements or temporary measures related to the problem.",
+        },
+        {
+          title: "Keep the Work Area Clear",
+          description:
+            "Keep children and pets away from wet, damaged or restricted areas.",
+        },
+      ],
+    },
   },
 ];
 

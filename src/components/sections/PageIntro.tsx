@@ -45,7 +45,11 @@ export function PageIntro({
 
           <h1
             id="page-heading"
-            className={eyebrow ? "mt-3 text-3xl md:text-4xl" : "text-3xl md:text-4xl"}
+            className={
+              eyebrow
+                ? "mt-3 break-words text-3xl md:text-4xl"
+                : "break-words text-3xl md:text-4xl"
+            }
           >
             {heading}
           </h1>

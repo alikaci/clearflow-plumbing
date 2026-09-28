@@ -24,6 +24,17 @@ const safetySteps = [
   "Move valuables away from the affected area and avoid standing water near electrical outlets or appliances.",
 ];
 
+const immediateThreatSentence =
+  "If there is an immediate threat involving safety, fire, gas, electricity or severe flooding, contact the appropriate emergency service or utility provider.";
+
+const immediateSafetyGuidance = [
+  "Stay clear of standing water that is near electrical outlets, cords or appliances.",
+  "Keep children and pets away from wet, contaminated or restricted areas.",
+  "Avoid using fixtures when continued use may worsen an overflow.",
+  "Do not attempt gas or electrical repairs, and do not open an equipment panel.",
+  "When you make contact, describe what you observed, when it started and whether it is getting worse.",
+];
+
 export default function EmergencyPage() {
   return (
     <main id="main-content">
@@ -32,6 +43,36 @@ export default function EmergencyPage() {
         heading="Urgent Plumbing Help"
         intro="Some plumbing problems cannot wait. This page explains how urgent requests would be presented, what to do first, and when to contact an emergency service instead."
       />
+
+      <Section labelledBy="emergency-immediate-heading">
+        <Container>
+          <div className="rounded-xl border-2 border-orange/50 bg-surface-muted p-5 md:p-7">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-navy">
+              Immediate Danger
+            </p>
+            <h2
+              id="emergency-immediate-heading"
+              className="mt-3 text-2xl md:text-3xl"
+            >
+              When an Immediate Threat Should Come First
+            </h2>
+            <p className="mt-4 max-w-3xl text-lg font-medium text-text">
+              {immediateThreatSentence}
+            </p>
+            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+              {immediateSafetyGuidance.map((item) => (
+                <li key={item} className="flex gap-3 text-muted">
+                  <Icon
+                    name="alert"
+                    className="mt-1 h-5 w-5 shrink-0 text-orange"
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Container>
+      </Section>
 
       <Section labelledBy="urgent-situations-heading">
         <Container>
