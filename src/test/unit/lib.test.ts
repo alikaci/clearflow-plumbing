@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { filterNavigation, isFeatureEnabled } from "@/lib/features";
 import { resolveHashHref } from "@/lib/links";
 import { buildMetadata, buildMetadataFor } from "@/lib/metadata";
+import { seo } from "@/config/seo";
 import { simulateSubmit } from "@/lib/submit";
 import { collectErrors, estimateStepSchemas } from "@/lib/validation";
 import { isZipInArea, isValidZip, sanitizeZipInput } from "@/lib/zip";
@@ -161,7 +162,9 @@ describe("metadata builders", () => {
 
   it("omits canonical and Open Graph URLs when no site URL is configured", () => {
     const metadata = buildMetadata("services");
-    expect(metadata.title).toBe("Plumbing Services");
+    expect(metadata.title).toEqual({
+      absolute: "Plumbing Services | ClearFlow Plumbing Co.",
+    });
     expect(metadata.alternates?.canonical).toBeUndefined();
     expect(metadata.openGraph?.url).toBeUndefined();
     expect(metadata.robots).toMatchObject({ index: false, follow: false });
@@ -174,7 +177,9 @@ describe("metadata builders", () => {
       description: "Custom description",
       path: "/custom",
     });
-    expect(metadata.title).toBe("Custom");
+    expect(metadata.title).toEqual({
+      absolute: "Custom | ClearFlow Plumbing Co.",
+    });
     expect(metadata.openGraph?.title).toBe("Custom | ClearFlow Plumbing Co.");
     expect(metadata.alternates?.canonical).toBe(
       "https://clearflow-plumbing.com/custom",
@@ -197,16 +202,84 @@ describe("metadata builders", () => {
     const metadata = buildMetadata("gallery");
 
     const images = metadata.openGraph?.images as
-      | { url: string; width: number; height: number; alt: string }[]
+      | {
+          url: string;
+          width: number;
+          height: number;
+          type?: string;
+          alt: string;
+        }[]
       | undefined;
     expect(images).toHaveLength(1);
     expect(images?.[0]).toMatchObject({
       url: "https://clearflow-plumbing.com/opengraph-image",
       width: 1200,
       height: 630,
+      type: "image/png",
+      alt: "ClearFlow Plumbing Co. fictional plumbing website concept by ServiceHarbor Studio.",
     });
-    expect(images?.[0]?.alt).toBeTruthy();
     expect(metadata.twitter).toMatchObject({ card: "summary_large_image" });
+  });
+
+  it("publishes complete Open Graph and X card metadata when configured", () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-plumbing.com");
+    const metadata = buildMetadata("home");
+
+    expect(metadata.title).toEqual({
+      absolute: "Plumbing Website Concept | ClearFlow Plumbing Co.",
+    });
+    expect(metadata.alternates?.canonical).toBe("https://clearflow-plumbing.com");
+    expect(metadata.openGraph).toMatchObject({
+      title: "Plumbing Website Concept | ClearFlow Plumbing Co.",
+      siteName: "ClearFlow Plumbing Co.",
+      locale: "en_US",
+      type: "website",
+      url: "https://clearflow-plumbing.com",
+    });
+    expect(metadata.openGraph?.description).toBe(metadata.description);
+    expect(metadata.openGraph?.description).toBeTruthy();
+    expect(metadata.twitter).toMatchObject({
+      card: "summary_large_image",
+      title: "Plumbing Website Concept | ClearFlow Plumbing Co.",
+    });
+    expect(metadata.twitter?.description).toBe(metadata.description);
+  });
+
+  it("keeps generated metadata free of unverifiable claims", () => {
+    const forbidden = [
+      "24/7",
+      "licensed",
+      "insured",
+      "guaranteed",
+      "4.9",
+      "800+",
+      "Google",
+      "yelp",
+      "Accredited",
+    ];
+    const collected = Object.keys(seo.routes).flatMap((routeId) => {
+      const metadata = buildMetadata(routeId as keyof typeof seo.routes);
+      const pageTitle =
+        typeof metadata.title === "string"
+          ? metadata.title
+          : metadata.title && "absolute" in metadata.title
+            ? metadata.title.absolute
+            : "";
+      return [
+        pageTitle,
+        String(metadata.description ?? ""),
+        String(metadata.openGraph?.title ?? ""),
+        String(metadata.openGraph?.description ?? ""),
+        String(metadata.twitter?.title ?? ""),
+        String(metadata.twitter?.description ?? ""),
+      ];
+    });
+
+    for (const token of forbidden) {
+      for (const text of collected) {
+        expect(text.toLowerCase()).not.toContain(token.toLowerCase());
+      }
+    }
   });
 
   it("omits the social image when no site URL is configured", () => {

@@ -25,7 +25,8 @@ export function getSocialImage(): NonNullable<
       url: toAbsoluteUrl(siteUrl, "/opengraph-image"),
       width: 1200,
       height: 630,
-      alt: "ClearFlow Plumbing Co. concept social preview: Reliable Plumbing Help, Without the Guesswork, Columbus, Ohio.",
+      type: "image/png",
+      alt: "ClearFlow Plumbing Co. fictional plumbing website concept by ServiceHarbor Studio.",
     },
   ];
 }
@@ -39,7 +40,7 @@ export function buildMetadataFor(input: {
   const canonical = siteUrl ? toAbsoluteUrl(siteUrl, input.path) : null;
 
   return {
-    title: input.title,
+    title: { absolute: `${input.title} | ${seo.siteName}` },
     description: input.description,
     ...(canonical ? { alternates: { canonical } } : {}),
     robots: {
@@ -59,6 +60,8 @@ export function buildMetadataFor(input: {
     },
     twitter: {
       card: "summary_large_image",
+      title: `${input.title} | ${seo.siteName}`,
+      description: input.description,
       images: getSocialImage(),
     },
   };

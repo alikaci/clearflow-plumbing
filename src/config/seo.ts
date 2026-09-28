@@ -19,9 +19,9 @@ export const seo = {
   routes: {
     home: {
       path: "/",
-      title: "Reliable Plumbing Help in Columbus",
+      title: "Plumbing Website Concept",
       description:
-        "Request professional plumbing support across Columbus and surrounding communities. A fictional portfolio concept by ServiceHarbor Studio.",
+        "ClearFlow Plumbing Co. is a fictional Columbus plumbing website concept by ServiceHarbor Studio. Explore the demonstration pages for services, pricing and more.",
     },
     services: {
       path: "/services",

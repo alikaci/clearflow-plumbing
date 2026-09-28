@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import robots from "@/app/robots";
 import {
   getSiteUrl,
+  hasConfiguredSiteUrl,
   normalizeSiteUrl,
   toAbsoluteUrl,
 } from "@/lib/site-url";
@@ -39,6 +40,18 @@ describe("normalizeSiteUrl", () => {
     expect(normalizeSiteUrl("javascript:alert(1)")).toBeNull();
   });
 
+  it("rejects opaque and non-web schemes", () => {
+    expect(normalizeSiteUrl("data:text/plain,hello")).toBeNull();
+    expect(normalizeSiteUrl("file:///C:/x.html")).toBeNull();
+    expect(normalizeSiteUrl("mailto:jordan@example.com")).toBeNull();
+  });
+
+  it("drops userinfo so credentials never reach metadata", () => {
+    expect(
+      normalizeSiteUrl("https://jordan:secret@clearflow-plumbing.com/some/path"),
+    ).toBe("https://clearflow-plumbing.com");
+  });
+
   it("rejects loopback hosts so localhost never becomes canonical", () => {
     expect(normalizeSiteUrl("http://localhost:3000")).toBeNull();
     expect(normalizeSiteUrl("http://127.0.0.1:4300")).toBeNull();
@@ -59,6 +72,57 @@ describe("normalizeSiteUrl", () => {
     vi.stubEnv("NEXT_PUBLIC_SITE_URL", "");
     expect(getSiteUrl()).toBeNull();
     vi.unstubAllEnvs();
+  });
+
+  it("reports whether a valid site URL is configured", () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-plumbing.com");
+    expect(hasConfiguredSiteUrl()).toBe(true);
+    vi.unstubAllEnvs();
+
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "");
+    expect(hasConfiguredSiteUrl()).toBe(false);
+    vi.unstubAllEnvs();
+
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "not a url");
+    expect(hasConfiguredSiteUrl()).toBe(false);
+    vi.unstubAllEnvs();
+  });
+});
+
+describe("getSiteUrl warnings", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("does not warn when the environment value is absent", () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "");
+    try {
+      expect(getSiteUrl()).toBeNull();
+      expect(warnSpy).not.toHaveBeenCalled();
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it("warns once for a set-but-invalid value without echoing it", () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv(
+      "NEXT_PUBLIC_SITE_URL",
+      "https://superadmin:hunter2@localhost:3000",
+    );
+    try {
+      expect(getSiteUrl()).toBeNull();
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      const message = String(warnSpy.mock.calls[0][0]);
+      expect(message).toContain("NEXT_PUBLIC_SITE_URL");
+      expect(message).not.toContain("superadmin");
+      expect(message).not.toContain("hunter2");
+    } finally {
+      warnSpy.mockRestore();
+    }
   });
 });
 

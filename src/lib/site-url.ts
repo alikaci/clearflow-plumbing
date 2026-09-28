@@ -55,10 +55,35 @@ export function normalizeSiteUrl(value: string | undefined | null): string | nul
   return url.origin;
 }
 
+/*
+The value is only echoed in a warning when it came from the environment, so no
+credential or secret a developer stored in the variable is ever printed.
+*/
+let warnedForInvalidEnvironmentValue = false;
+
+export function hasConfiguredSiteUrl(): boolean {
+  return normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL) !== null;
+}
+
 export function getSiteUrl(
   value: string | undefined = process.env.NEXT_PUBLIC_SITE_URL,
 ): string | null {
-  return normalizeSiteUrl(value);
+  const normalized = normalizeSiteUrl(value);
+
+  if (
+    normalized === null &&
+    value !== undefined &&
+    value.trim().length > 0 &&
+    !warnedForInvalidEnvironmentValue &&
+    process.env.NODE_ENV !== "test"
+  ) {
+    warnedForInvalidEnvironmentValue = true;
+    console.warn(
+      "NEXT_PUBLIC_SITE_URL is set but was rejected. Canonical tags, Open Graph URLs and the robots Host value will be omitted. Provide a bare http(s) origin on a non-local, non-reserved domain.",
+    );
+  }
+
+  return normalized;
 }
 
 /** Joins a site origin and a route path without producing a double slash. */

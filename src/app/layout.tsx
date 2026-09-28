@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { seo } from "@/config/seo";
 import { SkipLink } from "@/components/layout/SkipLink";
@@ -7,7 +7,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Footer } from "@/components/layout/Footer";
 import { MobileActionBar } from "@/components/layout/MobileActionBar";
 import { Assistant } from "@/components/assistant/Assistant";
-import { getSiteUrl, toAbsoluteUrl } from "@/lib/site-url";
+import { getSiteUrl } from "@/lib/site-url";
 import { getSocialImage } from "@/lib/metadata";
 
 const siteUrl = getSiteUrl();
@@ -43,8 +43,18 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    title: seo.defaultTitle,
+    description: seo.defaultDescription,
     images: socialImage,
   },
+};
+
+/*
+The brand navy matches the --color-navy custom property in globals.css. It is
+only a theme color hint for mobile browser chrome; nothing here is a PWA.
+*/
+export const viewport: Viewport = {
+  themeColor: "#0b1f33",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

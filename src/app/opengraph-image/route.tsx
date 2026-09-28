@@ -15,7 +15,7 @@ noindex is unaffected.
 export const dynamic = "force-static";
 
 export const alt =
-  "ClearFlow Plumbing Co. concept social preview: Reliable Plumbing Help, Without the Guesswork, Columbus, Ohio.";
+  "ClearFlow Plumbing Co. fictional plumbing website concept by ServiceHarbor Studio.";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -121,15 +121,18 @@ export function GET() {
             style={{
               display: "flex",
               flexDirection: "column",
-              fontSize: 66,
+              fontSize: 46,
               fontWeight: 700,
-              lineHeight: 1.08,
-              maxWidth: "660px",
+              lineHeight: 1.15,
+              maxWidth: "680px",
             }}
           >
-            Reliable Plumbing Help,
-            <br />
-            Without the Guesswork
+            <div style={{ whiteSpace: "nowrap" }}>
+              Clear Plumbing Information.
+            </div>
+            <div style={{ whiteSpace: "nowrap" }}>
+              Confident Service Requests.
+            </div>
           </div>
 
           <div
