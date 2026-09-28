@@ -1,19 +1,13 @@
 import type { ReactNode } from "react";
-import type { ServiceIconId } from "@/types";
+import type { ContentIconId } from "@/types";
 
 export type IconName =
-  | ServiceIconId
+  | ContentIconId
   | "menu"
   | "close"
-  | "phone"
   | "star"
-  | "check"
   | "arrow-right"
   | "chevron-down"
-  | "alert"
-  | "camera"
-  | "map-pin"
-  | "clock"
   | "chat";
 
 const filledIcons: ReadonlySet<IconName> = new Set<IconName>(["star"]);

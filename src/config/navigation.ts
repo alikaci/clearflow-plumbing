@@ -50,6 +50,7 @@ export const footerNavigation: readonly FooterNavGroup[] = [
       { label: "Offers", href: "/offers", flag: "specialOffers" },
       { label: "Membership", href: "/membership", flag: "membership" },
       { label: "Financing", href: "/financing", flag: "financing" },
+      { label: "How Pricing Works", href: "/pricing" },
     ],
   },
 ];

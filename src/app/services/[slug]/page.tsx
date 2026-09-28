@@ -1,13 +1,16 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { business } from "@/config/business";
 import { getService, serviceSlugs } from "@/config/services";
+import { pricingContextLinks } from "@/config/pricing";
 import { buildMetadataFor } from "@/lib/metadata";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { BrandImage } from "@/components/ui/BrandImage";
 import { Card } from "@/components/ui/Card";
+import { Icon } from "@/components/ui/Icon";
 import { PageIntro } from "@/components/sections/PageIntro";
 import { FaqAccordion } from "@/components/sections/FaqAccordion";
 
@@ -113,6 +116,15 @@ export default async function ServiceDetailPage({
                   </li>
                 ))}
               </ul>
+              <p className="mt-6">
+                <Link
+                  href={pricingContextLinks.service.href}
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-blue underline-offset-2 hover:underline"
+                >
+                  {pricingContextLinks.service.label}
+                  <Icon name="arrow-right" className="h-4 w-4" />
+                </Link>
+              </p>
             </div>
             <div>
               <h2 className="text-2xl">Benefits of Addressing It Early</h2>

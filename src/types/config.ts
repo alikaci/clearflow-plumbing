@@ -93,6 +93,20 @@ export type ServiceIconId =
   | "sewer"
   | "wrench";
 
+/*
+Icons that configuration files may reference. The Icon component owns the
+drawing of every name; this union only states which of those names content
+config is allowed to use, so a config file never has to import a component.
+*/
+export type ContentIconId =
+  | ServiceIconId
+  | "check"
+  | "clock"
+  | "alert"
+  | "map-pin"
+  | "camera"
+  | "phone";
+
 export type ImageKey =
   | "heroTechnician"
   | "serviceDrain"
@@ -432,4 +446,35 @@ export type HomePageConfig = {
 export type ProcessConfig = {
   heading: string;
   steps: readonly ProcessStep[];
+};
+
+export type PricingCostFactor = {
+  title: string;
+  description: string;
+  icon: ContentIconId;
+};
+
+export type PricingConfig = {
+  eyebrow: string;
+  heading: string;
+  intro: string;
+  disclosure: string;
+  process: ProcessConfig;
+  processNote: string;
+  costFactorsHeading: string;
+  costFactors: readonly PricingCostFactor[];
+  questionsHeading: string;
+  questions: readonly string[];
+  questionsNote: string;
+  ctaHeading: string;
+  ctaText: string;
+  ctaPrimaryLabel: string;
+  ctaPrimaryHref: string;
+  ctaSecondaryLabel: string;
+  ctaSecondaryHref: string;
+};
+
+export type PricingContextLink = {
+  label: string;
+  href: string;
 };

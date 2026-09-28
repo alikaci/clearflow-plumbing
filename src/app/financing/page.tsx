@@ -4,10 +4,13 @@ import {
   financingNotice,
   financingUseCases,
 } from "@/config/financing";
+import { pricingContextLinks } from "@/config/pricing";
 import { buildMetadata } from "@/lib/metadata";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
+import { Icon } from "@/components/ui/Icon";
 import { Section } from "@/components/ui/Section";
 import { PageIntro } from "@/components/sections/PageIntro";
 
@@ -49,6 +52,15 @@ export default function FinancingPage() {
           </h2>
           <p className="mt-4 text-muted">{financingNotice}</p>
           <p className="mt-4 text-muted">{financingDisclaimer}</p>
+          <p className="mt-6">
+            <Link
+              href={pricingContextLinks.financing.href}
+              className="inline-flex items-center gap-2 text-sm font-semibold text-blue underline-offset-2 hover:underline"
+            >
+              {pricingContextLinks.financing.label}
+              <Icon name="arrow-right" className="h-4 w-4" />
+            </Link>
+          </p>
           <div className="mt-8">
             <Button href="/#estimate" size="lg">
               Request a Free Estimate

@@ -8,6 +8,7 @@ const targets = [
   { path: "/contact", name: "contact" },
   { path: "/book", name: "booking preview" },
   { path: "/service-areas", name: "service areas" },
+  { path: "/pricing", name: "pricing process" },
 ];
 
 for (const target of targets) {

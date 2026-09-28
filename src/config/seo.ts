@@ -71,6 +71,12 @@ export const seo = {
       description:
         "How financing information would be presented for larger plumbing projects. This demonstration does not provide financing.",
     },
+    pricing: {
+      path: "/pricing",
+      title: "How Pricing Works",
+      description:
+        "See how a professional plumbing estimate process could be explained clearly before work begins in this fictional portfolio concept.",
+    },
     book: {
       path: "/book",
       title: "Booking Preview",

@@ -100,6 +100,16 @@ describe("site configuration", () => {
     }
   });
 
+  it("links the pricing process page from the footer but not the main navigation", () => {
+    const more = footerNavigation.find((group) => group.id === "more");
+    const link = more?.items.find((item) => item.href === "/pricing");
+
+    expect(link?.label).toBe("How Pricing Works");
+    expect(
+      mainNavigation.some((item) => item.href === "/pricing"),
+    ).toBe(false);
+  });
+
   it("exposes a canonical path and copy for every SEO route", () => {
     for (const [key, route] of Object.entries(seo.routes)) {
       expect(route.path.startsWith("/"), key).toBe(true);
