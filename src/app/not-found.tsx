@@ -9,7 +9,7 @@ export default function NotFound() {
     <main id="main-content">
       <Section labelledBy="not-found-heading">
         <Container size="narrow" className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-navy">
             404
           </p>
           <h1
