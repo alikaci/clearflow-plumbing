@@ -171,7 +171,7 @@ describe("metadata builders", () => {
   });
 
   it("builds an absolute canonical when a valid site URL is configured", () => {
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-plumbing.com");
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-preview.example");
     const metadata = buildMetadataFor({
       title: "Custom",
       description: "Custom description",
@@ -182,9 +182,9 @@ describe("metadata builders", () => {
     });
     expect(metadata.openGraph?.title).toBe("Custom | ClearFlow Plumbing Co.");
     expect(metadata.alternates?.canonical).toBe(
-      "https://clearflow-plumbing.com/custom",
+      "https://clearflow-preview.example/custom",
     );
-    expect(metadata.openGraph?.url).toBe("https://clearflow-plumbing.com/custom");
+    expect(metadata.openGraph?.url).toBe("https://clearflow-preview.example/custom");
   });
 
   it("ignores an invalid site URL", () => {
@@ -198,7 +198,7 @@ describe("metadata builders", () => {
   });
 
   it("emits the social image on every page when a site URL is configured", () => {
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-plumbing.com");
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-preview.example");
     const metadata = buildMetadata("gallery");
 
     const images = metadata.openGraph?.images as
@@ -212,7 +212,7 @@ describe("metadata builders", () => {
       | undefined;
     expect(images).toHaveLength(1);
     expect(images?.[0]).toMatchObject({
-      url: "https://clearflow-plumbing.com/opengraph-image",
+      url: "https://clearflow-preview.example/opengraph-image",
       width: 1200,
       height: 630,
       type: "image/png",
@@ -222,19 +222,19 @@ describe("metadata builders", () => {
   });
 
   it("publishes complete Open Graph and X card metadata when configured", () => {
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-plumbing.com");
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-preview.example");
     const metadata = buildMetadata("home");
 
     expect(metadata.title).toEqual({
       absolute: "Plumbing Website Concept | ClearFlow Plumbing Co.",
     });
-    expect(metadata.alternates?.canonical).toBe("https://clearflow-plumbing.com");
+    expect(metadata.alternates?.canonical).toBe("https://clearflow-preview.example");
     expect(metadata.openGraph).toMatchObject({
       title: "Plumbing Website Concept | ClearFlow Plumbing Co.",
       siteName: "ClearFlow Plumbing Co.",
       locale: "en_US",
       type: "website",
-      url: "https://clearflow-plumbing.com",
+      url: "https://clearflow-preview.example",
     });
     expect(metadata.openGraph?.description).toBe(metadata.description);
     expect(metadata.openGraph?.description).toBeTruthy();

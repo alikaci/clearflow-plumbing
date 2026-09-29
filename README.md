@@ -14,7 +14,7 @@ Fictional portfolio demonstration website for a plumbing-services concept, desig
 npm install
 ```
 
-Copy `.env.example` to `.env.local` if you want to review canonical/Open Graph output. `NEXT_PUBLIC_SITE_URL` is optional and must be the bare origin of an owned domain (for example `https://clearflow-plumbing.com`). When it is unset, canonical tags, `og:url`, `og:image`, `twitter:image` and the `robots.txt` `Host` directive are omitted so no local or placeholder domain is ever published.
+Copy `.env.example` to `.env.local` if you want to review canonical/Open Graph output. `NEXT_PUBLIC_SITE_URL` is optional and must be the bare origin of the site's owned/controlled domain once deployed (deterministic tests use the reserved IANA example origin `https://clearflow-preview.example`, which is intentionally never a real deployment). When it is unset, canonical tags, `og:url`, `og:image`, `twitter:image` and the `robots.txt` `Host` directive are omitted so no local or placeholder domain is ever published.
 
 ## Commands
 

@@ -2,10 +2,12 @@
 
 This demonstration website has no deployed domain, so all social metadata is
 safety-gated by one rule: it is only emitted when `NEXT_PUBLIC_SITE_URL` is
-configured with a **bare http(s) origin on an owned, non-local, non-reserved
-domain**. Until then, canonical tags, `og:url`, `og:image`, `twitter:image` and
-the `robots.txt` `Host` directive are all omitted, and `robots` stays
-`noindex, nofollow`.
+configured with a **bare http(s) origin on a non-local host**. Until then,
+canonical tags, `og:url`, `og:image`, `twitter:image` and the `robots.txt`
+`Host` directive are all omitted, and `robots` stays `noindex, nofollow`.
+Deterministic tests use the reserved IANA `.example` origin
+(`https://clearflow-preview.example`), which is intentionally never a real
+deployment; a deployed site sets its own owned/controlled origin.
 
 This checklist is for the person who later deploys this portfolio concept. It is
 a fictional website: nothing here offers real services, appointments, pricing or
@@ -27,11 +29,13 @@ reviews, and the metadata must never imply otherwise.
 ## Before deployment
 
 - [ ] Keep `NEXT_PUBLIC_SITE_URL=` empty in `.env.example` unless publishing.
-- [ ] Set the variable to the **exact origin** of the owned domain, no trailing
-      slash, http(s) only. Rejected values include `localhost`, `127.*`, `::1`,
-      `0.0.0.0` and reserved documentation TLDs (`.example`, `.invalid`,
-      `.test`, `.localhost`). Do not use a placeholder like
-      `https://your-preview-domain.example` — it is rejected by design.
+- [ ] Set the variable to the **exact origin** the deployment owns and controls,
+      no trailing slash, http(s) only. Rejected values include `localhost`,
+      `127.*`, `::1`, `0.0.0.0` and the reserved TLDs `.invalid`, `.test`,
+      `.localhost`. The reserved IANA `.example` TLD is accepted for
+      deterministic local tests (for example
+      `NEXT_PUBLIC_SITE_URL=https://clearflow-preview.example`) — it is a test
+      fixture, never a real deployment, and must not be used as the live origin.
 - [ ] Rebuild after changing the variable: `NEXT_PUBLIC_` values are inlined at
       build time.
 - [ ] Decide search intent. If staging behind a public URL, keep `robots`
@@ -56,16 +60,17 @@ No URL configured:
   in `/robots.txt`; `GET /opengraph-image` still returns 200 with
   `content-type: image/png` at 1200x630.
 
-Valid URL configured (`NEXT_PUBLIC_SITE_URL=https://your-real-domain.com`):
+Reserved origin configured for deterministic tests
+(`NEXT_PUBLIC_SITE_URL=https://clearflow-preview.example`):
 
 - Expected: absolute, route-correct canonicals and `og:url` (homepage = bare
   origin), one absolute `og:image`/`twitter:image` pointing at
-  `https://your-real-domain.com/opengraph-image` (no localhost, no relative
-  URL), `og:image:width/height` 1200/630, `og:image:type` `image/png`,
-  Open Graph `type` `website`, `locale` `en_US`, X `card`
-  `summary_large_image`, and `robots noindex` still intact.
+  `https://clearflow-preview.example/opengraph-image` (no localhost, no
+  relative URL, no unowned registrable domain), `og:image:width/height`
+  1200/630, `og:image:type` `image/png`, Open Graph `type` `website`, `locale`
+  `en_US`, X `card` `summary_large_image`, and `robots noindex` still intact.
 - Run `e2e/metadata-valid.spec.ts` (auto-skips when the URL is not configured):
-  `NEXT_PUBLIC_SITE_URL=https://your-real-domain.com npm run e2e -- e2e/metadata-valid.spec.ts`.
+  `NEXT_PUBLIC_SITE_URL=https://clearflow-preview.example npm run e2e -- e2e/metadata-valid.spec.ts`.
 
 ## After deployment
 

@@ -16,27 +16,27 @@ describe("normalizeSiteUrl", () => {
   });
 
   it("accepts a valid https origin and removes a trailing slash", () => {
-    expect(normalizeSiteUrl("https://clearflow-plumbing.com")).toBe(
-      "https://clearflow-plumbing.com",
+    expect(normalizeSiteUrl("https://clearflow-preview.example")).toBe(
+      "https://clearflow-preview.example",
     );
-    expect(normalizeSiteUrl("https://clearflow-plumbing.com/")).toBe(
-      "https://clearflow-plumbing.com",
+    expect(normalizeSiteUrl("https://clearflow-preview.example/")).toBe(
+      "https://clearflow-preview.example",
     );
-    expect(normalizeSiteUrl("https://clearflow-plumbing.com/some/path?x=1#y")).toBe(
-      "https://clearflow-plumbing.com",
+    expect(normalizeSiteUrl("https://clearflow-preview.example/some/path?x=1#y")).toBe(
+      "https://clearflow-preview.example",
     );
   });
 
   it("accepts a valid http origin", () => {
-    expect(normalizeSiteUrl("http://clearflow-plumbing.com")).toBe(
-      "http://clearflow-plumbing.com",
+    expect(normalizeSiteUrl("http://clearflow-preview.example")).toBe(
+      "http://clearflow-preview.example",
     );
   });
 
   it("rejects malformed and non-http(s) values", () => {
     expect(normalizeSiteUrl("not a url")).toBeNull();
-    expect(normalizeSiteUrl("clearflow-plumbing.com")).toBeNull();
-    expect(normalizeSiteUrl("ftp://clearflow-plumbing.com")).toBeNull();
+    expect(normalizeSiteUrl("clearflow-preview.example")).toBeNull();
+    expect(normalizeSiteUrl("ftp://clearflow-preview.example")).toBeNull();
     expect(normalizeSiteUrl("javascript:alert(1)")).toBeNull();
   });
 
@@ -48,8 +48,8 @@ describe("normalizeSiteUrl", () => {
 
   it("drops userinfo so credentials never reach metadata", () => {
     expect(
-      normalizeSiteUrl("https://jordan:secret@clearflow-plumbing.com/some/path"),
-    ).toBe("https://clearflow-plumbing.com");
+      normalizeSiteUrl("https://jordan:secret@clearflow-preview.example/some/path"),
+    ).toBe("https://clearflow-preview.example");
   });
 
   it("rejects loopback hosts so localhost never becomes canonical", () => {
@@ -58,15 +58,27 @@ describe("normalizeSiteUrl", () => {
     expect(normalizeSiteUrl("http://[::1]:3000")).toBeNull();
   });
 
-  it("rejects reserved documentation hosts", () => {
-    expect(normalizeSiteUrl("https://clearflow.example")).toBeNull();
+  it("accepts the reserved IANA example host for deterministic tests", () => {
+    expect(normalizeSiteUrl("https://clearflow-preview.example")).toBe(
+      "https://clearflow-preview.example",
+    );
+    expect(normalizeSiteUrl("https://clearflow-preview.example/")).toBe(
+      "https://clearflow-preview.example",
+    );
+    expect(normalizeSiteUrl("https://clearflow.example/gallery?x=1#y")).toBe(
+      "https://clearflow.example",
+    );
+  });
+
+  it("rejects other reserved hosts so only IANA example hosts pass", () => {
     expect(normalizeSiteUrl("https://something.test")).toBeNull();
     expect(normalizeSiteUrl("https://something.invalid")).toBeNull();
+    expect(normalizeSiteUrl("https://something.localhost")).toBeNull();
   });
 
   it("reads the environment value through getSiteUrl", () => {
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-plumbing.com/");
-    expect(getSiteUrl()).toBe("https://clearflow-plumbing.com");
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-preview.example/");
+    expect(getSiteUrl()).toBe("https://clearflow-preview.example");
     vi.unstubAllEnvs();
 
     vi.stubEnv("NEXT_PUBLIC_SITE_URL", "");
@@ -75,7 +87,7 @@ describe("normalizeSiteUrl", () => {
   });
 
   it("reports whether a valid site URL is configured", () => {
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-plumbing.com");
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-preview.example");
     expect(hasConfiguredSiteUrl()).toBe(true);
     vi.unstubAllEnvs();
 
@@ -128,17 +140,17 @@ describe("getSiteUrl warnings", () => {
 
 describe("toAbsoluteUrl", () => {
   it("keeps the bare origin for the home path", () => {
-    expect(toAbsoluteUrl("https://clearflow-plumbing.com", "/")).toBe(
-      "https://clearflow-plumbing.com",
+    expect(toAbsoluteUrl("https://clearflow-preview.example", "/")).toBe(
+      "https://clearflow-preview.example",
     );
   });
 
   it("joins route paths without a double slash", () => {
-    expect(toAbsoluteUrl("https://clearflow-plumbing.com", "/services")).toBe(
-      "https://clearflow-plumbing.com/services",
+    expect(toAbsoluteUrl("https://clearflow-preview.example", "/services")).toBe(
+      "https://clearflow-preview.example/services",
     );
-    expect(toAbsoluteUrl("https://clearflow-plumbing.com", "services")).toBe(
-      "https://clearflow-plumbing.com/services",
+    expect(toAbsoluteUrl("https://clearflow-preview.example", "services")).toBe(
+      "https://clearflow-preview.example/services",
     );
   });
 });
@@ -156,12 +168,17 @@ describe("robots output", () => {
   });
 
   it("uses the configured origin as the Host value", () => {
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-plumbing.com");
-    expect(robots().host).toBe("https://clearflow-plumbing.com");
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-preview.example");
+    expect(robots().host).toBe("https://clearflow-preview.example");
   });
 
-  it("never emits an unowned reserved Host value", () => {
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow.example");
+  it("emits the reserved IANA example origin as the Host value", () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://clearflow-preview.example");
+    expect(robots().host).toBe("https://clearflow-preview.example");
+  });
+
+  it("still omits Host for loopback or structurally invalid values", () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "http://localhost:3000");
     expect(robots().host).toBeUndefined();
   });
 });

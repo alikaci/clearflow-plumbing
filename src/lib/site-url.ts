@@ -8,7 +8,7 @@ canonical URLs, Open Graph URLs and the robots Host value rather than emitting
 an assumed, localhost or otherwise unverified domain.
 */
 
-const RESERVED_TLDS = [".example", ".invalid", ".test", ".localhost"] as const;
+const RESERVED_TLDS = [".invalid", ".test", ".localhost"] as const;
 
 function isLoopbackHost(host: string): boolean {
   return (
@@ -27,11 +27,14 @@ function isReservedHost(host: string): boolean {
 /**
  * Normalizes a raw URL value into a bare http(s) origin, or returns null when
  * the value is missing, malformed, not http(s), or clearly not a public host.
+ * The reserved IANA `.example` host (for example `clearflow-preview.example`)
+ * is accepted as an origin for deterministic tests even though it is
+ * intentionally not a real deployment.
  *
- * - `https://example.com/` -> `https://example.com`
+ * - `https://clearflow-preview.example/` -> `https://clearflow-preview.example`
  * - `https://example.com/path?q=1#x` -> `https://example.com`
  * - `http://localhost:3000` -> `null`
- * - `clearflow.example` -> `null`
+ * - `clearflow-preview.example` -> `null` (not an absolute URL)
  * - `not a url` -> `null`
  */
 export function normalizeSiteUrl(value: string | undefined | null): string | null {
@@ -79,7 +82,7 @@ export function getSiteUrl(
   ) {
     warnedForInvalidEnvironmentValue = true;
     console.warn(
-      "NEXT_PUBLIC_SITE_URL is set but was rejected. Canonical tags, Open Graph URLs and the robots Host value will be omitted. Provide a bare http(s) origin on a non-local, non-reserved domain.",
+      "NEXT_PUBLIC_SITE_URL is set but was rejected. Canonical tags, Open Graph URLs and the robots Host value will be omitted. Provide a bare https or http origin on a non-local host with no path, query, hash or credentials.",
     );
   }
 
