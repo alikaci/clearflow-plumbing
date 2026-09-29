@@ -3,13 +3,24 @@ import path from "node:path";
 import { ImageResponse } from "next/og";
 
 /*
-Social preview image.
+Social preview image (corrected composition).
 
-The approved concept visual in public/images/opengraph.jpg is used as the
-background. Every piece of text is rendered here in code so the spelling stays
-exact and nothing depends on text baked into the generated artwork. The route
-is only referenced from metadata when NEXT_PUBLIC_SITE_URL is configured, and
-noindex is unaffected.
+The previous background (public/images/opengraph.jpg) was generated with a
+ClearFlow branding strip, headline text and service icons baked into the
+artwork. Because every foreground word is rendered here in code over that
+background, the baked-in artwork ghosted through behind the real text.
+
+The corrected composition reuses the clean technician photo
+(public/images/hero-technician.jpg) - the same asset used as the site hero,
+which carries no embedded text or branding. The left content column sits on a
+fully opaque navy zone so nothing from the photo can ever read behind the
+text, and the fictional disclosure sits on its own solid navy chip for stable
+contrast at social-card thumbnail sizes.
+
+Every piece of text is rendered here in code so the spelling stays exact and
+nothing depends on text baked into a generated art file. The route is only
+referenced from metadata when NEXT_PUBLIC_SITE_URL is configured, and noindex
+is unaffected.
 */
 
 export const dynamic = "force-static";
@@ -21,7 +32,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 function backgroundImage(): string {
-  const file = path.join(process.cwd(), "public", "images", "opengraph.jpg");
+  const file = path.join(process.cwd(), "public", "images", "hero-technician.jpg");
   const encoded = fs.readFileSync(file).toString("base64");
   return `data:image/jpeg;base64,${encoded}`;
 }
@@ -41,7 +52,7 @@ export function GET() {
       >
         {/*
           Satori cannot resolve a data URI through `background-image`, so the
-          approved concept visual is layered as a real image element instead.
+          clean technician photo is layered as a real image element instead.
           It is decorative here: the social preview text is rendered below it,
           so the image itself carries an empty alt.
         */}
@@ -69,7 +80,7 @@ export function GET() {
             bottom: 0,
             display: "flex",
             backgroundImage:
-              "linear-gradient(90deg, rgba(11,31,51,0.95) 0%, rgba(11,31,51,0.88) 40%, rgba(11,31,51,0.45) 66%, rgba(11,31,51,0.1) 100%)",
+              "linear-gradient(90deg, rgba(11,31,51,1) 0%, rgba(11,31,51,1) 46%, rgba(11,31,51,0.94) 56%, rgba(11,31,51,0.74) 66%, rgba(11,31,51,0.46) 76%, rgba(11,31,51,0.2) 88%, rgba(11,31,51,0) 100%)",
           }}
         />
 
@@ -81,10 +92,11 @@ export function GET() {
             justifyContent: "space-between",
             width: "100%",
             height: "100%",
-            padding: "60px 68px",
+            padding: "68px 72px",
             color: "#ffffff",
           }}
-        >          <div style={{ display: "flex", flexDirection: "column" }}>
+        >
+          <div style={{ display: "flex", flexDirection: "column" }}>
             <div
               style={{
                 display: "flex",
@@ -107,7 +119,7 @@ export function GET() {
             </div>
             <div
               style={{
-                marginTop: "10px",
+                marginTop: "12px",
                 fontSize: 26,
                 letterSpacing: "0.32em",
                 color: "#cdd8e4",
@@ -121,16 +133,27 @@ export function GET() {
             style={{
               display: "flex",
               flexDirection: "column",
-              fontSize: 46,
-              fontWeight: 700,
-              lineHeight: 1.15,
-              maxWidth: "680px",
+              maxWidth: "700px",
             }}
           >
-            <div style={{ whiteSpace: "nowrap" }}>
+            <div
+              style={{
+                fontSize: 52,
+                fontWeight: 700,
+                lineHeight: 1.12,
+                whiteSpace: "nowrap",
+              }}
+            >
               Clear Plumbing Information.
             </div>
-            <div style={{ whiteSpace: "nowrap" }}>
+            <div
+              style={{
+                marginTop: "14px",
+                fontSize: 26,
+                fontWeight: 500,
+                color: "#d7e2ee",
+              }}
+            >
               Confident Service Requests.
             </div>
           </div>
@@ -138,19 +161,20 @@ export function GET() {
           <div
             style={{
               display: "flex",
+              width: "fit-content",
               alignItems: "flex-end",
               justifyContent: "space-between",
-              fontSize: 28,
-              color: "#eaf4ff",
             }}
           >
-            <div style={{ display: "flex" }}>Columbus, Ohio</div>
             <div
               style={{
                 display: "flex",
-                fontSize: 19,
-                color: "#a8b8cb",
-                textAlign: "right",
+                padding: "12px 22px",
+                borderRadius: 999,
+                backgroundColor: "#122b47",
+                color: "#ffffff",
+                fontSize: 20,
+                fontWeight: 500,
               }}
             >
               Fictional portfolio concept by ServiceHarbor Studio
