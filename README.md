@@ -1,38 +1,76 @@
-# ClearFlow Plumbing Co.
+@'
+# ClearFlow Plumbing
 
-Fictional portfolio demonstration website for a plumbing-services concept, designed and developed by ServiceHarbor Studio. No real service is provided and nothing here is deployed.
+A production-style fictional plumbing website created as a portfolio case study for **ServiceHarbor Studio**.
 
-## Environment
+> **Important:** ClearFlow Plumbing Co. is a fictional business. This repository does not represent a real plumbing company and does not provide real services, appointments, financing, emergency response, licenses, guarantees, or verified customer reviews.
 
-- Node.js: 24.19.0 (see `.nvmrc`)
-- npm: 11.17.0
-- Package manager: npm
+## Project Overview
 
-## Local setup
+ClearFlow demonstrates how a modern local-service website can combine:
+
+- Conversion-focused UI/UX
+- Responsive mobile and desktop layouts
+- Config-driven service pages
+- Accessible multi-step request forms
+- Simulated booking and request confirmation
+- Transparent pricing-process guidance
+- Service-area ZIP checking
+- Progressive motion with reduced-motion support
+- Security and privacy protections
+- Open Graph and social-sharing metadata
+
+## Technology
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Zod
+- Vitest
+- Playwright
+- ESLint
+
+## Main Routes
+
+- Home
+- Services and eight service-detail pages
+- Emergency guidance
+- Service areas
+- Pricing process
+- Booking preview
+- Contact and estimate request
+- Gallery
+- About
+- Offers
+- Membership
+- Financing
+- Privacy
+- Custom 404
+
+## Privacy and Demonstration Rules
+
+- Forms are simulations only.
+- No request data or photos are transmitted.
+- No database, cookies, localStorage or sessionStorage is used for form data.
+- No real appointment is created.
+- The website remains `noindex, nofollow`.
+- The phone number uses the reserved fictional `555-01xx` range.
+- Images may include AI-generated portfolio visuals.
+
+## Accessibility and Quality
+
+The project includes:
+
+- Keyboard-accessible navigation and forms
+- Accessible validation and focus handling
+- Reduced-motion and no-JavaScript fallbacks
+- Responsive testing across mobile and desktop viewports
+- Automated accessibility, metadata, security and E2E tests
+- Optimized images with fixed dimensions to reduce layout shift
+
+## Local Development
 
 ```bash
 npm install
-```
-
-Copy `.env.example` to `.env.local` if you want to review canonical/Open Graph output. `NEXT_PUBLIC_SITE_URL` is optional and must be the bare origin of the site's owned/controlled domain once deployed (deterministic tests use the reserved IANA example origin `https://clearflow-preview.example`, which is intentionally never a real deployment). When it is unset, canonical tags, `og:url`, `og:image`, `twitter:image` and the `robots.txt` `Host` directive are omitted so no local or placeholder domain is ever published.
-
-## Commands
-
-| Task | Command |
-| ---- | ------- |
-| Development server | `npm run dev` |
-| Production build | `npm run build` |
-| Lint | `npm run lint` |
-| Type check | `npm run typecheck` |
-| Lint, type check and build | `npm run check` |
-| Unit and component tests | `npm test` |
-| End-to-end tests (Chromium) | `npm run e2e` |
-| Run production build locally | `npm run start` |
-
-`npm run e2e` starts the production server on port 4300, so run `npm run build` first.
-
-## Status
-
-- All routes, content, forms and interactions are implemented as a static-first portfolio concept.
-- Content security policy and baseline security headers are applied in `next.config.ts`.
-- Nothing has been deployed and no remote Git repository has been created.
+npm run dev
