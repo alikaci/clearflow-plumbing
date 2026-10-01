@@ -30,7 +30,7 @@ export const estimateStepSchemas = [
     propertyType: z.enum(["house", "apartment-condo", "commercial", "other"]),
   }),
   z.object({
-    urgency: z.enum(["urgent", "not-urgent"]),
+    urgency: z.enum(["right-now", "today", "this-week", "getting-estimate"]),
     description: z
       .string()
       .trim()

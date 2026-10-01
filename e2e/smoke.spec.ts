@@ -78,19 +78,24 @@ test.describe("request flow", () => {
     await page.getByRole("button", { name: "Submit request" }).click();
 
     await expect(
-      page.getByRole("heading", { name: "Your Demonstration Request Is Complete" }),
+      page.getByRole("heading", { name: "Your Request Summary Is Ready" }),
     ).toBeVisible({ timeout: 5000 });
-    await expect(page.getByText("REQUEST RECEIVED")).toBeVisible();
+    await expect(
+      page.getByText("Request prepared. No information was sent and no appointment was created."),
+    ).toBeVisible();
     await expect(
       page.getByText(
-        "This is a portfolio demonstration. No appointment has been created and no information has been sent to a plumbing company.",
+        "This is a portfolio demonstration. No information has been sent to a plumbing company, no appointment has been created and no technician has been dispatched.",
       ),
     ).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "Request Summary" }),
+      page.getByRole("heading", { name: "Request Summary", exact: true }),
     ).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "What Happens Next in a Live Website?" }),
+      page.getByRole("heading", { name: "How a Request Moves Through the Office" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "What has not happened" }),
     ).toBeVisible();
     await expect(page.getByText(/^CF-DEMO-\d{6}$/)).toBeVisible();
     await expect(page.getByText("No photos selected")).toBeVisible();
@@ -111,8 +116,9 @@ test.describe("request flow", () => {
     await page.goto("/service-areas");
     await page.getByRole("textbox", { name: "ZIP code" }).fill("43215");
     await page.getByRole("button", { name: "Check coverage" }).click();
+    // Scope to the live region: the intro copy also mentions the service area.
     await expect(
-      page.getByText(/included in the demonstration service area/),
+      page.getByRole("status").filter({ hasText: /inside our Columbus service area/ }),
     ).toBeVisible();
   });
 });
@@ -128,5 +134,30 @@ test.describe("responsive layout", () => {
 
     await page.setViewportSize({ width: 1280, height: 900 });
     await expect(bar.getByRole("link", { name: "Call Now" })).toBeHidden();
+  });
+});
+
+test.describe("premium conversion", () => {
+  test("homepage problem chooser lists every problem destination", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(
+      page.getByRole("heading", { name: "What's happening?" }),
+    ).toBeVisible();
+
+    const serviceLinks = page.locator('a[href^="/services/"]');
+    expect(await serviceLinks.count()).toBeGreaterThanOrEqual(8);
+    await expect(
+      page.getByRole("link", { name: "See general plumbing" }),
+    ).toHaveAttribute("href", "/services/general-plumbing");
+  });
+
+  test("service-areas hero anchors to the ZIP checker", async ({ page }) => {
+    await page.goto("/service-areas");
+
+    await page.getByRole("link", { name: "Check Coverage" }).click();
+    await expect(page).toHaveURL(/#check-coverage/);
+    await expect(page.getByRole("textbox", { name: "ZIP code" })).toBeVisible();
   });
 });

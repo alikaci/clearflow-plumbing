@@ -3,8 +3,8 @@ import type { GalleryConfig } from "@/types";
 export const gallery = {
   heading: "Project Gallery",
   supportingText:
-    "A look at how completed plumbing work could be presented, using side-by-side before and after cards for common projects.",
-  note: "AI-generated project visuals shown for concept demonstration.",
+    "Side-by-side before and after photos from common residential and commercial plumbing jobs.",
+  note: "Project visuals are AI-generated artwork created for this portfolio concept.",
   previewCount: 3,
   pairs: [
     {
@@ -27,7 +27,7 @@ export const gallery = {
       id: "drain-cleaning",
       category: "Drain cleaning",
       description:
-        "Slow kitchen drain cleared and the sink area cleaned after diagnosis and service.",
+        "Slow kitchen drain cleared and the sink area cleaned after the blockage was assessed and removed.",
       beforeKey: "galleryDrainBefore",
       afterKey: "galleryDrainAfter",
     },

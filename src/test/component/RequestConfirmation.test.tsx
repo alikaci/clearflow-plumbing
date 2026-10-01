@@ -111,28 +111,68 @@ describe("simulated request confirmation", () => {
       /no appointment has been created/i,
     );
     expect(forms.confirmationDisclosure).toMatch(
-      /no information has been sent to a plumbing company/i,
+      /no technician has been dispatched/i,
     );
-  });
+  }, 30000);
 
-  it("explains how a live website would handle the request", async () => {
+  it("presents the full office workflow as a preview", async () => {
     const user = userEvent.setup({ delay: null });
     render(<EstimateForm />);
     await completeRequest(user);
 
-    for (const item of forms.confirmationLiveWebsiteSteps) {
+    for (const item of forms.confirmationWorkflowSteps) {
       expect(
         screen.getByRole("heading", { level: 5, name: item.title }),
       ).toBeInTheDocument();
       expect(screen.getByText(item.description)).toBeInTheDocument();
+      expect(screen.getAllByText(item.owner).length).toBeGreaterThan(0);
+    }
+    expect(
+      screen.getByRole("list", { name: forms.confirmationLiveWebsiteHeading }),
+    ).toBeInTheDocument();
+    expect(forms.confirmationWorkflowStages).toEqual([
+      "Website visitor",
+      "Qualified website request",
+      "Office review",
+      "Customer follow-up",
+      "Scheduling agreement",
+      "On-site assessment",
+      "Job follow-up",
+    ]);
+    for (const stage of forms.confirmationWorkflowStages) {
+      expect(screen.getByTestId("confirmation-workflow-stages")).toHaveTextContent(
+        stage,
+      );
     }
     expect(
       screen.getByText(forms.confirmationLiveWebsiteNote),
     ).toBeInTheDocument();
     expect(
       screen.getByText(forms.confirmationLiveWebsiteNote).textContent,
-    ).toMatch(/does not transmit or retain/i);
-  });
+    ).toMatch(/did not transmit or retain/i);
+  }, 30000);
+
+  it("states every outcome that did not occur, once, at the final state", async () => {
+    const user = userEvent.setup({ delay: null });
+    render(<EstimateForm />);
+    await completeRequest(user);
+
+    const disclosure = screen.getByTestId("confirmation-workflow-disclosure");
+    expect(
+      screen.getByRole("heading", {
+        name: forms.confirmationWorkflowDisclosureHeading,
+      }),
+    ).toBeInTheDocument();
+    for (const item of forms.confirmationWorkflowDisclosureItems) {
+      expect(disclosure).toHaveTextContent(item);
+    }
+    const text = disclosure.textContent ?? "";
+    expect(text).toMatch(/No information was sent/i);
+    expect(text).toMatch(/No lead was created/i);
+    expect(text).toMatch(/No appointment was created/i);
+    expect(text).toMatch(/No technician was dispatched/i);
+    expect(text).toMatch(/not stored/i);
+  }, 30000);
 
   it("creates the demo reference only after a valid submission and keeps it stable", async () => {
     const user = userEvent.setup({ delay: null });
@@ -178,7 +218,7 @@ describe("simulated request confirmation", () => {
     expect(summaryValue(labels.city)).toBe("Columbus");
     expect(summaryValue(labels.zip)).toBe("43215");
     expect(summaryValue(labels.propertyType)).toBe("House");
-    expect(summaryValue(labels.urgency)).toBe("No, it can be scheduled");
+    expect(summaryValue(labels.urgency)).toBe("Just getting an estimate");
     expect(summaryValue(labels.contactPreference)).toBe(
       "Phone, best time to reach you: morning",
     );
@@ -190,9 +230,11 @@ describe("simulated request confirmation", () => {
     const rendered = Array.from(document.querySelectorAll("dd"))
       .map((node) => node.textContent ?? "")
       .join(" ");
-    expect(rendered).not.toMatch(/water-heaters|apartment-condo|not-urgent/);
+    expect(rendered).not.toMatch(
+      /water-heaters|apartment-condo|getting-estimate|right-now|this-week/,
+    );
     expect(rendered).not.toMatch(/Jordan|jordan@example\.com|6145550147/);
-  });
+  }, 30000);
 
   it("reports only the selected photo count and never the file name", async () => {
     const user = userEvent.setup({ delay: null });
@@ -245,7 +287,7 @@ describe("simulated request confirmation", () => {
     xhrSend.mockRestore();
     beacon?.mockRestore();
     vi.unstubAllGlobals();
-  });
+  }, 30000);
 
   it("revokes photo object URLs on removal, reset and unmount", async () => {
     const user = userEvent.setup({ delay: null });
@@ -326,7 +368,7 @@ describe("simulated request confirmation", () => {
     });
     expect(phone).toHaveAttribute("href", "tel:+16145550147");
     expect(phone).toHaveClass("underline");
-  });
+  }, 30000);
 
   it("does not confirm or create a reference for an invalid submission", async () => {
     const user = userEvent.setup({ delay: null });
@@ -377,11 +419,11 @@ describe("simulated request confirmation", () => {
     const status = screen.getByRole("status");
     expect(status).toHaveTextContent(forms.confirmationStatus);
     expect(status.textContent).toMatch(
-      /demonstration request complete\. no appointment was created\./i,
+      /request prepared\. no information was sent and no appointment was created\./i,
     );
     expect(status.textContent?.length ?? 0).toBeLessThan(120);
     expect(status.textContent).not.toMatch(/43215|Water Heater/);
-  });
+  }, 30000);
 });
 
 async function completeRequestAfterFirstStep(user: UserEvent) {

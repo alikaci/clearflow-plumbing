@@ -16,8 +16,11 @@ export const business = {
     href: null,
   },
   hours: {
-    short: "Mon–Sat, 7:00 AM–7:00 PM",
-    full: "Monday–Saturday, 7:00 AM–7:00 PM",
+    short: "Mon-Sat, 7:00 AM-7:00 PM",
+    full: "Monday-Saturday, 7:00 AM-7:00 PM",
+    /** Emergency intake is a separate fact from office hours. */
+    emergency: "24/7",
+    emergencyLabel: "24/7 emergency calls",
   },
   primaryCta: {
     label: "Request a Free Estimate",
@@ -43,7 +46,7 @@ export const business = {
     aiImagery:
       "Visuals may include AI-generated imagery created for this fictional portfolio concept.",
     copyright:
-      "© 2026 ClearFlow Plumbing Co. Concept. Designed and developed by ServiceHarbor Studio.",
+      "(c) 2026 ClearFlow Plumbing Co. Concept. Designed and developed by ServiceHarbor Studio.",
   },
   description: `Professional plumbing-services website concept for ${serviceArea}.`,
   socialLinks: [],

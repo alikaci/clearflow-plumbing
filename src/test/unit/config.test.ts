@@ -332,6 +332,13 @@ describe("site configuration", () => {
     expect(offers.length).toBeGreaterThan(0);
   });
 
+  it("explains on the pricing page that final pricing depends on an assessment", () => {
+    expect(pricing.assessmentNote).toMatch(/depends on the on-site assessment/i);
+    expect(pricing.assessmentNote).toMatch(/no reliable price/i);
+    expect(pricing.assessmentNote).toMatch(/nothing here should be read as a quote/i);
+    expect(pricing.process.steps[2].title).toBe("On-Site Assessment");
+  });
+
   it("exposes every feature flag as a boolean", () => {
     for (const flag of Object.keys(features) as (keyof typeof features)[]) {
       expect(typeof features[flag]).toBe("boolean");
@@ -344,6 +351,66 @@ The active market is wired into a small number of reusable labels. These tests
 pin the exact current US strings so the wiring can never quietly change visible
 copy.
 */
+describe("confirmation workflow preview", () => {
+  it("keeps the required stage order for the office workflow", () => {
+    expect(forms.confirmationWorkflowStages).toEqual([
+      "Website visitor",
+      "Qualified website request",
+      "Office review",
+      "Customer follow-up",
+      "Scheduling agreement",
+      "On-site assessment",
+      "Job follow-up",
+    ]);
+  });
+
+  it("numbers the detailed steps consecutively from one", () => {
+    expect(forms.confirmationWorkflowSteps.map((item) => item.step)).toEqual([
+      1, 2, 3, 4, 5, 6,
+    ]);
+    for (const item of forms.confirmationWorkflowSteps) {
+      expect(item.owner.length).toBeGreaterThan(0);
+      expect(item.description.length).toBeGreaterThan(20);
+    }
+  });
+
+  it("states every non-occurrence required at the final transaction state", () => {
+    const items = forms.confirmationWorkflowDisclosureItems.join(" ").toLowerCase();
+    expect(items).toMatch(/no information was sent/);
+    expect(items).toMatch(/no lead was created/);
+    expect(items).toMatch(/no appointment was created/);
+    expect(items).toMatch(/no technician was dispatched/);
+    expect(items).toMatch(/not stored/);
+  });
+
+  it("never presents a workflow preview as an executed or live system", () => {
+    const previewCopy = [
+      forms.confirmationLiveWebsiteHeading,
+      forms.confirmationLiveWebsiteNote,
+      ...forms.confirmationWorkflowStages,
+      ...forms.confirmationWorkflowSteps.flatMap((item) => [
+        item.title,
+        item.owner,
+        item.description,
+      ]),
+    ]
+      .join(" ")
+      .toLowerCase();
+    for (const forbidden of [
+      "crm",
+      "dashboard",
+      "database",
+      "notification sent",
+      "request submitted to",
+      "we received your request",
+      "technician on the way",
+      "dispatched at",
+    ]) {
+      expect(previewCopy).not.toContain(forbidden);
+    }
+  });
+});
+
 describe("market terminology wiring", () => {
   it("keeps the 28 demonstration ZIP codes unchanged", () => {
     expect(serviceAreas.zips).toHaveLength(28);
@@ -367,6 +434,52 @@ describe("market terminology wiring", () => {
     expect(forms.confirmationSummaryLabels.zip).toBe(getPostalCodeLabel());
     expect(serviceAreas.zipLabel).toBe("ZIP code");
     expect(serviceAreas.zipLabel).toBe(getPostalCodeFieldLabel());
+  });
+
+  it("exposes the four lead-qualification timing options with stable internal values", () => {
+    expect(forms.urgencyOptions).toEqual([
+      { value: "right-now", label: "Right now" },
+      { value: "today", label: "Today" },
+      { value: "this-week", label: "This week" },
+      { value: "getting-estimate", label: "Just getting an estimate" },
+    ]);
+    expect(forms.confirmationSummaryLabels.urgency).toBe("Timing");
+  });
+
+  it("never implies availability, response time or dispatch in the timing copy", () => {
+    const copy = [
+      forms.urgencyLegend,
+      forms.urgencyHelp,
+      ...forms.urgencyOptions.map((option) => option.label),
+    ]
+      .join(" ")
+      .toLowerCase();
+    for (const forbidden of [
+      "available",
+      "availability",
+      "immediately",
+      "instantly",
+      "same-day",
+      "same day",
+      "within the hour",
+      "dispatch",
+      "dispatched",
+      "24/7",
+      "guaranteed",
+      "on the way",
+    ]) {
+      expect(copy).not.toContain(forbidden);
+    }
+  });
+
+  it("covers fire, gas, electrical and severe flooding in the safety guidance", () => {
+    const safety = `${forms.urgencySafetyHeading} ${forms.urgencySafetyBody}`.toLowerCase();
+    expect(safety).toContain("fire");
+    expect(safety).toContain("gas");
+    expect(safety).toContain("electrical");
+    expect(safety).toContain("flooding");
+    expect(safety).toMatch(/local emergency number/i);
+    expect(forms.urgencySafetyLinkLabel).toBe("Emergency plumbing help");
   });
 
   it("keeps the ZIP checker example and help text", () => {

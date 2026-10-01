@@ -17,7 +17,7 @@ export const metadata = buildMetadata("membership");
 
 export default function MembershipPage() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <PageIntro
         eyebrow="Membership"
         heading={membershipName}

@@ -95,16 +95,36 @@ describe("validation schemas", () => {
   it("requires a description of at least ten characters", () => {
     expect(
       estimateStepSchemas[2].safeParse({
-        urgency: "urgent",
+        urgency: "right-now",
         description: "short",
       }).success,
     ).toBe(false);
     expect(
       estimateStepSchemas[2].safeParse({
-        urgency: "urgent",
+        urgency: "right-now",
         description: "The kitchen sink drains very slowly.",
       }).success,
     ).toBe(true);
+  });
+
+  it("accepts every lead-qualification urgency value and rejects retired ones", () => {
+    const description = "The kitchen sink drains very slowly.";
+    for (const urgency of [
+      "right-now",
+      "today",
+      "this-week",
+      "getting-estimate",
+    ]) {
+      expect(
+        estimateStepSchemas[2].safeParse({ urgency, description }).success,
+      ).toBe(true);
+    }
+    for (const retired of ["urgent", "not-urgent", "asap", ""]) {
+      expect(
+        estimateStepSchemas[2].safeParse({ urgency: retired, description })
+          .success,
+      ).toBe(false);
+    }
   });
 
   it("requires valid contact details", () => {

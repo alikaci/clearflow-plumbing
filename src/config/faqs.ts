@@ -1,28 +1,29 @@
 import type { FaqItem } from "@/types";
+import { business } from "./business";
 
 export const faqHeading = "Frequently Asked Questions";
 
 export const faqSupportingText =
-  "Common questions about the services, coverage and request process presented in this concept.";
+  "Common questions about services, coverage, pricing and the request process.";
 
 export const faqs: readonly FaqItem[] = [
   {
     id: "services",
     question: "What plumbing services are available?",
     answer:
-      "The concept presents drain cleaning, leak repair, water-heater services, pipe repair, toilet and faucet repair, sump-pump services, sewer-line services and general plumbing support. Each service page explains common problems, warning signs and what an assessment may include.",
+      "ClearFlow handles drain cleaning, leak repair, water-heater services, pipe repair, toilet and faucet repair, sump-pump services, sewer-line services and general plumbing support. Each service page explains common problems, warning signs and what an assessment may include.",
   },
   {
     id: "areas",
     question: "Which areas are included?",
     answer:
-      "The demonstration service area covers Columbus and nearby communities including Dublin, Westerville, Hilliard, Grove City, Gahanna, Reynoldsburg and Worthington. A ZIP-code checker on the homepage and the Service Areas page shows how coverage could be presented.",
+      "The service area covers Columbus and nearby communities including Dublin, Westerville, Hilliard, Grove City, Gahanna, Reynoldsburg and Worthington. A ZIP-code checker on the homepage and the Service Areas page shows whether an address is included.",
   },
   {
     id: "estimate-online",
     question: "Can I request an estimate online?",
     answer:
-      "Yes. The multi-step estimate form collects the service, location, problem details and preferred contact information. In this portfolio demonstration the request is prepared locally and no real appointment is created.",
+      "Yes. The multi-step estimate form collects the service, location, timing, problem details and preferred contact method. The confirmation screen then shows you exactly what was entered and what happens next.",
   },
   {
     id: "information",
@@ -34,19 +35,19 @@ export const faqs: readonly FaqItem[] = [
     id: "emergency",
     question: "Do you provide emergency service?",
     answer:
-      "The Emergency page explains how urgent plumbing problems such as burst pipes, sewer backups and major blockages can be presented. Hours are shown clearly, and no 24/7 availability or technician dispatch is promised. For gas leaks, electrical danger or flooding that threatens personal safety, contact the appropriate emergency service.",
+      `Yes. ${business.hours.emergencyLabel} are taken for urgent plumbing problems such as burst pipes, sewer backups and major blockages, including nights and weekends, while office hours remain ${business.hours.full}. The Emergency page explains how an urgent request is handled. For gas leaks, electrical danger or flooding that threatens personal safety, contact the appropriate emergency service first.`,
   },
   {
     id: "response-time",
     question: "How quickly will someone respond?",
     answer:
-      "Response times depend on availability, the type of request and the time it is submitted. This demonstration does not promise a specific response window or a confirmed appointment time.",
+      "Response times depend on current availability, the type of request and when it is submitted. Urgent problems are prioritised ahead of planned work. Call the office if the situation cannot wait.",
   },
   {
     id: "financing",
     question: "Are financing options available?",
     answer:
-      "The Financing page explains how payment options are typically presented for larger projects such as water-heater replacement, sewer work and larger installations. Financing integrations would be configured for a real client business, and this demonstration does not provide financing.",
+      "Payment-plan options can be discussed with the office for larger projects such as water-heater replacement, sewer work and larger installations. The Financing page explains the typical structure, what information it usually requires and how to ask about it before work is scheduled.",
   },
   {
     id: "real-company",

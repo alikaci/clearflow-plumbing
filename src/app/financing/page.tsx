@@ -18,7 +18,7 @@ export const metadata = buildMetadata("financing");
 
 export default function FinancingPage() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <PageIntro
         eyebrow="Financing"
         heading="Financing Information"

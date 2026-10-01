@@ -10,7 +10,9 @@ export const pricing = {
   eyebrow: "PRICING PROCESS",
   heading: "Clear Estimates Before Work Begins",
   intro:
-    "A professional plumbing company should explain the scope of work and receive approval before starting. This concept demonstrates how that process could be presented clearly online.",
+    "A good plumbing company explains the scope of work and gets your approval before starting. Here is how that process works, and what it depends on.",
+  assessmentNote:
+    "Final pricing always depends on the on-site assessment. Until a technician has inspected the problem, no reliable price can be given, and nothing here should be read as a quote.",
   disclosure:
     "ClearFlow Plumbing Co. is fictional. No real pricing, estimates or plumbing services are provided through this website.",
 
@@ -19,7 +21,7 @@ export const pricing = {
     steps: [
       {
         step: 1,
-        title: "Tell Us What’s Happening",
+ title: "Tell Us What's Happening",
         description:
           "Choose the closest service and describe the problem, including when it started and what you have observed.",
       },
@@ -27,30 +29,30 @@ export const pricing = {
         step: 2,
         title: "Initial Review",
         description:
-          "The business reviews the request and determines whether an appointment, additional information or another next step is appropriate.",
+          "The office reviews the request and decides whether an appointment, more information or a different next step is the right move.",
       },
       {
         step: 3,
         title: "On-Site Assessment",
         description:
-          "A qualified technician would inspect the affected plumbing and confirm the work that may be required.",
+          "A qualified technician inspects the affected plumbing, identifies the cause and confirms the work that is actually required.",
       },
       {
         step: 4,
         title: "Clear Estimate",
         description:
-          "The customer would receive an explanation of the proposed work and the applicable estimate before work begins.",
+          "You receive a written explanation of the proposed work, the parts involved and the estimate that applies.",
       },
       {
         step: 5,
         title: "Customer Approval",
         description:
-          "No work should begin until the customer understands the proposed scope and approves it.",
+          "Nothing is started until you understand the proposed scope and approve it.",
       },
     ],
   },
   processNote:
-    "If the scope changes after work begins, the updated work and cost should be explained and approved before proceeding.",
+    "If the scope changes after work begins, the updated work and cost are explained and approved before anything else proceeds.",
 
   costFactorsHeading: "What Can Affect the Cost?",
   costFactors: [
@@ -104,11 +106,11 @@ export const pricing = {
     "Who should the customer contact with follow-up questions?",
   ],
   questionsNote:
-    "Policies vary by company and location. Customers should confirm the applicable terms before approving work.",
+    "Policies vary by company and location. Confirm the applicable terms before approving work.",
 
   ctaHeading: "Ready to Describe the Problem?",
   ctaText:
-    "Share the details through the demonstration request flow and see how a professional service request could be organized.",
+    "Share the details through the request form and the office can review the situation properly before anything is scheduled.",
   ctaPrimaryLabel: "Request a Service",
   // The canonical request destination, resolved from the same hash target the
   // homepage and service pages use.

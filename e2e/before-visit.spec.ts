@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 import { services } from "../src/config/services";
 
 const requiredSentence =
-  "If there is an immediate threat involving safety, fire, gas, electricity or severe flooding, contact the appropriate emergency service or utility provider.";
+  "If there is an immediate threat involving fire, gas, electricity or severe flooding, contact the appropriate emergency service or utility provider first.";
 
 const emergencyRouteGuidance = {
   "drain-cleaning": [

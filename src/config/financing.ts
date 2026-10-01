@@ -1,10 +1,10 @@
 import type { FinancingUseCase } from "@/types";
 
 export const financingNotice =
-  "Financing integrations are available for eligible client businesses. This portfolio demonstration does not provide financing.";
+  "Financing is presented for information only. No application is submitted, no credit check is run and no payment plan is arranged through this website.";
 
 export const financingIntroduction =
-  "Larger plumbing projects are often easier to plan when payment options are clear from the start. This page shows how financing information would be introduced for a real client business.";
+  "Larger plumbing projects are often easier to plan when payment options are clear from the start. Ask the office about plan structures, typical terms and what is usually required to get started.";
 
 export const financingUseCases: readonly FinancingUseCase[] = [
   {
@@ -25,4 +25,4 @@ export const financingUseCases: readonly FinancingUseCase[] = [
 ];
 
 export const financingDisclaimer =
-  "This demonstration never collects Social Security numbers, income details, bank information, payment-card numbers, dates of birth or employment information, and it does not display real lender branding.";
+  "No application is started on this page. Social Security numbers, income details, bank information, payment-card numbers, dates of birth and employment records are never collected here, and no real lender branding is displayed.";

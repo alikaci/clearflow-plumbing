@@ -14,7 +14,7 @@ export const metadata = buildMetadata("about");
 
 export default function AboutPage() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <PageIntro
         eyebrow="About"
         heading="About ClearFlow Plumbing Co."

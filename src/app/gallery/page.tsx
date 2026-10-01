@@ -10,7 +10,7 @@ export const metadata = buildMetadata("gallery");
 
 export default function GalleryPage() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <PageIntro
         eyebrow="Gallery"
         heading={gallery.heading}

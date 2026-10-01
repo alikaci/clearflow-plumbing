@@ -8,7 +8,12 @@ export type IconName =
   | "star"
   | "arrow-right"
   | "chevron-down"
-  | "chat";
+  | "chat"
+  | "shield"
+  | "badge"
+  | "receipt"
+  | "handshake"
+  | "card";
 
 const filledIcons: ReadonlySet<IconName> = new Set<IconName>(["star"]);
 
@@ -97,6 +102,38 @@ const paths: Record<IconName, ReactNode> = {
     <>
       <path d="M4 5h16v11H9l-5 4V5Z" />
       <path d="M8.5 9.5h7M8.5 12.5h4" />
+    </>
+  ),
+  shield: (
+    <>
+      <path d="M12 3 5 5.8v5.4c0 4.3 2.9 8.2 7 9.4 4.1-1.2 7-5.1 7-9.4V5.8L12 3Z" />
+      <path d="m9 11.8 2.2 2.2L15.5 9.7" />
+    </>
+  ),
+  badge: (
+    <>
+      <circle cx="12" cy="9.5" r="5" />
+      <path d="m8.8 13.6-1.3 6.9 4.5-2.4 4.5 2.4-1.3-6.9" />
+      <path d="m12 7.3.8 1.7 1.9.3-1.4 1.3.3 1.9-1.6-.9-1.6.9.3-1.9L9.3 9.3l1.9-.3.8-1.7Z" />
+    </>
+  ),
+  receipt: (
+    <>
+      <path d="M6 3h12v18l-3-1.6L12 21l-3-1.6L6 21V3Z" />
+      <path d="M9 8h6M9 12h6" />
+    </>
+  ),
+  handshake: (
+    <>
+      <path d="m3 10 3.5-3.5L10 9l2-1.5L16 10l2.5 2.5" />
+      <path d="m10.5 12.5 2 2M13 11l2.5 2.5M16 10.5 20 13l-3.5 4.5" />
+      <path d="M6 6.5 3 10l3.5 3.5L8 12" />
+    </>
+  ),
+  card: (
+    <>
+      <rect x="3" y="6" width="18" height="12" rx="2.5" />
+      <path d="M3 10h18M6.5 14.5h3" />
     </>
   ),
 };

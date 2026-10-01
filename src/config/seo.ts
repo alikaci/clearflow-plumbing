@@ -39,7 +39,7 @@ export const seo = {
       path: "/service-areas",
       title: "Service Areas",
       description:
-        "Check the demonstration service area for Columbus and nearby communities including Dublin, Westerville, Hilliard, Grove City, Gahanna, Reynoldsburg and Worthington.",
+        "Check our Columbus service area, including Dublin, Westerville, Hilliard, Grove City, Gahanna, Reynoldsburg and Worthington.",
     },
     about: {
       path: "/about",
@@ -63,19 +63,19 @@ export const seo = {
       path: "/membership",
       title: "ClearFlow Care Plan",
       description:
-        "An optional membership concept for homeowners, shown for demonstration purposes only.",
+        "An optional service plan for homeowners who want scheduled maintenance between jobs.",
     },
     financing: {
       path: "/financing",
       title: "Financing Information",
       description:
-        "How financing information would be presented for larger plumbing projects. This demonstration does not provide financing.",
+        "Payment-plan options for larger plumbing projects, and what to ask before work is scheduled.",
     },
     pricing: {
       path: "/pricing",
       title: "How Pricing Works",
       description:
-        "See how a professional plumbing estimate process could be explained clearly before work begins in this fictional portfolio concept.",
+        "How a professional plumbing estimate process is explained clearly before any work begins.",
     },
     book: {
       path: "/book",

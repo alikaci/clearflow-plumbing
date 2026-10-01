@@ -19,13 +19,24 @@ export default function PricingPage() {
   const requestHref = resolveHashHref(pricing.ctaPrimaryHref, "/pricing");
 
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <PageIntro
         eyebrow={pricing.eyebrow}
         heading={pricing.heading}
         intro={pricing.intro}
         note={pricing.disclosure}
       />
+
+      <Section labelledBy="pricing-assessment-note">
+        <Container>
+          <p
+            id="pricing-assessment-note"
+            className="max-w-3xl rounded-lg border border-border bg-surface-muted p-4 text-sm text-text"
+          >
+            {pricing.assessmentNote}
+          </p>
+        </Container>
+      </Section>
 
       <ProcessSteps
         heading={pricing.process.heading}

@@ -18,7 +18,7 @@ test.describe("pricing page", () => {
     ).toBeVisible();
 
     for (const title of [
-      "Tell Us What’s Happening",
+ "Tell Us What's Happening",
       "Initial Review",
       "On-Site Assessment",
       "Clear Estimate",

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
-import { PageIntro } from "@/components/sections/PageIntro";
+import { ServiceAreasHero } from "@/components/sections/ServiceAreasHero";
 import { ZipChecker } from "@/components/forms/ZipChecker";
 import { Reveal } from "@/components/motion/Reveal";
 
@@ -12,14 +12,10 @@ export const metadata = buildMetadata("serviceAreas");
 
 export default function ServiceAreasPage() {
   return (
-    <main id="main-content">
-      <PageIntro
-        eyebrow="Coverage"
-        heading={serviceAreas.heading}
-        intro={serviceAreas.supportingText}
-      />
+    <main id="main-content" tabIndex={-1}>
+      <ServiceAreasHero />
 
-      <Section labelledBy="areas-checker-heading">
+      <Section id="check-coverage" labelledBy="areas-checker-heading">
         <Container size="narrow">
           <Reveal>
             <h2 id="areas-checker-heading" className="text-2xl md:text-3xl">
@@ -39,7 +35,7 @@ export default function ServiceAreasPage() {
         <Container>
           <Reveal>
             <h2 id="areas-list-heading" className="text-2xl md:text-3xl">
-              Communities in the Demonstration Service Area
+              Communities in the Service Area
             </h2>
           </Reveal>
           <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

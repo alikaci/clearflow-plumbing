@@ -101,7 +101,8 @@ describe("Assistant", () => {
     });
     await user.click(launcher);
 
-    const dialog = screen.getByRole("dialog", { name: assistant.title });
+    const dialog = screen.getByRole("dialog", { name: assistant.dialogLabel });
+    expect(assistant.dialogLabel).toBe("Website assistant");
     expect(launcher).toHaveAttribute("aria-expanded", "true");
     expect(dialog).toHaveAttribute("id", launcher.getAttribute("aria-controls"));
 

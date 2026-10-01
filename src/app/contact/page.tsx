@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { business } from "@/config/business";
 import { buildMetadata } from "@/lib/metadata";
 import { Card } from "@/components/ui/Card";
@@ -11,7 +12,7 @@ export const metadata = buildMetadata("contact");
 
 export default function ContactPage() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <PageIntro
         eyebrow="Contact"
         heading="Contact ClearFlow Plumbing Co."
@@ -42,8 +43,14 @@ export default function ContactPage() {
               <Icon name="clock" className="h-6 w-6 text-blue" />
               <h3 className="mt-3 text-lg">Hours</h3>
               <p className="mt-2 text-sm text-muted">
-                {business.hours.full}. No 24/7 availability is offered in this
-                demonstration.
+                Office hours are {business.hours.full}.{" "}
+                <Link
+                  href="/emergency"
+                  className="inline-flex min-h-6 items-center underline underline-offset-2 hover:no-underline"
+                >
+                  {business.hours.emergencyLabel}
+                </Link>{" "}
+                are taken for emergencies, including nights and weekends.
               </p>
             </Card>
 

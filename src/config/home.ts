@@ -90,9 +90,9 @@ export const home = {
     secondaryHref: "tel:+16145550147",
   },
   optionalFeatures: {
-    heading: "More Ways the Concept Supports Customers",
+    heading: "More Ways ClearFlow Supports Customers",
     supportingText:
-      "Every optional feature below is controlled by a configuration flag. For a real client, a feature can be switched off and its page, navigation links and homepage tile all disappear together.",
+      "Everything a homeowner needs before deciding, from project photos to seasonal offers and service agreements.",
     tiles: [
       {
         flag: "gallery",

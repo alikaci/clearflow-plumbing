@@ -36,10 +36,25 @@ export const forms = {
     { value: "afternoon", label: "Afternoon" },
     { value: "evening", label: "Evening" },
   ],
+  /**
+   * Lead-qualification timing. Values are stable internal identifiers; labels
+   * are the customer-facing wording. Nothing here promises availability,
+   * response time or dispatch.
+   */
   urgencyOptions: [
-    { value: "urgent", label: "Yes, this is urgent" },
-    { value: "not-urgent", label: "No, it can be scheduled" },
+    { value: "right-now", label: "Right now" },
+    { value: "today", label: "Today" },
+    { value: "this-week", label: "This week" },
+    { value: "getting-estimate", label: "Just getting an estimate" },
   ],
+  urgencyLegend: "When does this need attention?",
+  urgencyHelp:
+    "Your answer helps us plan the work. It does not confirm an appointment, a response time or a technician.",
+  urgencySafetyHeading: "Some situations are emergencies, not service requests",
+  urgencySafetyBody:
+    "Fire, a suspected gas leak, electrical danger, or severe flooding that threatens personal safety needs emergency services rather than a plumbing appointment. If the building is unsafe, move to safety and call your local emergency number first. Contact us once everyone is safe.",
+  urgencySafetyCallLabel: "Call the office",
+  urgencySafetyLinkLabel: "Emergency plumbing help",
   timeRanges: [
     { value: "8-10", label: "8:00 AM - 10:00 AM" },
     { value: "10-12", label: "10:00 AM - 12:00 PM" },
@@ -58,62 +73,104 @@ export const forms = {
   photoRemoveLabel: "Remove photo",
   photoMaxBytes: 5 * 1024 * 1024,
   honeypotFieldName: "companyWebsite",
-  confirmationEyebrow: "REQUEST RECEIVED",
-  confirmationHeading: "Your Demonstration Request Is Complete",
-  confirmationReferenceLabel: "Demo reference",
+  /*
+  The confirmation is the single place in the conversion flow that must state
+  what did not happen. Earlier steps stay free of repeated warnings because the
+  global portfolio disclosure already carries that context.
+  */
+  confirmationEyebrow: "REQUEST PREPARED",
+  confirmationHeading: "Your Request Summary Is Ready",
+  confirmationReferenceLabel: "Local reference",
   confirmationDisclosure:
-    "This is a portfolio demonstration. No appointment has been created and no information has been sent to a plumbing company.",
+    "This is a portfolio demonstration. No information has been sent to a plumbing company, no appointment has been created and no technician has been dispatched.",
   confirmationSupport:
-    "You can review the simulated request below or start a new demonstration.",
+    "Review the request you entered below, or start a new one. Nothing on this screen has been transmitted.",
   confirmationStatus:
-    "Demonstration request complete. No appointment was created.",
+    "Request prepared. No information was sent and no appointment was created.",
   confirmationSummaryHeading: "Request Summary",
   confirmationSummaryLabels: {
     service: "Service",
     city: "City",
     zip: getPostalCodeLabel(),
     propertyType: "Property type",
-    urgency: "Urgency",
+    urgency: "Timing",
     contactPreference: "Contact preference",
     description: "Problem description",
     photos: "Selected photos",
   },
   confirmationNotProvided: "Not provided",
   confirmationNoPhotos: "No photos selected",
-  confirmationLiveWebsiteHeading: "What Happens Next in a Live Website?",
+  /*
+  Workflow preview.
+
+  This is a presentation of the operating sequence a plumbing office follows.
+  It is deliberately not a CRM, dashboard or notification system: every step
+  below is static config, and the visible status panel states plainly that no
+  step has been entered and nothing was transmitted.
+  */
+  confirmationLiveWebsiteHeading: "How a Request Moves Through the Office",
   confirmationLiveWebsiteNote:
-    "This demonstration stops at the confirmation screen and does not transmit or retain the submitted information.",
-  confirmationLiveWebsiteSteps: [
+    "This is the sequence the office follows with a request. This demonstration stopped at the summary screen and did not transmit or retain the submitted information.",
+  confirmationWorkflowStages: [
+    "Website visitor",
+    "Qualified website request",
+    "Office review",
+    "Customer follow-up",
+    "Scheduling agreement",
+    "On-site assessment",
+    "Job follow-up",
+  ] as const,
+  confirmationWorkflowSteps: [
     {
       step: 1,
-      title: "Request Review",
+      title: "Qualified Website Request",
+      owner: "Website",
       description:
-        "The business reviews the submitted details and determines the appropriate next step.",
+        "The request you entered is structured into a qualified record: service, location, property type, timing and description.",
     },
     {
       step: 2,
-      title: "Availability Check",
+      title: "Office Review",
+      owner: "Office",
       description:
-        "The business checks its actual schedule and service-area availability.",
+        "Reception reviews the request against the service area, current workload and the timing you selected, then decides the priority order.",
     },
     {
       step: 3,
-      title: "Customer Contact",
+      title: "Customer Follow-Up",
+      owner: "Office",
       description:
-        "The customer may receive a call, text or email using the contact method they provided.",
+        "The office contacts you using the method and time window you chose, confirms the problem and explains what an assessment would involve.",
     },
     {
       step: 4,
-      title: "Appointment Agreement",
+      title: "Scheduling Agreement",
+      owner: "Customer",
       description:
-        "The customer and business agree on an available appointment window.",
+        "You and the office agree an arrival window. The final price is confirmed after the on-site assessment, not before.",
     },
     {
       step: 5,
       title: "On-Site Assessment",
+      owner: "Technician",
       description:
-        "A qualified technician assesses the plumbing problem before work begins.",
+        "A technician assesses the plumbing, explains the cause and quotes the work before anything is carried out.",
     },
+    {
+      step: 6,
+      title: "Job Follow-Up",
+      owner: "Office",
+      description:
+        "After the work, the office reviews the invoice, warranty coverage and any further recommendations.",
+    },
+  ],
+  confirmationWorkflowDisclosureHeading: "What has not happened",
+  confirmationWorkflowDisclosureItems: [
+    "No information was sent to ClearFlow Plumbing or to any other plumbing company.",
+    "No lead was created in a customer relationship system.",
+    "No appointment was created or added to a calendar.",
+    "No technician was dispatched or assigned to a job.",
+    "The details you entered were not stored and have been discarded with this page.",
   ],
   confirmationPrimaryLabel: "Start a New Request",
   confirmationSecondaryLabel: "Return Home",

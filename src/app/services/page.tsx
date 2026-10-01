@@ -15,7 +15,7 @@ export const metadata = buildMetadata("services");
 
 export default function ServicesPage() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <PageIntro
         eyebrow="Services"
         heading="Plumbing Services for Homes and Small Commercial Properties"

@@ -11,7 +11,7 @@ export const metadata = buildMetadata("offers");
 
 export default function OffersPage() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <PageIntro
         eyebrow="Offers"
         heading="Current Offers"

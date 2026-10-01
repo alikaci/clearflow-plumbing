@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
+import Link from "next/link";
 import { business } from "@/config/business";
 import { features } from "@/config/features";
 import { forms } from "@/config/forms";
@@ -26,7 +27,7 @@ const initialValues: EstimateFormValues = {
   city: "",
   zip: "",
   propertyType: "house",
-  urgency: "not-urgent",
+  urgency: "getting-estimate",
   description: "",
   fullName: "",
   email: "",
@@ -316,33 +317,81 @@ export function EstimateForm() {
             <h4 className="text-lg text-navy">
               {forms.confirmationLiveWebsiteHeading}
             </h4>
-            <ol className="mt-4 grid gap-5 sm:grid-cols-2">
-              {forms.confirmationLiveWebsiteSteps.map((item) => (
-                <li key={item.step}>
-                  <div className="flex items-center gap-4">
+            <p className="mt-2 text-sm text-muted">
+              {forms.confirmationLiveWebsiteNote}
+            </p>
+
+            <ol
+              data-testid="confirmation-workflow-stages"
+              aria-label={forms.confirmationLiveWebsiteHeading}
+              className="mt-5 flex flex-wrap gap-x-2 gap-y-2"
+            >
+              {forms.confirmationWorkflowStages.map((stage, index) => (
+                <li key={stage} className="flex items-center gap-2">
+                  <span className="inline-flex items-center rounded-full border border-border bg-surface-muted px-3 py-1 text-xs font-medium text-navy">
+                    {stage}
+                  </span>
+                  {index < forms.confirmationWorkflowStages.length - 1 ? (
+                    <span aria-hidden="true" className="text-border">
+                      &rarr;
+                    </span>
+                  ) : null}
+                </li>
+              ))}
+            </ol>
+
+            <ol className="mt-6 grid gap-5 sm:grid-cols-2">
+              {forms.confirmationWorkflowSteps.map((item) => (
+                <li key={item.step} className="rounded-lg border border-border bg-white p-4">
+                  <div className="flex items-center gap-3">
                     <span
                       aria-hidden="true"
-                      className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-navy text-lg font-bold text-white"
+                      className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy text-base font-bold text-white"
                     >
                       {item.step}
                     </span>
-                    <span
-                      aria-hidden="true"
-                      className="hidden h-px flex-1 bg-navy/15 sm:block"
-                    />
+                    <div>
+                      <h5 className="font-semibold text-navy">
+                        {item.title}
+                      </h5>
+                      <p className="text-xs font-medium uppercase tracking-[0.12em] text-muted">
+                        {item.owner}
+                      </p>
+                    </div>
                   </div>
-                  <h5 className="mt-3 font-semibold text-navy">
-                    {item.title}
-                  </h5>
-                  <p className="mt-2 text-sm text-muted">
+                  <p className="mt-3 text-sm text-muted">
                     {item.description}
                   </p>
                 </li>
               ))}
             </ol>
-            <p className="mt-5 text-sm text-muted">
-              {forms.confirmationLiveWebsiteNote}
-            </p>
+
+            <div
+              data-testid="confirmation-workflow-disclosure"
+              className="mt-6 rounded-lg border border-error/40 bg-surface-muted p-4"
+            >
+              <h5 className="flex items-center gap-2 text-sm font-semibold text-navy">
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  className="h-5 w-5 shrink-0 text-error"
+                  fill="currentColor"
+                >
+                  <path d="M12 2 1 21h22L12 2Zm0 6 7.5 12h-15L12 8Zm-1 4v4h2v-4h-2Zm0 5v2h2v-2h-2Z" />
+                </svg>
+                {forms.confirmationWorkflowDisclosureHeading}
+              </h5>
+              <ul className="mt-3 grid gap-2">
+                {forms.confirmationWorkflowDisclosureItems.map((item) => (
+                  <li key={item} className="flex gap-2 text-sm text-text">
+                    <span aria-hidden="true" className="mt-1.5 text-error">
+                      &times;
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -465,14 +514,48 @@ export function EstimateForm() {
             <RadioGroupField
               id="estimate-urgency"
               name="urgency"
-              legend="Is this urgent?"
+              legend={forms.urgencyLegend}
               value={values.urgency}
               onChange={(value) =>
                 update("urgency", value as EstimateFormValues["urgency"])
               }
               options={forms.urgencyOptions}
+              help={forms.urgencyHelp}
               error={errors.urgency}
             />
+            <div
+              data-testid="estimate-urgency-safety"
+              className="rounded-lg border-2 border-error/40 bg-surface-muted p-4"
+            >
+              <h3 className="flex items-center gap-2 text-sm font-semibold text-navy">
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  className="h-5 w-5 shrink-0 text-error"
+                  fill="currentColor"
+                >
+                  <path d="M12 2 1 21h22L12 2Zm0 6 7.5 12h-15L12 8Zm-1 4v4h2v-4h-2Zm0 5v2h2v-2h-2Z" />
+                </svg>
+                {forms.urgencySafetyHeading}
+              </h3>
+              <p className="mt-2 text-sm text-text">
+                {forms.urgencySafetyBody}
+              </p>
+              <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+                <a
+                  href={business.phoneUri}
+                  className="inline-flex min-h-11 items-center font-semibold text-blue underline underline-offset-4"
+                >
+                  {forms.urgencySafetyCallLabel}: {business.phoneDisplay}
+                </a>
+                <Link
+                  href="/emergency"
+                  className="inline-flex min-h-11 items-center font-semibold text-blue underline underline-offset-4"
+                >
+                  {forms.urgencySafetyLinkLabel}
+                </Link>
+              </div>
+            </div>
             <TextAreaField
               id="estimate-description"
               name="description"
@@ -578,7 +661,7 @@ export function EstimateForm() {
                 </dd>
               </div>
               <div>
-                <dt className="text-sm text-muted">Urgency</dt>
+                <dt className="text-sm text-muted">Timing</dt>
                 <dd className="font-medium text-text">
                   {labelFor(forms.urgencyOptions, values.urgency)}
                 </dd>

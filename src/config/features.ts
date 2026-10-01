@@ -10,6 +10,7 @@ export const features: FeatureFlags = {
   chatAssistant: true,
   costRangeTool: true,
   reputationSection: true,
+  trustSignals: true,
   emergencyPath: true,
   photoUploadPreview: true,
 };

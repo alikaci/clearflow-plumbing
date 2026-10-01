@@ -6,7 +6,7 @@ import { Section } from "@/components/ui/Section";
 
 export default function NotFound() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <Section labelledBy="not-found-heading">
         <Container size="narrow" className="text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-navy">

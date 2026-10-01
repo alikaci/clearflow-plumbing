@@ -24,7 +24,7 @@ describe("GalleryGrid", () => {
 
   it("keeps the imagery disclosure copy unchanged", () => {
     expect(gallery.note).toBe(
-      "AI-generated project visuals shown for concept demonstration.",
+      "Project visuals are AI-generated artwork created for this portfolio concept.",
     );
   });
 });

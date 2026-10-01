@@ -47,7 +47,7 @@ const sections = [
 
 export default function PrivacyPage() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <PageIntro
         eyebrow="Privacy"
         heading="Privacy Notes"

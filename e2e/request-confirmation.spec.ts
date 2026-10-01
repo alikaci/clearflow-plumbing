@@ -32,7 +32,7 @@ async function completeRequest(page: Page) {
   await page.getByLabel(/portfolio demonstration/).check();
   await page.getByRole("button", { name: "Submit request" }).click();
   await expect(
-    page.getByRole("heading", { name: "Your Demonstration Request Is Complete" }),
+    page.getByRole("heading", { name: confirmationHeading }),
   ).toBeVisible({ timeout: 5000 });
 }
 
@@ -45,6 +45,8 @@ function readStorage(page: Page) {
     hash: window.location.hash,
   }));
 }
+
+const confirmationHeading = "Your Request Summary Is Ready";
 
 test.describe("request confirmation", () => {
   test("keeps the submitted request out of storage, cookies and the URL", async ({
@@ -93,16 +95,14 @@ test.describe("request confirmation", () => {
 
     await page.reload();
     await expect(
-      page.getByRole("heading", { name: "Your Demonstration Request Is Complete" }),
+      page.getByRole("heading", { name: confirmationHeading }),
     ).toHaveCount(0);
     await expect(page.getByText(/^CF-DEMO-\d{6}$/)).toHaveCount(0);
 
     const freshTab = await context.newPage();
     await freshTab.goto("/");
     await expect(
-      freshTab.getByRole("heading", {
-        name: "Your Demonstration Request Is Complete",
-      }),
+      freshTab.getByRole("heading", { name: confirmationHeading }),
     ).toHaveCount(0);
     await expect(freshTab.getByText(/^CF-DEMO-\d{6}$/)).toHaveCount(0);
     await freshTab.close();
@@ -125,9 +125,7 @@ test.describe("request confirmation", () => {
     await expect(page.getByText("Step 1 of 5", { exact: true })).toBeVisible();
     await expect(page.getByLabel(/Which service do you need/)).toHaveValue("");
     await expect(
-      page.getByRole("heading", {
-        name: "Your Demonstration Request Is Complete",
-      }),
+      page.getByRole("heading", { name: confirmationHeading }),
     ).toHaveCount(0);
 
     const focusedLabel = await page.evaluate(() => {

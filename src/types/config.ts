@@ -4,8 +4,17 @@ export type BusinessEmail = {
 };
 
 export type BusinessHours = {
+  /** Regular office hours, when the office itself is open. */
   short: string;
   full: string;
+  /**
+   * Emergency intake is a separate fact from office hours. The office can be
+   * closed while emergency calls are still taken, so the two must never be
+   * conflated into a single "open 24/7" string.
+   */
+  emergency: string;
+  /** Ready-to-render label, e.g. "24/7 emergency calls". */
+  emergencyLabel: string;
 };
 
 export type BusinessDisclosure = {
@@ -34,6 +43,7 @@ export type FeatureFlags = {
   chatAssistant: boolean;
   costRangeTool: boolean;
   reputationSection: boolean;
+  trustSignals: boolean;
   emergencyPath: boolean;
   photoUploadPreview: boolean;
 };
@@ -194,6 +204,12 @@ export type ContentIconId =
   | "camera"
   | "phone";
 
+/**
+ * Icons available to trust signals. Kept separate from ContentIconId so trust
+ * content can only draw from original ClearFlow glyphs.
+ */
+export type TrustIconId = "shield" | "badge" | "receipt" | "handshake" | "card" | "clock";
+
 export type ImageKey =
   | "heroTechnician"
   | "serviceDrain"
@@ -283,12 +299,6 @@ export type ServiceDetail = ServiceSummary & {
   beforeVisit?: BeforeVisitConfig;
 };
 
-export type Review = {
-  name: string;
-  location: string;
-  quote: string;
-};
-
 export type ReviewsConfig = {
   heading: string;
   supportingText: string;
@@ -296,9 +306,35 @@ export type ReviewsConfig = {
   ratingLabel: string;
   reviewCount: string;
   highlights: readonly string[];
+  /** Single section-level clarification. Individual cards carry no labels. */
   note: string;
-  presentationNote: string;
   reviews: readonly Review[];
+};
+
+export type Review = {
+  name: string;
+  /** City or neighbourhood, presented as review metadata. */
+  location: string;
+  /** Service performed, presented as review metadata. */
+  service: string;
+  /** ISO date rendered in the active market format. */
+  date: string;
+  /** Whole-star rating out of five. */
+  rating: number;
+  quote: string;
+};
+
+export type TrustSignal = {
+  id: string;
+  icon: TrustIconId;
+  title: string;
+  description: string;
+};
+
+export type TrustConfig = {
+  heading: string;
+  supportingText: string;
+  signals: readonly TrustSignal[];
 };
 
 export type FaqItem = {
@@ -329,9 +365,20 @@ export type ServiceArea = {
   description: string;
 };
 
+export type ServiceAreaHeroConfig = {
+  eyebrow: string;
+  coveragePoints: readonly string[];
+  badge: string;
+  primaryCtaLabel: string;
+  primaryCtaHref: string;
+  secondaryCtaLabel: string;
+  secondaryCtaHref: string;
+};
+
 export type ServiceAreaConfig = {
   heading: string;
   supportingText: string;
+  hero: ServiceAreaHeroConfig;
   areas: readonly ServiceArea[];
   zips: readonly string[];
   checkerTitle: string;
@@ -362,19 +409,99 @@ export type GalleryConfig = {
   pairs: readonly GalleryPair[];
 };
 
-export type AssistantChoice = {
-  id: string;
+/*
+Guided assistant (Premium Batch Part 2).
+
+The assistant is a deterministic, local keyword/phrase router. It is not an AI
+assistant: there is no model, no API call, no backend and no persistence. Every
+response is a configured string (or a configured string with a business fact
+substituted), and the intent matcher in src/lib/assistant-intents.ts only ever
+routes typed text to one of these definitions.
+*/
+
+/** The role a message plays in the conversation. */
+export type AssistantMessageRole = "user" | "assistant";
+
+/**
+ * Visual treatment for a message. "safety" is the only variant that adds an
+ * accent, and it is reserved for the high-risk safety intent so an ordinary
+ * plumbing answer never looks like an emergency.
+ */
+export type AssistantMessageVariant = "standard" | "safety";
+
+/** A contextual link rendered inside an assistant response. */
+export type AssistantActionLink = {
   label: string;
-  response: string;
   href: string;
-  hrefLabel: string;
+};
+
+/**
+ * A response body. `text` may be a literal string, or a function that returns
+ * one, so a configured business fact (hours, demo phone number) can be
+ * substituted without duplicating it inside the intent list.
+ */
+export type AssistantResponseBody = {
+  text: string | (() => string);
+  actions?: readonly AssistantActionLink[];
+  variant?: AssistantMessageVariant;
+};
+
+/**
+ * One routable topic. `keywords` are single tokens, `phrases` are two-or-more
+ * word sequences; both are matched against normalized, lowercased input. The
+ * safety intent is scored first and wins outright, so a message that mixes
+ * danger with a plumbing symptom ("my water heater is leaking and I smell gas")
+ * routes to safety rather than to the water-heater page.
+ */
+export type AssistantIntent = {
+  id: string;
+  keywords: readonly string[];
+  phrases: readonly string[];
+  response: AssistantResponseBody;
+};
+
+export type AssistantQuickPrompt = {
+  label: string;
+  /** Typed into the same input pipeline as free text, so chips and typing share one matcher. */
+  text: string;
 };
 
 export type AssistantConfig = {
-  title: string;
-  intro: string;
-  disclaimer: string;
-  choices: readonly AssistantChoice[];
+  /** Visible panel identity. */
+  name: string;
+  /** Short, always-visible status label. Never implies a live person. */
+  statusLabel: string;
+  /** Established accessible name of the dialog. Kept stable for tests and assistive tech. */
+  dialogLabel: string;
+  welcome: string;
+  explanation: string;
+  /** Concise disclosure list shown on the welcome screen. */
+  disclosures: readonly string[];
+  quickPrompts: readonly AssistantQuickPrompt[];
+  inputLabel: string;
+  inputPlaceholder: string;
+  sendLabel: string;
+  startOverLabel: string;
+  maxLength: number;
+  /** Matched before every other intent. */
+  safetyIntent: AssistantIntent;
+  /** Matched when no other intent reaches the confidence threshold. */
+  fallback: AssistantResponseBody;
+  /** Scored in the order listed; every intent here must be routable. */
+  intents: readonly AssistantIntent[];
+};
+
+/**
+ * One rendered conversation turn. `id` is a deterministic client-side sequence
+ * number (never random) so hydration stays stable. Messages live only in React
+ * component state; nothing here is transmitted or persisted.
+ */
+export type AssistantMessage = {
+  id: string;
+  role: AssistantMessageRole;
+  text: string;
+  actions?: readonly AssistantActionLink[];
+  variant?: AssistantMessageVariant;
 };
 
 export type CostToolConfig = {
@@ -395,7 +522,18 @@ export type ContactMethodValue = "phone" | "email" | "text";
 
 export type ContactTimeValue = "morning" | "afternoon" | "evening";
 
-export type UrgencyValue = "urgent" | "not-urgent";
+/**
+ * Lead-qualification urgency. These are stable internal values, not customer
+ * copy: the visible labels live in forms.urgencyOptions. "right-now" and
+ * "today" describe the customer's own situation only. They never assert
+ * availability, response time or dispatch, which is why the config also carries
+ * an explicit safety guidance block for the immediate-hazard cases.
+ */
+export type UrgencyValue =
+  | "right-now"
+  | "today"
+  | "this-week"
+  | "getting-estimate";
 
 export type EstimateFormValues = {
   service: string;
@@ -424,6 +562,8 @@ export type BookingFormValues = {
 export type ConfirmationStep = {
   step: number;
   title: string;
+  /** Which party owns the step, used for the workflow preview's owner tags. */
+  owner: string;
   description: string;
 };
 
@@ -453,6 +593,18 @@ export type FormsConfig = {
   contactMethods: readonly SelectOption<ContactMethodValue>[];
   contactTimes: readonly SelectOption<ContactTimeValue>[];
   urgencyOptions: readonly SelectOption<UrgencyValue>[];
+  urgencyLegend: string;
+  urgencyHelp: string;
+  /**
+   * Immediate-hazard guidance shown beside the urgency choice. Fire, suspected
+   * gas, electrical danger and severe flooding are safety situations, not
+   * higher-value leads, so the form routes them to emergency guidance instead
+   * of implying a faster response.
+   */
+  urgencySafetyHeading: string;
+  urgencySafetyBody: string;
+  urgencySafetyCallLabel: string;
+  urgencySafetyLinkLabel: string;
   timeRanges: readonly SelectOption[];
   cityLabel: string;
   zipLabel: string;
@@ -475,7 +627,14 @@ export type FormsConfig = {
   confirmationNoPhotos: string;
   confirmationLiveWebsiteHeading: string;
   confirmationLiveWebsiteNote: string;
-  confirmationLiveWebsiteSteps: readonly ConfirmationStep[];
+  /**
+   * Ordered stages shown as a compact stage rail above the detailed workflow.
+   * Presentation only; no step is ever marked as entered by this demonstration.
+   */
+  confirmationWorkflowStages: readonly string[];
+  confirmationWorkflowSteps: readonly ConfirmationStep[];
+  confirmationWorkflowDisclosureHeading: string;
+  confirmationWorkflowDisclosureItems: readonly string[];
   confirmationPrimaryLabel: string;
   confirmationSecondaryLabel: string;
   submitLabel: string;
@@ -588,6 +747,8 @@ export type PricingConfig = {
   eyebrow: string;
   heading: string;
   intro: string;
+  /** Single page-level note stating that final price depends on assessment. */
+  assessmentNote: string;
   disclosure: string;
   process: ProcessConfig;
   processNote: string;
@@ -607,4 +768,20 @@ export type PricingConfig = {
 export type PricingContextLink = {
   label: string;
   href: string;
+};
+
+export type ProblemPath = {
+  id: string;
+  label: string;
+  description: string;
+  icon: ContentIconId;
+  href: string;
+  linkLabel: string;
+  /** Visual emphasis for higher-urgency situations such as sewer concerns. */
+  accent?: boolean;
+  /** Secondary destination such as the estimate form for the "not sure" case. */
+  altCta?: {
+    label: string;
+    href: string;
+  };
 };

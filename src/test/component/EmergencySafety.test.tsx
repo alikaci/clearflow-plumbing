@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import EmergencyPage from "@/app/emergency/page";
-import { home } from "@/config/home";
+import { business } from "@/config/business";
 
 const requiredSentence =
-  "If there is an immediate threat involving safety, fire, gas, electricity or severe flooding, contact the appropriate emergency service or utility provider.";
+  "If there is an immediate threat involving fire, gas, electricity or severe flooding, contact the appropriate emergency service or utility provider first.";
 
 const forbiddenPhrases = [
   "on the way",
@@ -21,13 +21,13 @@ const forbiddenPhrases = [
 ];
 
 /*
-These words legitimately appear inside the page's existing negations, such as
-"No 24/7 availability ... is promised by this demonstration", so each mention
-has to be checked for a negation in the same sentence rather than banned
-outright.
+The emergency page is allowed to read as a real premium page: the portfolio
+disclosure in the footer carries the concept context, and emergency-call
+availability is rendered from config rather than hard-coded. Phrases that would
+still be false claims, such as a response guarantee or a dispatch promise, must
+stay inside a negation.
 */
 const phrasesThatMustBeNegated = [
-  "24/7",
   "guaranteed response",
   "technician dispatch",
 ];
@@ -75,7 +75,7 @@ describe("emergency page safety guidance", () => {
 
     const heading = screen.getByRole("heading", {
       level: 2,
-      name: "When an Immediate Threat Should Come First",
+      name: "Safety Comes Before Plumbing",
     });
     expect(heading).toBeInTheDocument();
     expect(callout?.contains(heading)).toBe(true);
@@ -90,7 +90,7 @@ describe("emergency page safety guidance", () => {
     const calloutSection = screen
       .getByRole("heading", {
         level: 2,
-        name: "When an Immediate Threat Should Come First",
+        name: "Safety Comes Before Plumbing",
       })
       .closest("section");
 
@@ -123,21 +123,49 @@ describe("emergency page safety guidance", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        "When you make contact, describe what you observed, when it started and whether it is getting worse.",
+        "If the building is unsafe to stay in, move to safety before calling anyone.",
       ),
     ).toBeInTheDocument();
   });
 
-  it("preserves the existing emergency disclosure and request copy", () => {
+  it("presents the emergency path in the required priority order", () => {
     render(<EmergencyPage />);
 
-    expect(screen.getByText(home.emergency.safetyNote)).toBeInTheDocument();
+    const headings = screen
+      .getAllByRole("heading", { level: 2 })
+      .map((heading) => heading.textContent ?? "");
+    const order = [
+      "Safety Comes Before Plumbing",
+      "Request Emergency Service",
+      "When to Request Urgent Help",
+      "What Happens After You Contact Us",
+    ];
+    const positions = order.map((title) => headings.indexOf(title));
+    for (const position of positions) {
+      expect(position).toBeGreaterThanOrEqual(0);
+    }
+    expect(positions).toEqual([...positions].sort((a, b) => a - b));
+  });
+
+  it("offers direct phone contact and an emergency request path", () => {
+    render(<EmergencyPage />);
+
     expect(
-      screen.getByRole("heading", { name: "Request Urgent Plumbing Help" }),
-    ).toBeInTheDocument();
+      screen.getByRole("link", { name: `Call ${business.phoneDisplay}` }),
+    ).toHaveAttribute("href", business.phoneUri);
     expect(
-      screen.getByRole("heading", { name: "When to Request Urgent Help" }),
+      screen.getByRole("link", { name: "Send an Emergency Request" }),
+    ).toHaveAttribute("href", "/#estimate");
+  });
+
+  it("keeps the emergency page free of demo framing", () => {
+    render(<EmergencyPage />);
+
+    expect(
+      screen.getByRole("heading", { name: "Emergency Help, Day or Night" }),
     ).toBeInTheDocument();
+    const text = (document.body.textContent ?? "").toLowerCase();
+    expect(text).not.toMatch(/sample|demo|placeholder|fictional|concept/);
   });
 
   it("makes no emergency-response, dispatch or scheduling claim", () => {

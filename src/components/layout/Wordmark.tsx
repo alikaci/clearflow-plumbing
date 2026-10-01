@@ -14,7 +14,7 @@ export function Wordmark({ variant = "light" }: WordmarkProps) {
   return (
     <Link
       href="/"
-      aria-label={`${business.name} — Home`}
+ aria-label={`${business.name}-Home`}
       className="inline-flex flex-col leading-none"
     >
       <span className={`text-xl font-bold tracking-tight ${primary}`}>

@@ -58,7 +58,7 @@ export default async function ServiceDetailPage({
   }));
 
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <PageIntro
         eyebrow="Service"
         heading={service.headline}

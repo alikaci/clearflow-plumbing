@@ -14,7 +14,7 @@ export function CostGuidanceTool({
   ctaHref?: string;
 }) {
   const [service, setService] = useState("");
-  const [urgency, setUrgency] = useState<UrgencyValue>("not-urgent");
+  const [urgency, setUrgency] = useState<UrgencyValue>("getting-estimate");
   const [propertyType, setPropertyType] = useState<PropertyTypeValue>("house");
   const [serviceError, setServiceError] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);

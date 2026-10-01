@@ -99,7 +99,7 @@ test.describe("interactive hydration on the production build", () => {
     await zip.fill("43215");
     await page.getByRole("button", { name: "Check coverage" }).click();
     await expect(
-      page.getByText(/included in the demonstration service area/),
+      page.getByRole("status").filter({ hasText: /inside our Columbus service area/ }),
     ).toBeVisible();
 
     await page.getByRole("button", { name: "Check another ZIP" }).click();
@@ -139,12 +139,15 @@ test.describe("interactive hydration on the production build", () => {
     const dialog = page.getByRole("dialog", { name: "Website assistant" });
     await expect(dialog).toBeVisible();
 
-    await dialog.getByRole("button", { name: "I have a leak" }).click();
+    await dialog.getByRole("button", { name: "I have a water leak" }).click();
     await expect(
-      dialog.getByText(/Leaks can range from a dripping fixture/),
+      dialog.getByText(/A leak can range from a dripping fixture/),
     ).toBeVisible();
 
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
+    await expect(
+      page.getByRole("button", { name: "Open website assistant" }),
+    ).toBeFocused();
   });
 });

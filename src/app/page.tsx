@@ -1,8 +1,9 @@
 import { features } from "@/config/features";
 import { buildMetadata } from "@/lib/metadata";
 import { Hero } from "@/components/sections/Hero";
-import { ReputationBar } from "@/components/sections/ReputationBar";
+import { TrustSignals } from "@/components/sections/TrustSignals";
 import { EmergencyCallout } from "@/components/sections/EmergencyCallout";
+import { ProblemChooser } from "@/components/sections/ProblemChooser";
 import { ServiceGrid } from "@/components/sections/ServiceGrid";
 import { ServiceAreaChecker } from "@/components/sections/ServiceAreaChecker";
 import { WhyChoose } from "@/components/sections/WhyChoose";
@@ -18,10 +19,11 @@ export const metadata = buildMetadata("home");
 
 export default function Home() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <Hero />
-      {features.reputationSection ? <ReputationBar /> : null}
+      {features.trustSignals ? <TrustSignals /> : null}
       {features.emergencyPath ? <EmergencyCallout /> : null}
+      <ProblemChooser />
       <ServiceGrid />
       {features.serviceAreaChecker ? <ServiceAreaChecker /> : null}
       <WhyChoose />

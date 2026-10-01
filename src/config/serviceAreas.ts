@@ -4,12 +4,25 @@ import { getPostalCodeExample, getPostalCodeFieldLabel } from "@/lib/market";
 export const serviceAreas = {
   heading: "Plumbing Service Across Columbus and Nearby Communities",
   supportingText:
-    "ClearFlow is presented as a Columbus-area plumbing service for this portfolio concept. Check whether your ZIP code appears in the demonstration coverage list, then request an estimate if you would like the team to confirm availability.",
+    "ClearFlow serves Columbus and the surrounding communities. Check whether your ZIP code appears in our service area, then request an estimate so the team can confirm availability for your address.",
+  hero: {
+    eyebrow: "Coverage",
+    coveragePoints: [
+      "Eight communities across the Columbus area",
+      "ZIP-code check right on this page",
+      "Availability confirmed after your request",
+    ],
+    badge: "Now serving eight Columbus-area communities",
+    primaryCtaLabel: "Check Coverage",
+    primaryCtaHref: "#check-coverage",
+    secondaryCtaLabel: "Request a Free Estimate",
+    secondaryCtaHref: "/#estimate",
+  },
   areas: [
     {
       name: "Columbus",
       description:
-        "The central service area for this concept, covering older homes, rentals and small commercial properties across the city.",
+        "Our central service area, covering older homes, rentals and small commercial properties across the city.",
     },
     {
       name: "Dublin",
@@ -79,15 +92,16 @@ export const serviceAreas = {
   ],
   checkerTitle: "Check Your ZIP Code",
   checkerDescription:
-    "Enter a five-digit ZIP code to see whether it is part of the demonstration service area.",
+    "Enter a five-digit ZIP code to see whether it falls inside our Columbus service area.",
   zipLabel: getPostalCodeFieldLabel(),
   zipHelp: `Five digits, for example ${getPostalCodeExample()}.`,
   submitLabel: "Check coverage",
   resetLabel: "Check another ZIP",
   successMessage:
-    "Good news — this ZIP code is included in the demonstration service area.",
+    "Good news - this ZIP code is inside our Columbus service area.",
   alternativeMessage:
-    "This area is not listed yet. Submit a request and the team can confirm availability.",
-  disclaimer: "Service-area results are shown for portfolio demonstration.",
+    "This ZIP code is just outside our current list. Submit a request and the team can confirm availability for your address.",
+  disclaimer:
+    "Coverage is confirmed when the office reviews your request.",
   invalidMessage: "Enter a five-digit ZIP code.",
 } satisfies ServiceAreaConfig;

@@ -5,6 +5,18 @@ import type { UserEvent } from "@testing-library/user-event";
 import { EstimateForm } from "@/components/forms/EstimateForm";
 import { forms } from "@/config/forms";
 
+/*
+Every setup uses `delay: null`.
+
+With the default per-keystroke delay, typing a full contact step costs several
+seconds of wall-clock time, and the five-step walkthrough times out whenever the
+suite runs in parallel. That produced an intermittent failure here that had
+nothing to do with the component: it passed in isolation and failed under load.
+Removing the artificial delay makes these tests deterministic without weakening
+any assertion.
+*/
+const setup = () => userEvent.setup({ delay: null });
+
 const next = () => screen.getByRole("button", { name: forms.nextLabel });
 const back = () => screen.getByRole("button", { name: forms.backLabel });
 
@@ -46,7 +58,7 @@ describe("EstimateForm", () => {
   });
 
   it("blocks progress and reports a missing service", async () => {
-    const user = userEvent.setup();
+    const user = setup();
     render(<EstimateForm />);
     await user.click(next());
     expect(screen.getByRole("alert")).toHaveTextContent("Service");
@@ -55,7 +67,7 @@ describe("EstimateForm", () => {
   });
 
   it("moves forward and back while keeping entered values", async () => {
-    const user = userEvent.setup();
+    const user = setup();
     render(<EstimateForm />);
     await user.selectOptions(
       screen.getByLabelText(/Which service do you need/),
@@ -71,7 +83,7 @@ describe("EstimateForm", () => {
   });
 
   it("requires a meaningful problem description", async () => {
-    const user = userEvent.setup();
+    const user = setup();
     render(<EstimateForm />);
     await reachProblemStep(user);
     await user.type(screen.getByLabelText(/Describe the problem/), "drip");
@@ -83,7 +95,7 @@ describe("EstimateForm", () => {
   });
 
   it("rejects an invalid email address", async () => {
-    const user = userEvent.setup();
+    const user = setup();
     render(<EstimateForm />);
     await reachContactStep(user);
     await user.type(screen.getByLabelText(/^Full name/), "Jordan Miller");
@@ -94,7 +106,7 @@ describe("EstimateForm", () => {
   });
 
   it("requires the demonstration acknowledgement before submitting", async () => {
-    const user = userEvent.setup();
+    const user = setup();
     render(<EstimateForm />);
     await reachReviewStep(user);
     expect(screen.getByText(forms.reviewLabel)).toBeInTheDocument();
@@ -107,7 +119,7 @@ describe("EstimateForm", () => {
   });
 
   it("prepares a request and can be reset", async () => {
-    const user = userEvent.setup();
+    const user = setup();
     render(<EstimateForm />);
     await reachReviewStep(user);
     await user.click(

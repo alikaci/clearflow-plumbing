@@ -130,7 +130,7 @@ describe("pricing page", () => {
     expect(route.path).toBe("/pricing");
     expect(route.title).toBe("How Pricing Works");
     expect(route.description).toBe(
-      "See how a professional plumbing estimate process could be explained clearly before work begins in this fictional portfolio concept.",
+      "How a professional plumbing estimate process is explained clearly before any work begins.",
     );
   });
 });

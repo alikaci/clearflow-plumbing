@@ -22,10 +22,10 @@ export function Footer() {
             <ul className="mt-6 flex flex-col gap-2 text-sm text-footer-muted">
               <li>
                 <a
-                  href={business.phoneUri}
-                  className="underline-offset-2 transition-colors hover:text-white hover:underline"
-                >
-                  Call {business.phoneDisplay}
+href={business.phoneUri}
+                className="inline-flex min-h-6 items-center underline-offset-2 transition-colors hover:text-white hover:underline"
+              >
+                Call {business.phoneDisplay}
                 </a>
               </li>
               <li>
@@ -40,7 +40,15 @@ export function Footer() {
                   <span>{business.email.display}</span>
                 )}
               </li>
-              <li>{business.hours.full}</li>
+              <li>Office hours: {business.hours.full}</li>
+              <li>
+                <Link
+                  href="/emergency"
+                  className="inline-flex min-h-6 items-center underline-offset-2 hover:text-white hover:underline"
+                >
+                  {business.hours.emergencyLabel}
+                </Link>
+              </li>
               <li>Serving {business.serviceArea}</li>
             </ul>
           </div>
@@ -81,7 +89,7 @@ export function Footer() {
           <div className="mt-6 flex justify-end">
             <a
               href="#top"
-              className="inline-flex items-center text-sm font-medium text-footer-muted underline-offset-2 transition-colors hover:text-white hover:underline"
+              className="inline-flex min-h-6 items-center text-sm font-medium text-footer-muted underline-offset-2 transition-colors hover:text-white hover:underline"
             >
               Back to top
             </a>

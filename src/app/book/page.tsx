@@ -17,7 +17,7 @@ export default function BookPage() {
   if (!features.onlineBooking) notFound();
 
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <PageIntro
         eyebrow="Booking"
         heading={forms.bookingHeading}
