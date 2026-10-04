@@ -7,6 +7,12 @@ type BrandImageProps = {
   imageKey: ImageKey;
   className?: string;
   sizes?: string;
+  /**
+   * CSS `object-position` for editorial crops. Separate from `className` so a
+   * focal point stays a typed, config-driven value instead of an arbitrary
+   * utility string, and so the fallback art can mirror the same framing.
+   */
+  objectPosition?: string;
 };
 
 /*
@@ -14,11 +20,12 @@ Renders the final local photo when the manifest entry is available, otherwise a
 branded SVG fallback at the same aspect ratio. Swapping in a real image only
 requires setting `available: true` in the manifest.
 */
-export function BrandImage({ imageKey, className, sizes }: BrandImageProps) {
+export function BrandImage({ imageKey, className, sizes, objectPosition }: BrandImageProps) {
   const asset = images[imageKey];
+  const position = objectPosition ? { objectPosition } : undefined;
 
   if (!asset.available) {
-    return <PlaceholderArt imageKey={imageKey} className={className} />;
+    return <PlaceholderArt imageKey={imageKey} className={className} objectPosition={objectPosition} />;
   }
 
   return (
@@ -31,6 +38,7 @@ export function BrandImage({ imageKey, className, sizes }: BrandImageProps) {
       priority={asset.priority}
       sizes={sizes}
       className={className}
+      style={position}
     />
   );
 }

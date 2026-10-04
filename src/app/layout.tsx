@@ -6,6 +6,7 @@ import { UtilityBar } from "@/components/layout/UtilityBar";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Footer } from "@/components/layout/Footer";
 import { MobileActionBar } from "@/components/layout/MobileActionBar";
+import { FloatingControlVisibility } from "@/components/layout/FloatingControlVisibility";
 import { Assistant } from "@/components/assistant/Assistant";
 import { getSiteUrl } from "@/lib/site-url";
 import { getSocialImage } from "@/lib/metadata";
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Footer />
         <MobileActionBar />
         <Assistant />
+        <FloatingControlVisibility />
       </body>
     </html>
   );

@@ -52,6 +52,9 @@ through generated Tailwind utilities (bg-navy, text-muted, bg-surface-muted, ...
   --mobile-action-bar-height: calc(3.5625rem + env(safe-area-inset-bottom, 0px));
   --mobile-floating-gap: 0.875rem;
 
+  /* Homepage hero entrance, kept inside the 180-450ms range on purpose. */
+  --hero-motion-duration: 420ms;
+
   /* Motion */
   --motion-duration-fast: 160ms;
   --motion-duration-base: 320ms;
@@ -211,6 +214,47 @@ html[data-assistant-open="true"] .mobile-action-bar {
   display: none;
 }
 
+/*
+Floating controls during the Hero.
+Published by FloatingControlVisibility as data-floating-controls on <html>:
+"hero" while the Hero still fills at least half the viewport, "page" otherwise,
+and the attribute is absent before hydration and on routes without a Hero.
+
+Both controls are position: fixed, so suppressing them reflows nothing and the
+body's reserved action-bar padding stays constant. Nothing is display: none, so
+the fade-out is visible; visibility is what takes a hidden control out of the tab
+order and the accessibility tree. It is given a delay equal to the fade so the
+control disappears only after it has faded out, while becoming visible again is
+instant. The whole transition sits behind prefers-reduced-motion, and without
+JavaScript the attribute is never written, so the controls simply stay visible.
+*/
+.mobile-action-bar,
+[data-assistant-launcher] {
+  transition:
+    opacity var(--motion-duration-fast) var(--motion-ease-standard),
+    transform var(--motion-duration-fast) var(--motion-ease-standard),
+    visibility 0s linear;
+}
+
+html[data-floating-controls="hero"] .mobile-action-bar,
+html[data-floating-controls="hero"] [data-assistant-launcher] {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.75rem);
+  pointer-events: none;
+  transition-delay: 0s, 0s, var(--motion-duration-fast);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-action-bar,
+  [data-assistant-launcher],
+  html[data-floating-controls="hero"] .mobile-action-bar,
+  html[data-floating-controls="hero"] [data-assistant-launcher] {
+    transition: none;
+    transform: none;
+  }
+}
+
 .mobile-menu-dialog::backdrop {
   background-color: rgb(11 31 51 / 0.5);
 }
@@ -247,6 +291,55 @@ it paints, then flips them to revealed once an IntersectionObserver sees them.
     opacity var(--motion-duration-reveal) var(--motion-ease-emphasized),
     transform var(--motion-duration-reveal) var(--motion-ease-emphasized);
   transition-delay: var(--reveal-stagger-ms, 0ms);
+}
+
+/*
+Homepage hero entrance.
+
+Scoped to the hero, run once, opacity and transform only, no continuous motion.
+Everything lives behind `prefers-reduced-motion: no-preference`, so a
+reduced-motion visitor never gets the animation at all and simply reads the
+server-rendered markup at its natural visible state. There is no JavaScript and
+no inline hidden style, so the copy is present in the HTML on first paint.
+
+--hero-motion-duration is deliberately shorter than the shared
+--motion-duration-reveal because the hero entrance is the first thing a visitor
+sees: 420ms keeps it inside the 180-450ms range without making the page feel
+slow on arrival.
+*/
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-enter {
+    animation: hero-enter var(--hero-motion-duration)
+      var(--motion-ease-emphasized) backwards;
+  }
+
+  /* A short stagger, still inside the 450ms ceiling, between copy and image. */
+  .hero-enter-visual {
+    animation: hero-enter var(--hero-motion-duration)
+      var(--motion-ease-emphasized) 90ms backwards;
+  }
+}
+
+/*
+The hero sits on navy, where the global blue focus ring only reaches about
+3.3:1 against the surface and far less against the orange primary button. A
+white ring clears 3:1 against both the navy background and the orange fill.
+*/
+.hero-cta:focus-visible {
+  outline: 3px solid var(--color-white);
+  outline-offset: 3px;
 }
 
 /* New form step: a short decorative drift, never a slide between columns. */

@@ -14,7 +14,34 @@ const CLOSE = "Close website assistant";
 const DIALOG = "Website assistant";
 
 async function openAssistant(page: Page) {
-  await page.getByRole("button", { name: LAUNCHER }).click();
+  /*
+  On mobile and tablet the launcher is intentionally suppressed for as long as
+  any part of the Hero remains on screen below the sticky header, so reaching it
+  means scrolling past the Hero first. That is also how a real visitor meets it.
+  Desktop is unaffected.
+
+  The scroll is keyed off the viewport width rather than the launcher's current
+  visibility: this runs immediately after goto, which can be before React has
+  hydrated, and a visibility check would then read "visible" and skip the scroll
+  that the suppression is about to require.
+
+  `hero.offsetHeight + 24` puts the Hero's bottom edge 24px above the sticky
+  header, comfortably past the boundary the controller waits for.
+  */
+  await page.evaluate(() => {
+    if (window.innerWidth >= 1024) return;
+    const hero = document.querySelector("main [data-hero-root]")?.closest("section");
+    if (!hero) return;
+    window.scrollTo({
+      top:
+        hero.getBoundingClientRect().top + window.scrollY + hero.offsetHeight + 24,
+      behavior: "instant",
+    });
+  });
+
+  const launcher = page.getByRole("button", { name: LAUNCHER });
+  await expect(launcher).toBeVisible();
+  await launcher.click();
   const dialog = page.getByRole("dialog", { name: DIALOG });
   await expect(dialog).toBeVisible();
   return dialog;
@@ -477,9 +504,7 @@ test.describe("guided assistant", () => {
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto("/");
 
-      await page.getByRole("button", { name: LAUNCHER }).click();
-      const dialog = page.getByRole("dialog", { name: DIALOG });
-      await expect(dialog).toBeVisible();
+      const dialog = await openAssistant(page);
 
       const state = await dialog.evaluate((node) => {
         const style = getComputedStyle(node);

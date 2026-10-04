@@ -1,17 +1,35 @@
 import type { HomePageConfig } from "@/types";
+import { business } from "@/config/business";
 
 export const home = {
   hero: {
-    eyebrow: "Professional Plumbing Support Across Columbus",
-    heading: "Reliable Plumbing Help, Without the Guesswork",
+    eyebrow: `${business.hours.emergencyLabel} \u00b7 Serving Columbus`,
+    heading: "Plumbing Help, Without the Runaround.",
     paragraph:
-      "From leaking pipes and blocked drains to water-heater problems, ClearFlow makes it easy to request professional plumbing support across Columbus and surrounding communities.",
-    trustPoints: [
-      "Clear Communication",
-      "Upfront Estimates",
-      "Respectful Service",
-      "Easy Online Requests",
+      "Tell us what\u2019s happening, find the right service, and request a clear next step\u2014from urgent leaks to everyday repairs across Columbus.",
+    paragraphCompact:
+      "Tell us what\u2019s happening and request a clear next step across Columbus.",
+    primaryCtaLabel: "Tell Us What\u2019s Happening",
+    primaryCtaHref: "#problem-chooser",
+    secondaryCtaLabel: `Call ${business.phoneDisplay}`,
+    tertiaryLabel: "Request a Free Estimate",
+    tertiaryHref: "#estimate",
+    proofCues: [
+      {
+        label: "Upfront Estimates",
+        detail: "Review the work before you decide",
+        icon: "receipt",
+      },
+      {
+        label: "Problem-Led Routing",
+        detail: "Start from the symptom, not the jargon",
+        icon: "pipe",
+      },
     ],
+    imageKey: "heroTechnician",
+    imageFocalPoint: "50% 38%",
+    imageSizes:
+      "(min-width: 1024px) 46vw, (min-width: 640px) 92vw, 100vw",
   },
   emergency: {
     heading: "Dealing With an Urgent Plumbing Problem?",

@@ -42,6 +42,7 @@ export function MobileActionBar() {
   return (
     <div
       ref={barRef}
+      data-floating-control=""
       className="mobile-action-bar fixed inset-x-0 bottom-0 z-40 border-t border-border bg-white lg:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >

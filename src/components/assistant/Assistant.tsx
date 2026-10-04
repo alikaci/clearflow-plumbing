@@ -152,6 +152,7 @@ export function Assistant() {
           role="dialog"
           aria-label={assistant.dialogLabel}
           tabIndex={-1}
+          data-floating-control=""
           className={`${panelClasses} flex w-[calc(100vw-2rem)] max-w-md flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-xl`}
         >
           <div className="flex items-start justify-between gap-3 border-b border-border bg-navy px-4 py-3 text-white">
@@ -313,6 +314,8 @@ export function Assistant() {
       <button
         ref={launcherRef}
         type="button"
+        data-floating-control=""
+        data-assistant-launcher=""
         onClick={() => (open ? closeAssistant() : setOpen(true))}
         aria-expanded={open}
         aria-controls={panelId}

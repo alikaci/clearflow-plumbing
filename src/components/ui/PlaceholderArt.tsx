@@ -163,9 +163,14 @@ const motifs: Record<ImageFallbackMotif, (uid: string) => ReactNode> = {
 type PlaceholderArtProps = {
   imageKey: ImageKey;
   className?: string;
+  objectPosition?: string;
 };
 
-export function PlaceholderArt({ imageKey, className = "" }: PlaceholderArtProps) {
+export function PlaceholderArt({
+  imageKey,
+  className = "",
+  objectPosition,
+}: PlaceholderArtProps) {
   const asset = images[imageKey];
 
   return (
@@ -176,7 +181,7 @@ export function PlaceholderArt({ imageKey, className = "" }: PlaceholderArtProps
       className={["relative overflow-hidden bg-navy", className]
         .filter(Boolean)
         .join(" ")}
-      style={{ aspectRatio: asset.aspectRatio }}
+      style={{ aspectRatio: asset.aspectRatio, objectPosition }}
     >
       <svg
         viewBox="0 0 400 300"

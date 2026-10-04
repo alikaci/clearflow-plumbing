@@ -42,7 +42,11 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <header id="top" className="site-header sticky top-0 z-30 border-b border-border bg-white">
+    <header
+      id="top"
+      data-sticky-header="true"
+      className="site-header sticky top-0 z-30 border-b border-border bg-white"
+    >
       <Container className="flex h-16 items-center justify-between gap-4">
         <Wordmark />
 

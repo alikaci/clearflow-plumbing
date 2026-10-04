@@ -6,6 +6,12 @@ type SectionProps = {
   children: ReactNode;
   className?: string;
   id?: string;
+  /**
+   * Optional programmatic focus target. A fragment link scrolls to `id` but the
+   * browser only moves focus when the target is focusable, so an anchor that
+   * receives keyboard focus after activation needs `tabIndex={-1}`.
+   */
+  tabIndex?: number;
   surface?: SectionSurface;
   ariaLabel?: string;
   labelledBy?: string;
@@ -22,6 +28,7 @@ export function Section({
   children,
   className = "",
   id,
+  tabIndex,
   surface = "default",
   ariaLabel,
   labelledBy,
@@ -29,6 +36,7 @@ export function Section({
   return (
     <section
       id={id}
+      tabIndex={tabIndex}
       aria-label={ariaLabel}
       aria-labelledby={labelledBy}
       className={[surfaceClasses[surface], "py-14 md:py-20", className]

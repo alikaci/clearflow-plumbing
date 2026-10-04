@@ -663,11 +663,44 @@ export type SeoConfig = {
   routes: Record<string, SeoRouteConfig>;
 };
 
+/**
+ * A short capability cue attached to the hero's visual composition. These are
+ * real site capabilities, never ratings, badges or third-party verification.
+ */
+export type HeroProofCue = {
+  label: string;
+  detail: string;
+  /** Original ClearFlow glyphs only, matching what `Icon` can render. */
+  icon: ContentIconId | TrustIconId;
+};
+
 export type HeroConfig = {
   eyebrow: string;
   heading: string;
   paragraph: string;
-  trustPoints: readonly string[];
+  /**
+   * Shortened variant rendered on narrow viewports. It must preserve the meaning
+   * of `paragraph` so the primary and phone CTAs stay inside the first mobile
+   * viewport instead of being pushed under the fixed mobile action bar.
+   */
+  paragraphCompact: string;
+  primaryCtaLabel: string;
+  /** Stable hash anchor of the section the primary CTA scrolls to. */
+  primaryCtaHref: string;
+  secondaryCtaLabel: string;
+  /** Low-emphasis third action, rendered below the two main CTAs. */
+  tertiaryLabel: string;
+  tertiaryHref: string;
+  /**
+   * Two or three concise cues attached to the image composition. The wider trust
+   * argument stays in its own homepage section rather than the first viewport.
+   */
+  proofCues: readonly HeroProofCue[];
+  imageKey: ImageKey;
+  /** CSS `object-position`, exposed so the editorial crop can be tuned in config. */
+  imageFocalPoint: string;
+  /** `next/image` sizes for the hero frame across breakpoints. */
+  imageSizes: string;
 };
 
 export type EmergencyConfig = {

@@ -55,7 +55,7 @@ function ProblemChoiceCard({ path }: { path: ProblemPath }) {
 
 export function ProblemChooser() {
   return (
-    <Section labelledBy="problem-chooser-heading">
+    <Section id="problem-chooser" tabIndex={-1} labelledBy="problem-chooser-heading">
       <Container>
         <Reveal>
           <div className="max-w-2xl">
