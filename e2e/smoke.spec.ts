@@ -130,10 +130,24 @@ test.describe("responsive layout", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
     const bar = page.locator(".mobile-action-bar");
+    // The bar intentionally stays hidden while the Hero is on screen, exactly
+    // like a visitor who has not scrolled yet would not see it, so this check
+    // scrolls past the Hero first.
+    await page.evaluate(() => {
+      const hero = document
+        .querySelector("main [data-hero-root]")
+        ?.closest("section");
+      if (!hero) return;
+      window.scrollTo({
+        top: hero.getBoundingClientRect().top + window.scrollY + hero.offsetHeight + 24,
+        behavior: "instant",
+      });
+    });
     await expect(bar.getByRole("link", { name: "Call Now" })).toBeVisible();
 
     await page.setViewportSize({ width: 1280, height: 900 });
-    await expect(bar.getByRole("link", { name: "Call Now" })).toBeHidden();
+    // The bar does not render at all on desktop.
+    await expect(bar.getByRole("link", { name: "Call Now" })).toHaveCount(0);
   });
 });
 

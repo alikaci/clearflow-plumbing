@@ -376,6 +376,23 @@ test.describe("guided assistant", () => {
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto("/");
 
+      // The launcher stays suppressed while the Hero is on screen, so reach it
+      // the way a visitor does: scroll past the Hero first.
+      await page.evaluate(() => {
+        const hero = document
+          .querySelector("main [data-hero-root]")
+          ?.closest("section");
+        if (!hero) return;
+        window.scrollTo({
+          top:
+            hero.getBoundingClientRect().top +
+            window.scrollY +
+            hero.offsetHeight +
+            24,
+          behavior: "instant",
+        });
+      });
+
       const launcher = page.getByRole("button", { name: LAUNCHER });
       await launcher.focus();
       await expect(launcher).toBeFocused();

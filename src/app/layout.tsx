@@ -67,9 +67,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteHeader />
         {children}
         <Footer />
+        {/*
+          Order matters: the bootstrap script must execute while the HTML is
+          still streaming, i.e. before the two floating controls are parsed,
+          so their first painted frame already carries the correct
+          data-floating-controls state.
+        */}
+        <FloatingControlVisibility />
         <MobileActionBar />
         <Assistant />
-        <FloatingControlVisibility />
       </body>
     </html>
   );

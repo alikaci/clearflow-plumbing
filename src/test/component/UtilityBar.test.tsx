@@ -125,6 +125,69 @@ describe("UtilityBar", () => {
     ).toHaveClass("min-h-6");
   });
 
+  it("gives the emergency line a restrained alert icon that stays out of the name", () => {
+    render(<UtilityBar />);
+
+    const emergency = screen.getByRole("link", {
+      name: business.hours.emergencyLabel,
+    });
+    const icon = emergency.querySelector("svg");
+
+    expect(icon).not.toBeNull();
+    expect(icon).toHaveAttribute("aria-hidden", "true");
+    expect(icon).toHaveClass("text-orange");
+    // The icon is decorative, so the accessible name is the label alone.
+    expect(emergency.textContent).toBe(business.hours.emergencyLabel);
+  });
+
+  it("makes the phone number the single filled accent in the row", () => {
+    render(<UtilityBar />);
+
+    const phone = screen.getByRole("link", {
+      name: `Call ${business.phoneDisplay}`,
+    });
+
+    expect(phone).toHaveClass("bg-orange");
+    expect(phone).toHaveClass("text-navy");
+    expect(phone).toHaveClass("font-semibold");
+    // It is the only filled element: the rest of the row is plain text on navy.
+    expect(screen.getByRole("link", { name: business.hours.emergencyLabel }).className)
+      .not.toContain("bg-orange");
+    expect(phone.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+    expect(phone.querySelector("svg")).toHaveClass("h-3.5");
+  });
+
+  it("shows the number on the bar while keeping the full call phrase as the name", () => {
+    render(<UtilityBar />);
+
+    const phone = screen.getByRole("link", {
+      name: `Call ${business.phoneDisplay}`,
+    });
+
+    // The visible text buys width at 360px; the accessible name still reads
+    // as an action and contains the visible text (WCAG 2.5.3).
+    expect(phone).toHaveTextContent(business.phoneDisplay);
+    expect(phone.textContent).not.toContain("Call");
+    expect(phone.getAttribute("aria-label")).toBe(
+      `Call ${business.phoneDisplay}`,
+    );
+  });
+
+  it("keeps the strip inside the 40-44px band through py-2 around a min-h-6 row", () => {
+    render(<UtilityBar />);
+
+    const row = bar().querySelector("div");
+    expect(row).toHaveClass("py-2");
+    expect(row).toHaveClass("gap-x-4");
+    // 8px + 24px + 8px = 40px, before any content wrapping.
+    for (const item of [
+      screen.getByText(business.hours.emergencyLabel),
+      screen.getByRole("link", { name: `Call ${business.phoneDisplay}` }),
+    ]) {
+      expect(item).toHaveClass("min-h-6");
+    }
+  });
+
   it("does not drop the hours claim from desktop, only relocates it", () => {
     render(<UtilityBar />);
 
